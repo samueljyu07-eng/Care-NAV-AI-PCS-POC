@@ -2,6 +2,17 @@
 
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
+import { saveIntakeAnswers } from "./intake-answers";
+
+const TIMELINE_STOPS = [
+  "1 week",
+  "2 weeks",
+  "1 month",
+  "3 months",
+  "6 months",
+  "1 year",
+  "2 years",
+] as const;
 
 const SYMPTOMS = [
   { id: "headache", label: "Headache" },
@@ -21,7 +32,7 @@ export default function Home() {
   const [location, setLocation] = useState("");
   const [concerns, setConcerns] = useState("");
   const [symptoms, setSymptoms] = useState<string[]>([]);
-  const [timeline, setTimeline] = useState("");
+  const [timelineIndex, setTimelineIndex] = useState(0);
   const [pastAttempts, setPastAttempts] = useState("");
 
   function toggleSymptom(id: string) {
@@ -34,9 +45,16 @@ export default function Home() {
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const city = location.trim();
-    const query = city ? `?city=${encodeURIComponent(city)}` : "";
-    router.push(`/results${query}`);
+    saveIntakeAnswers({
+      city: location.trim(),
+      concerns: concerns.trim(),
+      symptoms: SYMPTOMS.filter((symptom) => symptoms.includes(symptom.id)).map(
+        (symptom) => symptom.label,
+      ),
+      timeline: TIMELINE_STOPS[timelineIndex],
+      pastAttempts: pastAttempts.trim(),
+    });
+    router.push("/results");
   }
 
   return (
@@ -66,8 +84,6 @@ export default function Home() {
       </aside>
 
       <form
-        action="/results"
-        method="get"
         onSubmit={handleSubmit}
         className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-8"
       >
@@ -151,17 +167,34 @@ export default function Home() {
               Timeline
             </label>
             <p id="timeline-hint" className="mt-1 text-sm text-slate-500">
-              How long have symptoms persisted?
+              Drag the handle to show how long symptoms have lasted.
+            </p>
+            <p className="mt-3 text-base font-medium text-slate-800">
+              {TIMELINE_STOPS[timelineIndex]}
             </p>
             <input
               id="timeline"
-              type="text"
-              value={timeline}
-              onChange={(event) => setTimeline(event.target.value)}
+              type="range"
+              min={0}
+              max={TIMELINE_STOPS.length - 1}
+              step={1}
+              value={timelineIndex}
+              onChange={(event) => setTimelineIndex(Number(event.target.value))}
+              aria-valuetext={TIMELINE_STOPS[timelineIndex]}
               aria-describedby="timeline-hint"
-              className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-3 py-3 text-base text-slate-900 outline-none ring-teal-700/20 placeholder:text-slate-400 focus:border-teal-700 focus:ring-4"
-              placeholder="For example: 3 weeks, or since March"
+              className="mt-2 h-2 w-full cursor-pointer accent-teal-800"
             />
+            <div className="mt-2 grid grid-cols-7 gap-1 text-[11px] leading-4 text-slate-500">
+              {TIMELINE_STOPS.map((stop) => {
+                const [amount, ...unit] = stop.split(" ");
+                return (
+                  <span key={stop} className="text-center">
+                    <span className="block">{amount}</span>
+                    <span className="block">{unit.join(" ")}</span>
+                  </span>
+                );
+              })}
+            </div>
           </div>
 
           <div>

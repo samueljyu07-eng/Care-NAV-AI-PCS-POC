@@ -13,9 +13,10 @@ from. This is a proof of concept for a demo, not a production medical product.
 - All data is synthetic. No real patient data is ever stored or sent.
 
 ## Current status
-- Done: static intake form (city, concerns, primary symptoms checkboxes, past
-  attempts) and an empty /results page.
-- Next: placeholder practitioner data, sample pathway data, tree diagram UI.
+- Done: intake form, and the /results tree UI with practitioner panels. Submitting
+  the form saves the answers for this visit. The results page shows three sample
+  pathways, and each step can open sample practitioners to choose from.
+- Next: a Claude API route that generates pathways. Not built yet.
 
 ## Intake data shape
 {

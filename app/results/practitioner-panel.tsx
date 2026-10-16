@@ -70,15 +70,25 @@ export default function PractitionerPanel({
       <div className="min-h-0 overflow-hidden" inert={!open}>
         <section
           aria-label="Sample practitioners"
-          className="mt-1 rounded-xl border border-slate-200 bg-white p-4 sm:p-5"
+          className="mt-2 break-words rounded-xl border border-slate-200 bg-white p-3"
         >
           {stepTitle ? (
             <h2 className="text-lg font-semibold text-slate-800">{stepTitle}</h2>
           ) : null}
           {practitionerType && matches.length === 0 ? (
-            <p className="mt-2 text-sm leading-6 text-slate-600">
-              {emptyMessage(patientCity)}
-            </p>
+            <ul className="mt-3">
+              <li className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4">
+                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  No match
+                </p>
+                <p className="mt-1 text-base font-semibold text-slate-900">
+                  No sample practitioner for this step
+                </p>
+                <p className="mt-3 text-sm leading-6 text-slate-600">
+                  {emptyMessage(patientCity)}
+                </p>
+              </li>
+            </ul>
           ) : matches.length > 0 ? (
             <ul className="mt-4 space-y-3">
               {matches.map((person) => {
