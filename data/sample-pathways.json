@@ -1,0 +1,87 @@
+{
+  "red_flag": false,
+  "symptom_domains": ["vestibular", "ocular"],
+  "rule_out_checklist": [
+    {
+      "item": "Has the dizziness suddenly become severe, or is it a kind of dizziness you have not had before?",
+      "why_it_matters": "A sharp change is worth describing to a doctor so they can decide whether it needs a closer look.",
+      "raise_with": "GP"
+    },
+    {
+      "item": "Does light sensitivity come with new vision loss, new double vision, or a headache that is much worse than usual?",
+      "why_it_matters": "Those details help a doctor tell everyday light sensitivity apart from something they may want to check sooner.",
+      "raise_with": "GP"
+    },
+    {
+      "item": "Have you noticed weakness, trouble speaking, fainting, or a recent head impact that has not been checked yet?",
+      "why_it_matters": "This is a question to raise with a doctor. This demo does not decide whether symptoms are urgent.",
+      "raise_with": "GP"
+    }
+  ],
+  "pathways": [
+    {
+      "name": "Dizziness and balance questions",
+      "summary": "A roadmap for talking about dizziness: what sets it off, how balance feels day to day, and which details to bring to a GP. It does not explain the cause or promise that symptoms will change.",
+      "supported_by": ["Parachute Canadian Guideline on Concussion in Sport"],
+      "steps": [
+        {
+          "order": 1,
+          "title": "Describe dizziness and balance with a vestibular physiotherapist",
+          "practitioner_type": "vestibular_physio",
+          "rationale": "Dizziness sits in the vestibular area of this demo. This visit is for listing triggers, such as turning the head or busy places, so those notes can go to a GP."
+        },
+        {
+          "order": 2,
+          "title": "Add questions about neck comfort and everyday movement",
+          "practitioner_type": "physiotherapist",
+          "rationale": "People with dizziness sometimes also want words for neck stiffness or how movement feels. This step collects those questions. It does not say the neck is the cause."
+        }
+      ]
+    },
+    {
+      "name": "Light sensitivity and visual comfort",
+      "summary": "A roadmap for talking about light sensitivity: screens, reading, and bright rooms, plus what to ask a GP. It does not test vision or prescribe treatment.",
+      "supported_by": ["CDC HEADS UP concussion information"],
+      "steps": [
+        {
+          "order": 1,
+          "title": "Describe light sensitivity and visual comfort with a vision therapist",
+          "practitioner_type": "vision_therapist",
+          "rationale": "Light sensitivity sits in the ocular area of this demo. This visit is for noting which lights, screens, or reading tasks are hard, so a GP can hear the pattern."
+        },
+        {
+          "order": 2,
+          "title": "List how light sensitivity changes daily activity",
+          "practitioner_type": "sports_medicine_physician",
+          "rationale": "A sports medicine conversation can turn those visual notes into questions about work, school, or exercise to raise with a GP. It is not a clearance to return to activity."
+        }
+      ]
+    },
+    {
+      "name": "Dizziness and light sensitivity together",
+      "summary": "A roadmap that keeps both symptoms in one set of notes for a GP: dizziness first, then light sensitivity, then questions about activity. The order is for the conversation, not a treatment plan.",
+      "supported_by": ["Ontario Neurotrauma Foundation guideline for concussion and prolonged symptoms"],
+      "steps": [
+        {
+          "order": 1,
+          "title": "Start with dizziness and balance notes",
+          "practitioner_type": "vestibular_physio",
+          "rationale": "The first conversation captures when dizziness shows up and what makes it stronger, using the vestibular practitioner type in this demo."
+        },
+        {
+          "order": 2,
+          "title": "Add light sensitivity and visual comfort notes",
+          "practitioner_type": "vision_therapist",
+          "rationale": "The second conversation adds light, screen, and reading details so both symptom areas are written down before a GP visit."
+        },
+        {
+          "order": 3,
+          "title": "Gather activity questions for a GP",
+          "practitioner_type": "sports_medicine_physician",
+          "rationale": "The last conversation turns the dizziness and light notes into questions about daily activity. Those questions are for a GP. This step does not promise a timeline or an outcome."
+        }
+      ]
+    }
+  ],
+  "disclaimer": "These pathways are a navigation roadmap to take to a GP. They are not a diagnosis, a prescription, or medical advice, and they do not promise any outcome."
+}
