@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
 const SYMPTOMS = [
@@ -16,6 +17,7 @@ const SYMPTOMS = [
 ] as const;
 
 export default function Home() {
+  const router = useRouter();
   const [location, setLocation] = useState("");
   const [concerns, setConcerns] = useState("");
   const [symptoms, setSymptoms] = useState<string[]>([]);
@@ -32,7 +34,9 @@ export default function Home() {
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    window.location.assign("/results");
+    const city = location.trim();
+    const query = city ? `?city=${encodeURIComponent(city)}` : "";
+    router.push(`/results${query}`);
   }
 
   return (
