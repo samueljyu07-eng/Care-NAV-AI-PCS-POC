@@ -114,7 +114,7 @@ const shellStyle = {
   borderWidth: 1,
   color: "#1e293b",
   fontSize: 15,
-  lineHeight: 1.4,
+  lineHeight: 1.45,
 };
 
 function IntakeNodeView({ data }: NodeProps<IntakeNode>) {
@@ -216,7 +216,7 @@ function PathwayLegend({ pathways }: { pathways: CarePathway[] }) {
         return (
           <li
             key={pathway.name}
-            className="flex items-center gap-2 text-sm leading-5 text-slate-700"
+            className="flex items-center gap-2 text-base leading-6 text-black"
           >
             <span
               aria-hidden="true"
@@ -392,8 +392,8 @@ export default function CareTree({
         aria-label="Care pathway diagram"
         className={
           isPhone
-            ? "h-[70svh] w-full overflow-hidden rounded-xl border border-slate-200 bg-white"
-            : "h-[75vh] min-h-[640px] w-full overflow-hidden rounded-xl border border-slate-200 bg-white"
+            ? "h-[70svh] w-full overflow-hidden rounded-xl border border-[#E2E2E2] bg-[#F6F6F6]"
+            : "h-[75vh] min-h-[640px] w-full overflow-hidden rounded-xl border border-[#E2E2E2] bg-[#F6F6F6]"
         }
       >
         <div className="h-full w-full">

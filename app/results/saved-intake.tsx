@@ -119,38 +119,38 @@ export default function SavedIntake({ children }: { children?: ReactNode }) {
     <>
       <section
         aria-label="Your intake answers"
-        className="rounded-xl border border-slate-200 bg-white px-4 py-3"
+        className="rounded-xl border border-[#E2E2E2] bg-[#F6F6F6] px-4 py-4"
       >
-        <h2 className="text-sm font-semibold text-slate-800">Your answers</h2>
+        <h2 className="text-base font-semibold text-black">Your answers</h2>
         {answers ? (
-          <dl className="mt-2 grid gap-3 text-sm leading-6 text-slate-700 sm:grid-cols-2">
+          <dl className="mt-3 grid gap-3 text-base leading-7 text-black sm:grid-cols-2">
             <div>
-              <dt className="text-slate-500">City</dt>
+              <dt className="text-sm text-[#545454]">City</dt>
               <dd>{answerText(answers.city, "Not added")}</dd>
             </div>
             <div>
-              <dt className="text-slate-500">Timeline</dt>
+              <dt className="text-sm text-[#545454]">Timeline</dt>
               <dd>{answerText(answers.timeline, "Not added")}</dd>
             </div>
             <div className="sm:col-span-2">
-              <dt className="text-slate-500">Primary symptoms</dt>
+              <dt className="text-sm text-[#545454]">Primary symptoms</dt>
               <dd>{symptomText}</dd>
             </div>
             <div className="sm:col-span-2">
-              <dt className="text-slate-500">Main concerns</dt>
+              <dt className="text-sm text-[#545454]">Main concerns</dt>
               <dd className="line-clamp-2">
                 {answerText(answers.concerns, "Not added")}
               </dd>
             </div>
             <div className="sm:col-span-2">
-              <dt className="text-slate-500">Past attempts</dt>
+              <dt className="text-sm text-[#545454]">Past attempts</dt>
               <dd className="line-clamp-2">
                 {answerText(answers.pastAttempts, "Not added")}
               </dd>
             </div>
           </dl>
         ) : (
-          <p className="mt-2 text-sm leading-6 text-slate-600">
+          <p className="mt-2 text-base leading-7 text-[#545454]">
             {pending
               ? "Loading your answers…"
               : "No intake answers are saved for this visit. Go back to the form, fill it in, and submit."}
@@ -159,25 +159,25 @@ export default function SavedIntake({ children }: { children?: ReactNode }) {
       </section>
       {children}
       {pending ? (
-        <p className="text-sm text-slate-600">Loading care pathways…</p>
+        <p className="text-base leading-7 text-[#545454]">Loading care pathways…</p>
       ) : pathwayState.kind === "loading" || pathwayState.kind === "waiting" ? (
         answers ? (
-          <p className="text-sm text-slate-600">
+          <p className="text-base leading-7 text-[#545454]">
             Building pathways from your symptoms…
           </p>
         ) : null
       ) : pathwayState.kind === "urgent" ? (
         <aside
-          className="rounded-2xl border border-red-200 bg-red-50 px-4 py-4"
+          className="rounded-xl border border-red-200 bg-red-50 px-4 py-4"
           role="alert"
         >
-          <p className="text-sm font-semibold text-red-950">Urgent care</p>
-          <p className="mt-1 text-sm leading-6 text-red-950">
+          <p className="text-base font-semibold text-red-950">Urgent care</p>
+          <p className="mt-1 text-base leading-7 text-red-950">
             {pathwayState.message}
           </p>
         </aside>
       ) : pathwayState.kind === "message" ? (
-        <p className="text-sm leading-6 text-slate-600">{pathwayState.text}</p>
+        <p className="text-base leading-7 text-[#545454]">{pathwayState.text}</p>
       ) : (
         <CareTree
           pathways={pathwayState.pathways}
