@@ -23,7 +23,7 @@ import {
   useSyncExternalStore,
   type MouseEvent,
 } from "react";
-import PractitionerPanel, { type Practitioner } from "./practitioner-panel";
+import PractitionerPanel from "./practitioner-panel";
 
 const NODE_WIDTH = 260;
 const HORIZONTAL_GAP = 48;
@@ -145,7 +145,6 @@ function PathwayNodeView({ data }: NodeProps<PathwayNode>) {
 type StepUi = {
   selectedStepId: string | null;
   chosenByStep: Record<string, string>;
-  practitioners: Practitioner[];
   patientCity: string;
   onChoose: (practitionerId: string) => void;
 };
@@ -191,7 +190,6 @@ function StepNodeView({ id, data }: NodeProps<StepNode>) {
             stepTitle={data.title}
             practitionerType={data.practitionerTypeId}
             patientCity={ui.patientCity}
-            practitioners={ui.practitioners}
             chosenId={ui.chosenByStep[id] ?? null}
             onChoose={ui.onChoose}
           />
@@ -318,11 +316,9 @@ function buildCareTree(pathways: CarePathway[], selectedStepId: string | null) {
 
 export default function CareTree({
   pathways,
-  practitioners,
   patientCity,
 }: {
   pathways: CarePathway[];
-  practitioners: Practitioner[];
   patientCity: string;
 }) {
   const [selectedStepId, setSelectedStepId] = useState<string | null>(null);
@@ -405,7 +401,6 @@ export default function CareTree({
             value={{
               selectedStepId,
               chosenByStep,
-              practitioners,
               patientCity,
               onChoose: choosePractitioner,
             }}

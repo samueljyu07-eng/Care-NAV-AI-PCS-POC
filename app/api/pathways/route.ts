@@ -1,10 +1,17 @@
 import Anthropic from "@anthropic-ai/sdk";
+import { pathwayOutputFormat } from "../../../lib/pathwaySchema";
 import { checkRedFlags, type IntakeData } from "../../../lib/redFlags";
+import { validatedPathway } from "../../../lib/schema";
+import { SYSTEM_PROMPT } from "../../../lib/SYSTEM_PROMPT";
+import { PATHWAY_DISCLAIMER } from "../../../lib/systemPrompt";
 
 const MODEL = "claude-sonnet-5-5";
 
 const URGENT_CARE_MESSAGE =
   "Get urgent care now. Call 911 or go to the nearest emergency department. This tool will not create a pathway for this answer, and it does not give medical advice.";
+
+const PATHWAY_ERROR =
+  "We couldn't build pathways for that answer. Please try again.";
 
 type IntakeBody = {
   address: string;
@@ -134,27 +141,34 @@ export async function POST(request: Request) {
 
   try {
     const client = new Anthropic();
-    const message = await client.messages.create({
-      model: MODEL,
-      max_tokens: 256,
-      messages: [
-        {
-          role: "user",
-          content: "Reply with exactly this word and nothing else: connected",
+    const pathway = await validatedPathway(async () => {
+      const message = await client.messages.parse({
+        model: MODEL,
+        max_tokens: 4096,
+        system: SYSTEM_PROMPT,
+        messages: [
+          {
+            role: "user",
+            content: JSON.stringify(body),
+          },
+        ],
+        output_config: {
+          format: pathwayOutputFormat(),
         },
-      ],
-    });
-    const reply = message.content
-      .flatMap((block) => (block.type === "text" ? [block.text] : []))
-      .join("")
-      .trim();
+      });
 
-    return Response.json({ reply });
-  } catch (error) {
-    const detail = error instanceof Error ? error.message : "Unknown error";
-    return Response.json(
-      { error: "Claude did not respond.", detail },
-      { status: 502 },
-    );
+      return message.parsed_output;
+    });
+
+    if (!pathway) {
+      return Response.json({ error: PATHWAY_ERROR }, { status: 502 });
+    }
+
+    return Response.json({
+      ...pathway,
+      disclaimer: PATHWAY_DISCLAIMER,
+    });
+  } catch {
+    return Response.json({ error: PATHWAY_ERROR }, { status: 502 });
   }
 }

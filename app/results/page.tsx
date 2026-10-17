@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import practitioners from "../../data/practitioners.json";
-import samplePathways from "../../data/sample-pathways.json";
+import { PATHWAY_DISCLAIMER } from "../../lib/systemPrompt";
 import SavedIntake from "./saved-intake";
 
 export const metadata: Metadata = {
@@ -16,13 +15,10 @@ export default function ResultsPage() {
       <div>
         <h1 className="text-2xl font-semibold text-slate-800">Care pathways</h1>
         <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-          {samplePathways.disclaimer}
+          {PATHWAY_DISCLAIMER}
         </p>
       </div>
-      <SavedIntake
-        pathways={samplePathways.pathways}
-        practitioners={practitioners}
-      >
+      <SavedIntake>
         <p className="text-sm text-slate-600">
           Use the + and − buttons to zoom. On a phone, drag to move the
           diagram. On a larger screen, drag the background and scroll to
@@ -41,7 +37,7 @@ export default function ResultsPage() {
       >
         <p className="text-sm font-semibold text-amber-950">Not medical advice</p>
         <p className="mt-1 text-sm leading-6 text-amber-950">
-          {samplePathways.disclaimer}
+          {PATHWAY_DISCLAIMER}
         </p>
       </aside>
     </main>

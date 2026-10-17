@@ -1,34 +1,6 @@
 "use client";
 
-export type Practitioner = {
-  id: string;
-  name: string;
-  practitioner_type: string;
-  city: string;
-  clinic: string;
-  about: string;
-  details: {
-    availability: string;
-    languages: string[];
-    accepting_new_patients: boolean;
-  };
-};
-
-function cityMatches(patientLocation: string, practitionerCity: string) {
-  const location = patientLocation.trim().toLowerCase();
-  const city = practitionerCity.trim().toLowerCase();
-  if (!location || !city) {
-    return false;
-  }
-
-  const beforeComma = location.split(",")[0]?.trim();
-  if (beforeComma === city) {
-    return true;
-  }
-
-  const escaped = city.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  return new RegExp(`\\b${escaped}\\b`, "i").test(patientLocation);
-}
+import { matchPractitioners } from "../../lib/matchPractitioners";
 
 function emptyMessage(patientCity: string) {
   const city = patientCity.trim();
@@ -44,7 +16,6 @@ export default function PractitionerPanel({
   stepTitle,
   practitionerType,
   patientCity,
-  practitioners,
   chosenId,
   onChoose,
 }: {
@@ -52,15 +23,12 @@ export default function PractitionerPanel({
   stepTitle: string | null;
   practitionerType: string | null;
   patientCity: string;
-  practitioners: Practitioner[];
   chosenId: string | null;
   onChoose: (practitionerId: string) => void;
 }) {
-  const matches = practitioners.filter(
-    (person) =>
-      person.practitioner_type === practitionerType &&
-      cityMatches(patientCity, person.city),
-  );
+  const matches = practitionerType
+    ? matchPractitioners(practitionerType, patientCity)
+    : [];
 
   return (
     <div
