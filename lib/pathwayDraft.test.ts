@@ -1,0 +1,174 @@
+import { expect, it } from "vitest";
+import { evidenceBadge, sourcesFor, categoryById } from "./catalog";
+import { demoPathways, mergeNarratives, sanitizeProvisional } from "./pathwayDraft";
+import { scoreSurvey } from "./scoring";
+
+it("keeps at most four unique categories and drops a practitioner type the category does not list", () => {
+  const pathways = sanitizeProvisional(
+    {
+      pathways: [
+        {
+          category_id: "vestibular",
+          why_it_may_apply: "A possible balance pattern.",
+          steps: [
+            {
+              order: 1,
+              title: "Talk with a vestibular physiotherapist",
+              practitioner_type: "vision_therapist",
+              rationale: "Wrong type for this category.",
+            },
+            {
+              order: 2,
+              title: "Describe dizziness",
+              practitioner_type: "vestibular_physio",
+              rationale: "This visit is for listing what brings on dizziness.",
+            },
+          ],
+        },
+        { category_id: "vestibular", why_it_may_apply: "Duplicate", steps: [] },
+        { category_id: "not_a_category", why_it_may_apply: "No", steps: [] },
+        {
+          category_id: "oculomotor",
+          why_it_may_apply: "A possible reading pattern.",
+          steps: [
+            {
+              order: 1,
+              title: "Describe screens",
+              practitioner_type: "vision_therapist",
+              rationale: "A vision therapist can help list screen symptoms.",
+            },
+          ],
+        },
+        {
+          category_id: "metabolic_cellular",
+          why_it_may_apply: "",
+          steps: [],
+        },
+        {
+          category_id: "cerebrovascular",
+          why_it_may_apply: "Possible activity pattern.",
+          steps: [
+            {
+              order: 1,
+              title: "Describe activity",
+              practitioner_type: "sports_medicine_physician",
+              rationale: "Who to see and why.",
+            },
+          ],
+        },
+        {
+          category_id: "sensory_peripheral",
+          why_it_may_apply: "Fifth path should be left out.",
+          steps: [
+            {
+              order: 1,
+              title: "Describe the neck",
+              practitioner_type: "physiotherapist",
+              rationale: "Who to see and why.",
+            },
+          ],
+        },
+      ],
+    },
+    "18+",
+  );
+
+  expect(pathways.map((pathway) => pathway.category_id)).toEqual([
+    "vestibular",
+    "oculomotor",
+    "metabolic_cellular",
+    "cerebrovascular",
+  ]);
+  expect(pathways[0].steps.map((step) => step.practitioner_type)).toEqual([
+    "vestibular_physio",
+  ]);
+  expect(pathways[2].why_it_may_apply.length).toBeGreaterThan(0);
+  expect(pathways[2].steps[0].practitioner_type).toBe("sports_medicine_physician");
+});
+
+it("reorders explanations without taking numbers from the model", () => {
+  const scored = scoreSurvey([
+    { question_id: "Q5", option_ids: ["A", "B"] },
+    { question_id: "Q7", option_ids: ["A"] },
+    { question_id: "Q8", option_ids: ["A"] },
+  ]);
+  const displayed = mergeNarratives(
+    scored,
+    {
+      pathways: [
+        {
+          category_id: "sensory_peripheral",
+          why_it_may_apply: "A possible neck and light pattern.",
+          percentage: 99,
+          steps: [
+            {
+              order: 9,
+              title: "Describe neck tenderness",
+              practitioner_type: "physiotherapist",
+              rationale: "A physiotherapist can help list those symptoms for a GP.",
+            },
+          ],
+        },
+        {
+          category_id: "vestibular",
+          why_it_may_apply: "A possible motion pattern.",
+          percentage: 1,
+          steps: [
+            {
+              order: 4,
+              title: "Describe dizziness",
+              practitioner_type: "neurosurgeon",
+              rationale: "This type is not allowed.",
+            },
+          ],
+        },
+      ],
+    },
+    "18+",
+  );
+
+  expect(displayed.map((pathway) => pathway.category_id)).toEqual([
+    "sensory_peripheral",
+    "vestibular",
+  ]);
+  expect(displayed[0].percentage_label).not.toBe("99%");
+  expect(displayed[0].points).toBe(6);
+  expect(displayed[0].max_points).toBe(9);
+  expect(displayed[1].steps[0].practitioner_type).toBe("vestibular_physio");
+  expect(displayed[1].percentage).toBe(100);
+});
+
+it("hides adult-only sources and the adult evidence label for teens", () => {
+  for (const id of [
+    "metabolic_cellular",
+    "cerebrovascular",
+    "neuroendocrine",
+    "vestibular",
+    "oculomotor",
+    "sensory_peripheral",
+  ]) {
+    const category = categoryById(id);
+    expect(category).toBeTruthy();
+    if (!category) {
+      continue;
+    }
+    expect(sourcesFor(category, "13-17")).toEqual([]);
+    expect(evidenceBadge(category, "13-17")).toBe("Pending clinician review");
+  }
+
+  const vestibular = categoryById("vestibular");
+  expect(vestibular && sourcesFor(vestibular, "18+").length).toBeGreaterThan(0);
+  expect(vestibular && evidenceBadge(vestibular, "18+")).toBe("Guideline");
+});
+
+it("builds demo paths from checked symptoms when the model returns none", () => {
+  const pathways = demoPathways(["Dizziness", "Light sensitivity"], "18+");
+
+  expect(pathways.map((pathway) => pathway.category_id)).toEqual([
+    "vestibular",
+    "sensory_peripheral",
+  ]);
+  expect(pathways[0].why_it_may_apply).toContain("Dizziness");
+  expect(pathways[1].why_it_may_apply).toContain("Light sensitivity");
+  expect(pathways[0].steps[0].practitioner_type).toBe("vestibular_physio");
+});

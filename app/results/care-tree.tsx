@@ -23,6 +23,8 @@ import {
   useSyncExternalStore,
   type MouseEvent,
 } from "react";
+import type { AgeBand } from "../../lib/catalog";
+import { practitionerTypeLabel } from "../../lib/catalog";
 import PractitionerPanel from "./practitioner-panel";
 
 const NODE_WIDTH = 260;
@@ -40,17 +42,9 @@ const PATHWAY_COLORS = [
   { background: "#f6f1e6", border: "#b19772" },
 ];
 
-const PRACTITIONER_TYPE_LABELS: Record<string, string> = {
-  vestibular_physio: "Vestibular physiotherapist",
-  physiotherapist: "Physiotherapist",
-  vision_therapist: "Vision therapist",
-  sports_medicine_physician: "Sports medicine physician",
-  sleep_specialist: "Sleep specialist",
-  psychologist: "Psychologist",
-};
-
 export type CarePathway = {
   name: string;
+  scoreText?: string | null;
   steps: {
     order: number;
     title: string;
@@ -60,7 +54,7 @@ export type CarePathway = {
 
 type IntakeNode = Node<{ label: string }, "intake">;
 type PathwayNode = Node<
-  { label: string; background: string; border: string },
+  { label: string; scoreText?: string | null; background: string; border: string },
   "pathway"
 >;
 type StepNode = Node<
@@ -75,7 +69,7 @@ type StepNode = Node<
 type CareNode = IntakeNode | PathwayNode | StepNode;
 
 function practitionerLabel(type: string) {
-  return PRACTITIONER_TYPE_LABELS[type] ?? type.replaceAll("_", " ");
+  return practitionerTypeLabel(type);
 }
 
 function columnX(column: number) {
@@ -137,6 +131,9 @@ function PathwayNodeView({ data }: NodeProps<PathwayNode>) {
     >
       <Handle type="target" position={Position.Left} />
       <div style={{ fontWeight: 600 }}>{data.label}</div>
+      {data.scoreText ? (
+        <div style={{ marginTop: 6, fontSize: 13, color: "#334155" }}>{data.scoreText}</div>
+      ) : null}
       <Handle type="source" position={Position.Right} />
     </div>
   );
@@ -146,6 +143,7 @@ type StepUi = {
   selectedStepId: string | null;
   chosenByStep: Record<string, string>;
   patientCity: string;
+  ageBand: AgeBand | null;
   onChoose: (practitionerId: string) => void;
 };
 
@@ -190,6 +188,7 @@ function StepNodeView({ id, data }: NodeProps<StepNode>) {
             stepTitle={data.title}
             practitionerType={data.practitionerTypeId}
             patientCity={ui.patientCity}
+            ageBand={ui.ageBand}
             chosenId={ui.chosenByStep[id] ?? null}
             onChoose={ui.onChoose}
           />
@@ -223,7 +222,14 @@ function PathwayLegend({ pathways }: { pathways: CarePathway[] }) {
               className="size-3.5 shrink-0 rounded-sm border"
               style={{ background: color.background, borderColor: color.border }}
             />
-            {pathway.name}
+            <span>
+              {pathway.name}
+              {pathway.scoreText ? (
+                <span className="mt-0.5 block text-sm leading-6 text-[#545454]">
+                  {pathway.scoreText}
+                </span>
+              ) : null}
+            </span>
           </li>
         );
       })}
@@ -261,6 +267,7 @@ function buildCareTree(pathways: CarePathway[], selectedStepId: string | null) {
       position: { x: columnX(1), y: rowY },
       data: {
         label: pathway.name,
+        scoreText: pathway.scoreText,
         background: color.background,
         border: color.border,
       },
@@ -317,9 +324,11 @@ function buildCareTree(pathways: CarePathway[], selectedStepId: string | null) {
 export default function CareTree({
   pathways,
   patientCity,
+  ageBand,
 }: {
   pathways: CarePathway[];
   patientCity: string;
+  ageBand: AgeBand | null;
 }) {
   const [selectedStepId, setSelectedStepId] = useState<string | null>(null);
   const [chosenByStep, setChosenByStep] = useState<Record<string, string>>({});
@@ -402,6 +411,7 @@ export default function CareTree({
               selectedStepId,
               chosenByStep,
               patientCity,
+              ageBand,
               onChoose: choosePractitioner,
             }}
           >

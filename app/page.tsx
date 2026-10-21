@@ -2,7 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
-import { saveIntakeAnswers } from "./intake-answers";
+import { saveIntakeAnswers, type AgeBand } from "./intake-answers";
+import { UNDER_13_MESSAGE } from "../lib/copy";
 
 const TIMELINE_STOPS = [
   "1 week",
@@ -34,6 +35,7 @@ export default function Home() {
   const [symptoms, setSymptoms] = useState<string[]>([]);
   const [timelineIndex, setTimelineIndex] = useState(0);
   const [pastAttempts, setPastAttempts] = useState("");
+  const [ageChoice, setAgeChoice] = useState<AgeBand | "under-13" | "">("");
 
   function toggleSymptom(id: string) {
     setSymptoms((current) =>
@@ -45,6 +47,9 @@ export default function Home() {
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (ageChoice !== "13-17" && ageChoice !== "18+") {
+      return;
+    }
     saveIntakeAnswers({
       city: location.trim(),
       concerns: concerns.trim(),
@@ -53,6 +58,7 @@ export default function Home() {
       ),
       timeline: TIMELINE_STOPS[timelineIndex],
       pastAttempts: pastAttempts.trim(),
+      ageBand: ageChoice,
     });
     router.push("/results");
   }
@@ -88,6 +94,50 @@ export default function Home() {
         className="space-y-10"
       >
         <div className="space-y-8">
+          <fieldset>
+            <legend className="text-base font-medium text-black">
+              Who are these answers about?
+            </legend>
+            <p className="mt-1 text-sm leading-6 text-[#545454]">
+              This demo is for teens and adults.
+            </p>
+            <div className="mt-4 flex flex-col gap-2">
+              {(
+                [
+                  ["13-17", "Teen, 13 to 17"],
+                  ["18+", "Adult, 18 or older"],
+                  ["under-13", "Child, 12 or younger"],
+                ] as const
+              ).map(([value, label]) => (
+                <label
+                  key={value}
+                  className="flex min-h-12 cursor-pointer items-center gap-3 rounded-xl bg-[#F6F6F6] px-4 text-base text-black has-[:checked]:bg-black has-[:checked]:text-white"
+                >
+                  <input
+                    type="radio"
+                    name="age-band"
+                    value={value}
+                    checked={ageChoice === value}
+                    onChange={() => setAgeChoice(value)}
+                    className="sr-only"
+                  />
+                  {label}
+                </label>
+              ))}
+            </div>
+            {ageChoice === "13-17" ? (
+              <p className="mt-3 text-sm leading-6 text-[#545454]">
+                A parent or guardian should complete this with the teen. Results
+                are written for a pediatric clinician.
+              </p>
+            ) : null}
+            {ageChoice === "under-13" ? (
+              <p className="mt-3 text-base leading-7 text-black" role="status">
+                {UNDER_13_MESSAGE}
+              </p>
+            ) : null}
+          </fieldset>
+
           <div>
             <label
               htmlFor="location"
@@ -221,6 +271,7 @@ export default function Home() {
 
         <button
           type="submit"
+          disabled={ageChoice !== "13-17" && ageChoice !== "18+"}
           className="mt-10 inline-flex min-h-14 w-full items-center justify-center rounded-full bg-black px-5 text-base font-medium text-white transition-colors duration-200 hover:bg-[#1A1A1A] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black disabled:cursor-not-allowed disabled:opacity-40"
         >
           Submit

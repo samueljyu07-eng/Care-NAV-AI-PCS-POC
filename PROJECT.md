@@ -37,8 +37,11 @@ from. This is a proof of concept for a demo, not a production medical product.
   "concerns": "free text",
   "primary_symptoms": ["Headache", "Dizziness"],
   "past_attempts": "free text",
-  "timeline": "1 week"
+  "timeline": "1 week",
+  "age_band": "18+"
 }
+
+age_band is "13-17" or "18+". Under 13 is not accepted. The form shows a short message and does not continue.
 
 primary_symptoms are the checked Primary symptoms labels. timeline is context
 only. It does not create a pathway section by itself.
@@ -73,8 +76,11 @@ pathways has one entry for each symptom group. It is not fixed at three.
   "city": "Kelowna",
   "clinic": "string",
   "about": "2-3 sentences",
-  "details": { "availability": "string", "languages": ["English"], "accepting_new_patients": true }
+  "details": { "availability": "string", "languages": ["English"], "accepting_new_patients": true },
+  "sees_ages": ["teen", "adult"]
 }
+
+practitioner_type may also be gp_family_physician. sees_ages lists who that placeholder can see: "teen", "adult", or both.
 
 ## Rules (always follow)
 1. The app never diagnoses, prescribes, or promises outcomes.

@@ -1,12 +1,14 @@
 import { expect, it } from "vitest";
-import { pathwayOutputFormat } from "./pathwaySchema";
+import { structuredOutputFormat } from "./pathwaySchema";
+import { modelPathwaySchema } from "./schema";
 
 it("keeps the structured-output constraints Claude can enforce", () => {
-  const schema = JSON.stringify(pathwayOutputFormat().schema);
+  const schema = JSON.stringify(structuredOutputFormat(modelPathwaySchema).schema);
 
-  expect(schema).toContain('"const":false');
-  expect(schema).toContain('"const":"GP"');
-  expect(schema).toContain('"vestibular_physio"');
+  expect(schema).toContain("metabolic_cellular");
+  expect(schema).toContain("oculomotor");
+  expect(schema).toContain("vestibular_physio");
+  expect(schema).toContain("why_it_may_apply");
   expect(schema).not.toContain("minimum");
   expect(schema).not.toContain("maxItems");
 });

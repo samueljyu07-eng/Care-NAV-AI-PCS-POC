@@ -21,10 +21,20 @@ function sameCity(givenCity: string, practitionerCity: string) {
 export function matchPractitioners(
   practitionerType: string,
   city: string,
+  ageBand?: "13-17" | "18+",
 ): Practitioner[] {
-  return practitioners.filter(
-    (person) =>
-      person.practitioner_type === practitionerType &&
-      sameCity(city, person.city),
-  );
+  const needed =
+    ageBand === "13-17" ? "teen" : ageBand === "18+" ? "adult" : null;
+  return practitioners.filter((person) => {
+    if (
+      person.practitioner_type !== practitionerType ||
+      !sameCity(city, person.city)
+    ) {
+      return false;
+    }
+    if (!needed) {
+      return true;
+    }
+    return person.sees_ages.includes(needed);
+  });
 }
