@@ -1,4 +1,10 @@
 import {
+  draftLabelFor,
+  libraryStepSources,
+  libraryStepsFor,
+  type LibraryStep,
+} from "./careSteps";
+import {
   categoryById,
   categoryDescription,
   evidenceBadge,
@@ -20,7 +26,15 @@ export type DraftStep = {
   title: string;
   practitioner_type: string;
   rationale: string;
+  step_id: string | null;
+  from_library: boolean;
+  draft_label: string | null;
+  safety_note: string;
+  sources: { title: string; url: string; limits: string }[];
 };
+
+const MAX_STEPS = 4;
+const MIN_LIBRARY_STEPS = 2;
 
 export type DraftPathway = {
   category_id: string;
@@ -51,23 +65,63 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
+function blankAuthoredStep(step: {
+  title: string;
+  practitioner_type: string;
+  rationale: string;
+}): DraftStep {
+  return {
+    order: 0,
+    title: step.title,
+    practitioner_type: step.practitioner_type,
+    rationale: step.rationale,
+    step_id: null,
+    from_library: false,
+    draft_label: null,
+    safety_note: "",
+    sources: [],
+  };
+}
+
+function draftFromLibrary(step: LibraryStep): DraftStep {
+  return {
+    order: step.order_hint,
+    title: step.title,
+    practitioner_type: step.who_to_see,
+    rationale: step.why_it_may_help,
+    step_id: step.step_id,
+    from_library: true,
+    draft_label: draftLabelFor(step),
+    safety_note: step.safety_note,
+    sources: libraryStepSources(step),
+  };
+}
+
 export function fallbackPathway(categoryId: string, ageBand: AgeBand): DraftPathway | null {
   const category = categoryById(categoryId);
   const type = category?.practitioner_types_draft[0];
   if (!category || !type) {
     return null;
   }
+  const library = libraryStepsFor(category.id, ageBand)
+    .slice(0, MAX_STEPS)
+    .map((step, index) => ({ ...draftFromLibrary(step), order: index + 1 }));
   return {
     category_id: category.id,
     why_it_may_apply: categoryDescription(category),
-    steps: [
-      {
-        order: 1,
-        title: `Talk with a ${type.label.toLowerCase()}`,
-        practitioner_type: type.id,
-        rationale: whoToRaiseWith(category, ageBand),
-      },
-    ],
+    steps:
+      library.length > 0
+        ? library
+        : [
+            {
+              ...blankAuthoredStep({
+                title: `Talk with a ${type.label.toLowerCase()}`,
+                practitioner_type: type.id,
+                rationale: whoToRaiseWith(category, ageBand),
+              }),
+              order: 1,
+            },
+          ],
   };
 }
 
@@ -86,12 +140,62 @@ function readStep(value: unknown, categoryId: string): DraftStep | null {
   ) {
     return null;
   }
-  return {
-    order: 0,
+  return blankAuthoredStep({
     title: value.title.trim(),
     practitioner_type: practitionerType,
     rationale: value.rationale.trim(),
-  };
+  });
+}
+
+function assembleSteps(
+  rawSteps: unknown[],
+  categoryId: string,
+  ageBand: AgeBand,
+): DraftStep[] {
+  const eligible = libraryStepsFor(categoryId, ageBand);
+  const byId = new Map(eligible.map((step) => [step.step_id, step]));
+  const selected: LibraryStep[] = [];
+  const authored: DraftStep[] = [];
+
+  for (const value of rawSteps) {
+    if (!isRecord(value)) {
+      continue;
+    }
+    const stepId = typeof value.step_id === "string" ? value.step_id.trim() : "";
+    if (stepId !== "") {
+      const libraryStep = byId.get(stepId);
+      if (libraryStep && !selected.some((step) => step.step_id === stepId)) {
+        selected.push(libraryStep);
+      }
+      continue;
+    }
+    const written = readStep(value, categoryId);
+    if (written) {
+      authored.push(written);
+    }
+  }
+
+  let library = [...selected].sort((a, b) => a.order_hint - b.order_hint);
+  if (library.length === 0) {
+    library = eligible.slice(0, MAX_STEPS);
+  } else {
+    for (const step of eligible) {
+      if (library.length >= Math.min(MIN_LIBRARY_STEPS, eligible.length)) {
+        break;
+      }
+      if (!library.some((item) => item.step_id === step.step_id)) {
+        library.push(step);
+      }
+    }
+    library.sort((a, b) => a.order_hint - b.order_hint);
+  }
+
+  const libraryDrafts = library.slice(0, MAX_STEPS).map(draftFromLibrary);
+  const room = MAX_STEPS - libraryDrafts.length;
+  return [...libraryDrafts, ...authored.slice(0, room)].map((step, index) => ({
+    ...step,
+    order: index + 1,
+  }));
 }
 
 function readPathway(value: unknown, ageBand: AgeBand): DraftPathway | null {
@@ -103,10 +207,7 @@ function readPathway(value: unknown, ageBand: AgeBand): DraftPathway | null {
     return null;
   }
   const rawSteps = Array.isArray(value.steps) ? value.steps : [];
-  const steps = rawSteps
-    .map((step) => readStep(step, category.id))
-    .filter((step): step is DraftStep => step !== null)
-    .map((step, index) => ({ ...step, order: index + 1 }));
+  const steps = assembleSteps(rawSteps, category.id, ageBand);
   const written =
     typeof value.why_it_may_apply === "string" ? value.why_it_may_apply.trim() : "";
   const whyItMayApply = written !== "" ? written : categoryDescription(category);

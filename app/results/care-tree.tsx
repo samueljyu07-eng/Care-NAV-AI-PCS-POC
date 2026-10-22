@@ -49,6 +49,10 @@ export type CarePathway = {
     order: number;
     title: string;
     practitioner_type: string;
+    rationale?: string;
+    draft_label?: string | null;
+    safety_note?: string;
+    sources?: { title: string; url: string; limits: string }[];
   }[];
 };
 
@@ -63,6 +67,10 @@ type StepNode = Node<
     practitionerType: string;
     practitionerTypeId: string;
     border: string;
+    rationale: string;
+    draftLabel: string | null;
+    safetyNote: string;
+    sources: { title: string; url: string; limits: string }[];
   },
   "step"
 >;
@@ -176,6 +184,36 @@ function StepNodeView({ id, data }: NodeProps<StepNode>) {
         <div style={{ marginTop: 6, fontSize: 13, color: "#475569" }}>
           {data.practitionerType}
         </div>
+        {data.draftLabel ? (
+          <div style={{ marginTop: 6, fontSize: 13, color: "#545454" }}>{data.draftLabel}</div>
+        ) : null}
+        {selected ? (
+          <div style={{ marginTop: 10, fontSize: 14, lineHeight: 1.5 }}>
+            {data.rationale ? <div>{data.rationale}</div> : null}
+            {data.safetyNote ? (
+              <div style={{ marginTop: 8 }}>{data.safetyNote}</div>
+            ) : null}
+            {data.sources.length > 0 ? (
+              <details style={{ marginTop: 8 }}>
+                <summary>Sources and limits</summary>
+                <ul style={{ margin: "8px 0 0", paddingLeft: 18 }}>
+                  {data.sources.map((source) => (
+                    <li key={`${source.title}-${source.url}`} style={{ marginTop: 8 }}>
+                      {source.url ? (
+                        <a href={source.url} target="_blank" rel="noreferrer">
+                          {source.title || source.url}
+                        </a>
+                      ) : (
+                        source.title
+                      )}
+                      {source.limits ? <div>{source.limits}</div> : null}
+                    </li>
+                  ))}
+                </ul>
+              </details>
+            ) : null}
+          </div>
+        ) : null}
         <Handle type="source" position={Position.Right} style={{ top: 48 }} />
       </div>
       {selected && ui ? (
@@ -295,6 +333,10 @@ function buildCareTree(pathways: CarePathway[], selectedStepId: string | null) {
           practitionerType: practitionerLabel(step.practitioner_type),
           practitionerTypeId: step.practitioner_type,
           border: color.border,
+          rationale: step.rationale ?? "",
+          draftLabel: step.draft_label ?? null,
+          safetyNote: step.safety_note ?? "",
+          sources: step.sources ?? [],
         },
         draggable: false,
         zIndex: selectedStepId === stepId ? 20 : 0,

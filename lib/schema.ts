@@ -3,6 +3,7 @@ import { categoryIds, practitionerTypeIds, practitionerTypesFor } from "./catalo
 
 const pathwayStepSchema = z.object({
   order: z.int(),
+  step_id: z.string().optional(),
   title: z.string().min(1),
   practitioner_type: z.enum(practitionerTypeIds()),
   rationale: z.string().min(1),

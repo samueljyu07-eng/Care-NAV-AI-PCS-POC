@@ -1,3 +1,4 @@
+import { libraryBrief } from "./careSteps";
 import {
   categoryById,
   listCategories,
@@ -70,6 +71,16 @@ function distinguishingNotes(categoryId: string): string[] {
   return notes;
 }
 
+function careStepRules(ageBand: AgeBand): string {
+  return `CARE STEP LIBRARY
+These are the outlined steps for this age. Refer to them first.
+Choose a library step by its step_id. The page inserts that step's title, who to see, and why text. Do not rewrite them.
+Put library step_ids first. Use 2 to 4 steps. If this age has fewer library steps for a category, use the ones that exist.
+You may add your own step only after the library steps, and only when the library does not cover a specific detail from this intake. For your own step, set step_id to an empty string and write title, practitioner_type, and rationale.
+Do not use a step_id from another category. Do not use a step_id that is not listed.
+${libraryBrief(ageBand)}`;
+}
+
 function categoryBrief(ageBand: AgeBand): string {
   return listCategories()
     .map((category) => {
@@ -131,8 +142,10 @@ Question ids: ${listQuestions()
 TASK
 From the full intake, propose at most 4 paths. Each path uses exactly one category id.
 For each path write why_it_may_apply. It must mention specific details from this intake, such as a checked symptom, a phrase from the concerns, or something they already tried. Do not write a generic definition.
-Each path has ordered steps. Each step has order, title, one practitioner_type from that category's list, and a rationale that says who to see and why.
+Each path has ordered steps. Prefer the care step library. A library step uses its step_id. Your own step, if you need one, comes after those and uses an empty step_id.
 If the intake does not support a category, leave it out.
+
+${careStepRules(ageBand)}
 
 ${SHARED_RULES}
 Disclaimer to respect: ${pathwayDisclaimer(ageBand)}`;
@@ -156,7 +169,9 @@ Rewrite why_it_may_apply for the top categories only. Mention specific intake or
 You may put those paths in a different order.
 You must not change, recompute, or mention any score, percentage, point value, or other number. Do not include digits.
 Do not add a category that is not in the computed list.
-Each step names who to see and why, using only that category's practitioner types.
+Keep the library steps for each category. You may reorder categories, not the library step text. Add your own step only after the library steps, with an empty step_id, when the library does not cover a specific survey or intake detail.
+
+${careStepRules(ageBand)}
 
 ${SHARED_RULES}
 Disclaimer to respect: ${pathwayDisclaimer(ageBand)}`;

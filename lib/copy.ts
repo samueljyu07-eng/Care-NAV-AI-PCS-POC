@@ -14,6 +14,10 @@ export const TEEN_FRAMING =
 export const TEEN_RED_FLAG_NOTE =
   "The urgent-warning list for teens is pending clinician review and may differ from the list used here.";
 
+export const SHOW_DRAFT_STEPS = true;
+
+export const DRAFT_STEP_LABEL = "Draft: pending clinician review";
+
 export const ADULT_DISCLAIMER =
   "These pathways are a navigation roadmap to take to a GP. They are not a diagnosis, a prescription, or medical advice, and they do not promise any outcome.";
 

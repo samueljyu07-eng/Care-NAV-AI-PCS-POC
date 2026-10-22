@@ -5,6 +5,52 @@ export type CardPathway = PresentedPathway & {
   scoreText?: string | null;
 };
 
+function StepList({ steps }: { steps: DisplayPathway["steps"] }) {
+  if (steps.length === 0) {
+    return null;
+  }
+  return (
+    <ol className="mt-4 flex list-decimal flex-col gap-4 pl-5">
+      {steps.map((step) => (
+        <li key={`${step.order}-${step.title}`} className="text-base leading-7 text-black">
+          <p className="font-medium">{step.title}</p>
+          {step.draft_label ? (
+            <p className="text-sm leading-6 text-[#545454]">{step.draft_label}</p>
+          ) : null}
+          <p>{step.rationale}</p>
+          {step.safety_note ? <p className="mt-2">{step.safety_note}</p> : null}
+          {step.sources.length > 0 ? (
+            <details className="mt-2">
+              <summary className="cursor-pointer font-medium">Sources and limits</summary>
+              <ul className="mt-2 flex flex-col gap-3">
+                {step.sources.map((source) => (
+                  <li key={`${source.title}-${source.url}`}>
+                    {source.url ? (
+                      <a
+                        href={source.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="font-medium underline decoration-black underline-offset-4"
+                      >
+                        {source.title || source.url}
+                      </a>
+                    ) : (
+                      <p className="font-medium">{source.title}</p>
+                    )}
+                    {source.limits ? (
+                      <p className="text-sm leading-6 text-[#545454]">{source.limits}</p>
+                    ) : null}
+                  </li>
+                ))}
+              </ul>
+            </details>
+          ) : null}
+        </li>
+      ))}
+    </ol>
+  );
+}
+
 function roleLabel(role: DisplayPathway["role"]) {
   if (role === "co-primary") {
     return "Co-primary";
@@ -44,6 +90,7 @@ export function ProvisionalCards({
               <p className="mt-2 text-base font-medium text-black">{pathway.scoreText}</p>
             ) : null}
             <p className="mt-3 text-base leading-7 text-black">{pathway.why_it_may_apply}</p>
+            <StepList steps={pathway.steps} />
             {pathway.sources.length > 0 ? (
               <ul className="mt-4 flex flex-col gap-2">
                 {pathway.sources.map((source) => (
@@ -126,6 +173,7 @@ export function ScoredCards({
               {pathway.points} of {pathway.max_points} points
             </p>
             <p className="mt-3 text-base leading-7 text-black">{pathway.why_it_may_apply}</p>
+            <StepList steps={pathway.steps} />
             {pathway.drivers.length > 0 ? (
               <div className="mt-4">
                 <h4 className="text-base font-medium text-black">
