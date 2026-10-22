@@ -68,6 +68,26 @@ only. It does not create a pathway section by itself.
 
 pathways has one entry for each symptom group. It is not fixed at three.
 
+## Care step library (updated)
+
+Category ids: fatigue_activity, exertional_symptoms, neuroendocrine, vestibular,
+oculomotor, sensory_peripheral (see data/categories.json). Steps come from
+data/care-steps.csv imported to data/care-steps.json. Sources are in
+data/sources.json. The AI only chooses steps by step_id and never edits step text.
+
+- source_title and source_url can hold several values separated by " ; ".
+- claim_verification values: supported, partially supported, scope-limited,
+  unsupported, contradicted. Never show unsupported or contradicted steps. For
+  the others, show them in an expandable "Sources and limits" section with the
+  source titles, links and limitations.
+- Draft steps show "Draft: pending clinician review" while SHOW_DRAFT_STEPS is true.
+- Each path shows 2 to 4 steps. If fewer are available for the patient's age band,
+  show what exists. Never invent steps.
+- The red-flag wording in every safety_note and in the red-flag screen must come
+  from one shared constant.
+- Mechanisms are never stated to patients. Categories with mechanism null get no
+  mechanism text at all.
+
 ## Practitioner data shape
 {
   "id": "p001",
