@@ -101,29 +101,31 @@ export default function Home() {
             <p className="mt-1 text-sm leading-6 text-[#545454]">
               This demo is for teens and adults.
             </p>
-            <div className="mt-4 flex flex-col gap-2">
+            <div className="mt-4 flex flex-col gap-2" role="group" aria-label="Age">
               {(
                 [
                   ["13-17", "Teen, 13 to 17"],
                   ["18+", "Adult, 18 or older"],
                   ["under-13", "Child, 12 or younger"],
                 ] as const
-              ).map(([value, label]) => (
-                <label
-                  key={value}
-                  className="flex min-h-12 cursor-pointer items-center gap-3 rounded-xl bg-[#F6F6F6] px-4 text-base text-black has-[:checked]:bg-black has-[:checked]:text-white"
-                >
-                  <input
-                    type="radio"
-                    name="age-band"
-                    value={value}
-                    checked={ageChoice === value}
-                    onChange={() => setAgeChoice(value)}
-                    className="sr-only"
-                  />
-                  {label}
-                </label>
-              ))}
+              ).map(([value, label]) => {
+                const selected = ageChoice === value;
+                return (
+                  <button
+                    key={value}
+                    type="button"
+                    aria-pressed={selected}
+                    onClick={() => setAgeChoice(value)}
+                    className={
+                      selected
+                        ? "flex min-h-12 cursor-pointer items-center rounded-xl bg-black px-4 text-left text-base text-white"
+                        : "flex min-h-12 cursor-pointer items-center rounded-xl bg-[#F6F6F6] px-4 text-left text-base text-black"
+                    }
+                  >
+                    {label}
+                  </button>
+                );
+              })}
             </div>
             {ageChoice === "13-17" ? (
               <p className="mt-3 text-sm leading-6 text-[#545454]">
@@ -193,7 +195,7 @@ export default function Home() {
                 <label
                   key={symptom.id}
                   htmlFor={symptom.id}
-                  className="inline-flex min-h-11 cursor-pointer items-center rounded-full bg-[#F6F6F6] px-4 text-base text-black has-[:checked]:bg-black has-[:checked]:text-white has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black"
+                  className="relative inline-flex min-h-11 cursor-pointer items-center rounded-full bg-[#F6F6F6] px-4 text-base text-black has-[:checked]:bg-black has-[:checked]:text-white has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black"
                 >
                   <input
                     id={symptom.id}
@@ -201,9 +203,9 @@ export default function Home() {
                     value={symptom.id}
                     checked={symptoms.includes(symptom.id)}
                     onChange={() => toggleSymptom(symptom.id)}
-                    className="sr-only"
+                    className="absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0"
                   />
-                  {symptom.label}
+                  <span className="pointer-events-none">{symptom.label}</span>
                 </label>
               ))}
             </div>
@@ -276,6 +278,12 @@ export default function Home() {
         >
           Submit
         </button>
+        {ageChoice !== "13-17" && ageChoice !== "18+" ? (
+          <p className="mt-3 text-sm leading-6 text-[#545454]">
+            Choose Teen, 13 to 17 or Adult, 18 or older above. Submit stays off
+            until one of those is selected. A child 12 or younger cannot continue.
+          </p>
+        ) : null}
       </form>
     </main>
   );

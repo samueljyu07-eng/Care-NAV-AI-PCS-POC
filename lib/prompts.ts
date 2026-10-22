@@ -80,11 +80,14 @@ function categoryBrief(ageBand: AgeBand): string {
         .map((source) => source.name)
         .join("; ");
       const features = featureTexts(category.id);
-      const distinguishing = distinguishingNotes(category.id);
+      const distinguishing = [
+        category.distinguishing_factors,
+        ...distinguishingNotes(category.id),
+      ].filter((note) => note.trim() !== "");
       return [
         `- id: ${category.id}`,
         `  patient_label: ${category.patient_label}`,
-        `  possible_mechanism: ${category.possible_mechanism}`,
+        `  typical_features: ${category.typical_features || "none listed"}`,
         `  possible_features: ${features.join(" | ") || "none listed"}`,
         `  possible_distinguishing_factors: ${distinguishing.join(" | ") || "none listed"}`,
         `  practitioner_types: ${types}`,
@@ -96,7 +99,7 @@ function categoryBrief(ageBand: AgeBand): string {
 
 const SHARED_RULES = `RULES
 - Never diagnose, prescribe, or promise an outcome.
-- The category list is possible knowledge only. Say "possible" when you mention a mechanism, feature, or distinguishing factor. Never say one of them is the cause.
+- The category list is possible knowledge only. Do not state a mechanism to the patient. Say "possible" when you mention a feature or distinguishing factor. Never say one of them is the cause.
 - Steps stay at who to see and why. Do not give treatment protocols, exercise plans, medications, or therapy programs.
 - Use only the practitioner_types listed for that category. Never invent a type.
 - Each path uses exactly one category id from the list.
@@ -115,7 +118,7 @@ ${ageInstructions(ageBand)}
 
 POSSIBLE KNOWLEDGE
 These are the only path categories. Use the id exactly.
-A mechanism, feature, or distinguishing factor below is possible only. Do not state it as the cause or as a diagnosis.
+Features and distinguishing factors below are possible only. Do not state a mechanism, and do not state a feature as the cause or as a diagnosis.
 The page fills in the path name, evidence level, and sources from the category file. Do not invent those.
 ${categoryBrief(ageBand)}
 
@@ -143,7 +146,7 @@ You do not diagnose, prescribe, or promise outcomes.
 ${ageInstructions(ageBand)}
 
 POSSIBLE KNOWLEDGE
-A mechanism, feature, or distinguishing factor below is possible only. Do not state it as the cause or as a diagnosis.
+Features and distinguishing factors below are possible only. Do not state a mechanism, and do not state a feature as the cause or as a diagnosis.
 The page fills in the path name, evidence level, and sources. Do not invent those.
 ${categoryBrief(ageBand)}
 

@@ -35,7 +35,7 @@ it("rejects a category id that is not in the category file", () => {
 
 it("rejects a practitioner type that the category does not list", () => {
   const draft = sample();
-  draft.pathways[0].steps[0].practitioner_type = "vision_therapist";
+  draft.pathways[0].steps[0].practitioner_type = "optometrist";
 
   expect(modelPathwaySchema.safeParse(draft).success).toBe(false);
 });
@@ -45,10 +45,10 @@ it("rejects more than four paths", () => {
   const draft = {
     pathways: [
       one,
-      { ...one, category_id: "oculomotor", steps: [{ ...one.steps[0], practitioner_type: "vision_therapist" }] },
+      { ...one, category_id: "oculomotor", steps: [{ ...one.steps[0], practitioner_type: "optometrist" }] },
       { ...one, category_id: "sensory_peripheral", steps: [{ ...one.steps[0], practitioner_type: "physiotherapist" }] },
-      { ...one, category_id: "neuroendocrine", steps: [{ ...one.steps[0], practitioner_type: "psychologist" }] },
-      { ...one, category_id: "metabolic_cellular", steps: [{ ...one.steps[0], practitioner_type: "sports_medicine_physician" }] },
+      { ...one, category_id: "neuroendocrine", steps: [{ ...one.steps[0], practitioner_type: "gp_family_physician" }] },
+      { ...one, category_id: "fatigue_activity", steps: [{ ...one.steps[0], practitioner_type: "gp_family_physician" }] },
     ],
   };
 

@@ -16,8 +16,8 @@ const SYMPTOM_CATEGORY: Record<string, string> = {
   light_sensitivity: "sensory_peripheral",
   dizziness: "vestibular",
   vision_problems: "oculomotor",
-  fatigue: "metabolic_cellular",
-  brain_fog: "metabolic_cellular",
+  fatigue: "fatigue_activity",
+  brain_fog: "fatigue_activity",
   sleep_problems: "neuroendocrine",
   mood_changes: "neuroendocrine",
 };

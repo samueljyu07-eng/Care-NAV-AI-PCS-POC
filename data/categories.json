@@ -1,176 +1,146 @@
 {
+  "version": "draft-3",
+  "status": "DRAFT. Rebuilt from the revised workbook, Fact Check and Source Register. practitioner_types and source_ids are derived from the steps in the workbook. Needs clinician approval.",
+  "supported_age_bands": [
+    "13-17",
+    "18+"
+  ],
+  "age_notes": "Ontario Living Concussion Guidelines linked here are adult-oriented. Steps use applies_to_ages and teen_note; teen content needs clinician approval.",
   "categories": [
     {
-      "id": "metabolic_cellular",
-      "patient_label": "Energy and recovery",
-      "possible_mechanism": "A possible pattern in which a small amount of thinking or physical effort is followed by exhaustion that shows up across more than one part of daily life.",
-      "evidence_level": "research",
-      "evidence_level_label": "Research",
-      "evidence_applies_to": ["18+"],
-      "fallback_evidence_label": "Pending clinician review",
-      "sources": [
-        {
-          "name": "Cellular energy and prolonged symptoms after concussion (research article)",
-          "url": "https://www.scirp.org/pdf/crcm2025142_72772104.pdf",
-          "applies_to": ["18+"]
-        }
+      "id": "fatigue_activity",
+      "label": "Fatigue/Activity",
+      "renamed_from": "metabolic_cellular",
+      "patient_label": "Energy and recovery after effort",
+      "mechanism": null,
+      "mechanism_note": "Energy-production explanations are not established by the cited sources. Do not state a mechanism to patients.",
+      "typical_features": "Ongoing physical or cognitive fatigue, brain fog, and symptoms that worsen after activity",
+      "distinguishing_factors": "Symptoms that worsen across thinking and physical tasks after minor effort. Edited from the original sheet wording; 'post-exertional malaise' removed unless a clinician uses it.",
+      "flags": [
+        "Original sheet mechanism (mitochondrial ATP failure) cited a single case report and was removed per the audit."
       ],
-      "practitioner_types_draft": [
-        {
-          "id": "sports_medicine_physician",
-          "label": "Sports medicine physician"
-        }
+      "practitioner_types": [
+        "gp_family_physician"
       ],
-      "who_to_raise_with": {
-        "adult": "A sports medicine physician can help you write down how effort and energy line up, so a GP can look at that pattern with you. This is a conversation about what you notice, not a treatment plan.",
-        "teen": "A sports medicine physician can help a parent or guardian write down how effort and energy line up, so a pediatric clinician can look at that pattern. This is a conversation about what the teen notices, not a treatment plan."
-      },
-      "teen_note": "Teen-specific content for this pattern is pending clinician review.",
-      "review_note": ""
+      "source_ids": [
+        "R07",
+        "R08",
+        "R09",
+        "R11",
+        "R13"
+      ]
     },
     {
-      "id": "cerebrovascular",
-      "patient_label": "Activity and blood-flow pattern",
-      "possible_mechanism": "A possible pattern in which symptoms show up within minutes of physical activity or a rise in heart rate.",
-      "evidence_level": "research",
-      "evidence_level_label": "Research",
-      "evidence_applies_to": ["18+"],
-      "fallback_evidence_label": "Pending clinician review",
-      "sources": [
-        {
-          "name": "Cerebrovascular reactivity after concussion (research article)",
-          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8511727/",
-          "applies_to": ["18+"]
-        }
+      "id": "exertional_symptoms",
+      "label": "Exertional symptoms",
+      "renamed_from": "cerebrovascular",
+      "patient_label": "Symptoms triggered by exertion",
+      "mechanism": null,
+      "mechanism_note": "A blood-flow (cerebrovascular) explanation is not established for individual patients by the cited sources. Do not state a mechanism to patients.",
+      "typical_features": "Headache, lightheadedness, or foggy thinking during or after physical activity",
+      "distinguishing_factors": "Symptoms appear within minutes of physical activity or a raised heart rate.",
+      "flags": [
+        "Original sheet cited an acute-phase MRI study of 12 adults; it does not support a persistent-care pathway."
       ],
-      "practitioner_types_draft": [
-        {
-          "id": "sports_medicine_physician",
-          "label": "Sports medicine physician"
-        }
+      "practitioner_types": [
+        "gp_family_physician",
+        "sports_medicine_physician"
       ],
-      "who_to_raise_with": {
-        "adult": "A sports medicine physician can help you describe symptoms that show up with activity or a faster heart rate, so a GP can decide what to review. This visit does not set an exercise plan.",
-        "teen": "A sports medicine physician can help a parent or guardian describe symptoms that show up with activity, so a pediatric clinician can decide what to review. This visit does not set an exercise plan."
-      },
-      "teen_note": "Teen-specific content for this pattern is pending clinician review.",
-      "review_note": ""
+      "source_ids": [
+        "R08",
+        "R11",
+        "R12",
+        "R13"
+      ]
     },
     {
       "id": "neuroendocrine",
-      "patient_label": "Sleep, mood, and body-rhythm pattern",
-      "possible_mechanism": "A possible pattern that can look like sleep trouble, unexplained weight change, or mood shifts that are hard to account for.",
-      "evidence_level": "research",
-      "evidence_level_label": "Research",
-      "evidence_applies_to": ["18+"],
-      "fallback_evidence_label": "Pending clinician review",
-      "sources": [
-        {
-          "name": "Hormonal change after traumatic brain injury (research article)",
-          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5996920/",
-          "applies_to": ["18+"]
-        }
+      "label": "Neuroendocrine",
+      "patient_label": "Hormonal and body-system changes",
+      "mechanism": "Possible pituitary or hormone-system contributor",
+      "mechanism_note": "Testing is not routine for every concussion and depends on injury history and symptom pattern. Adult screening guidance only; teens need pediatric clinician input.",
+      "typical_features": "Fatigue, cold intolerance, unexplained weight shifts, and mood changes",
+      "distinguishing_factors": "Can resemble endocrine conditions such as hypothyroidism; only a clinician can tell, usually with blood tests. 'Adrenal fatigue' removed (not a recognized diagnosis).",
+      "flags": [
+        "Symptoms are nonspecific. Do not imply they establish an endocrine problem."
       ],
-      "practitioner_types_draft": [
-        {
-          "id": "sleep_specialist",
-          "label": "Sleep specialist"
-        },
-        {
-          "id": "psychologist",
-          "label": "Psychologist"
-        }
+      "practitioner_types": [
+        "gp_family_physician"
       ],
-      "who_to_raise_with": {
-        "adult": "A sleep specialist or a psychologist can help you list sleep and mood changes so a GP can decide whether a hormone check belongs in the conversation. This is not a diagnosis.",
-        "teen": "A sleep specialist or a psychologist can help a parent or guardian list sleep and mood changes so a pediatric clinician can decide what belongs in the conversation. This is not a diagnosis."
-      },
-      "teen_note": "Teen-specific content for this pattern is pending clinician review.",
-      "review_note": ""
+      "source_ids": [
+        "R06",
+        "R07",
+        "R08",
+        "R10",
+        "R13",
+        "R16"
+      ]
     },
     {
       "id": "vestibular",
-      "patient_label": "Balance and motion",
-      "possible_mechanism": "A possible pattern in which crowds, visual movement, or motion bring on dizziness, disorientation, or nausea.",
-      "evidence_level": "guideline",
-      "evidence_level_label": "Guideline",
-      "evidence_applies_to": ["18+"],
-      "fallback_evidence_label": "Pending clinician review",
-      "sources": [
-        {
-          "name": "Ontario concussion guideline: vestibular, balance, and vision",
-          "url": "https://concussionsontario.org/concussion/guideline-section/vestibular-balance-dizziness-vision-dysfunction",
-          "applies_to": ["18+"]
-        }
+      "label": "Vestibular",
+      "split_from": "vestibular_visual",
+      "patient_label": "Balance, dizziness and visual motion",
+      "mechanism": "VOR mismatch",
+      "typical_features": "Dizziness in crowds and motion sickness",
+      "distinguishing_factors": "Provoked explicitly by visual motion or head turns.",
+      "practitioner_types": [
+        "vestibular_physio"
       ],
-      "practitioner_types_draft": [
-        {
-          "id": "vestibular_physio",
-          "label": "Vestibular physiotherapist"
-        }
-      ],
-      "who_to_raise_with": {
-        "adult": "A vestibular physiotherapist can help you describe dizziness, motion, and busy places so a GP can see that pattern. The visit is for those details, not a treatment protocol.",
-        "teen": "A vestibular physiotherapist can help a parent or guardian describe a teen's dizziness and motion symptoms so a pediatric clinician can see that pattern. The visit is for those details, not a treatment protocol."
-      },
-      "teen_note": "Teen-specific content for this pattern is pending clinician review. Adult guideline claims are not applied to teens.",
-      "review_note": "Balance and eye-tracking are separate paths in this demo so the survey can tell them apart. That split is pending clinician review."
+      "source_ids": [
+        "R01",
+        "R08",
+        "R09",
+        "R11",
+        "R12",
+        "R13"
+      ]
     },
     {
       "id": "oculomotor",
-      "patient_label": "Eye tracking and reading",
-      "possible_mechanism": "A possible pattern in which reading, screens, scrolling, or following a moving target brings on eye strain or other symptoms.",
-      "evidence_level": "guideline",
-      "evidence_level_label": "Guideline",
-      "evidence_applies_to": ["18+"],
-      "fallback_evidence_label": "Pending clinician review",
-      "sources": [
-        {
-          "name": "Ontario concussion guideline: vestibular, balance, and vision",
-          "url": "https://concussionsontario.org/concussion/guideline-section/vestibular-balance-dizziness-vision-dysfunction",
-          "applies_to": ["18+"]
-        }
+      "label": "Oculomotor",
+      "split_from": "vestibular_visual",
+      "patient_label": "Eye tracking, focusing and screen strain",
+      "mechanism": "Convergence insufficiency & tracking failure",
+      "typical_features": "Eye strain and reading fatigue",
+      "distinguishing_factors": "Provoked explicitly by scrolling screens or tracking targets.",
+      "flags": [
+        "Vision therapy evidence applies to diagnosed concussion-related convergence insufficiency, ages 11-25 (CONCUSS trial). Clinician to confirm which Canadian provider types deliver it; the trial used certified vision therapists."
       ],
-      "practitioner_types_draft": [
-        {
-          "id": "vision_therapist",
-          "label": "Vision therapist"
-        }
+      "practitioner_types": [
+        "optometrist"
       ],
-      "who_to_raise_with": {
-        "adult": "A vision therapist can help you describe reading strain, screens, and tracking so a GP can see that pattern. The visit does not start a vision-therapy protocol.",
-        "teen": "A vision therapist can help a parent or guardian describe a teen's reading strain, screens, and tracking so a pediatric clinician can see that pattern. The visit does not start a vision-therapy protocol."
-      },
-      "teen_note": "Teen-specific content for this pattern is pending clinician review. Adult guideline claims are not applied to teens.",
-      "review_note": "Eye-tracking is shown separately from balance so the survey can tell them apart. That split is pending clinician review."
+      "source_ids": [
+        "R01",
+        "R02",
+        "R13",
+        "R14"
+      ]
     },
     {
       "id": "sensory_peripheral",
-      "patient_label": "Neck and sensory sensitivity",
-      "possible_mechanism": "A possible pattern of neck tenderness, tension headaches, or strong reactions to light or sound.",
-      "evidence_level": "clinic_explainer",
-      "evidence_level_label": "Clinic explainer",
-      "evidence_applies_to": ["18+"],
-      "fallback_evidence_label": "Pending clinician review",
-      "sources": [
-        {
-          "name": "Clinic explainer on dizziness and vision after concussion",
-          "url": "https://harcourtbraincenter.com/post-concussion-dizziness-vision-problems/",
-          "applies_to": ["18+"]
-        }
+      "label": "Sensory/Peripheral",
+      "patient_label": "Neck tension and sensory sensitivity",
+      "mechanism": null,
+      "mechanism_note": "Central sensitization and neck-driven light/noise sensitivity are not established by the cited sources. Do not state a mechanism to patients.",
+      "typical_features": "Daily tension headaches, neck stiffness, and sensitivity to light or noise",
+      "distinguishing_factors": "Localized tenderness in the upper neck muscles.",
+      "flags": [
+        "Audit recommends splitting neck/vestibular symptoms from sensory sensitivity. Clinician to decide.",
+        "'Positive VOMS oculomotor triggers' was removed here because it overlaps with Vestibular and Oculomotor."
       ],
-      "practitioner_types_draft": [
-        {
-          "id": "physiotherapist",
-          "label": "Physiotherapist"
-        }
+      "practitioner_types": [
+        "physiotherapist"
       ],
-      "who_to_raise_with": {
-        "adult": "A physiotherapist can help you describe neck tenderness and sensitivity to light or sound so a GP can decide what that pattern means. The visit does not treat the neck as the cause.",
-        "teen": "A physiotherapist can help a parent or guardian describe a teen's neck tenderness and sensitivity to light or sound so a pediatric clinician can review it. The visit does not treat the neck as the cause."
-      },
-      "teen_note": "Teen-specific content for this pattern is pending clinician review.",
-      "review_note": ""
+      "source_ids": [
+        "R01",
+        "R08",
+        "R09",
+        "R11",
+        "R12",
+        "R13",
+        "R15"
+      ]
     }
   ]
 }

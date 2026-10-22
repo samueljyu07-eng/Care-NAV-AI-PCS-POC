@@ -1,0 +1,186 @@
+{
+  "version": "draft-1",
+  "status": "Built from the Source Register sheet. Not independently verified except where claude_spot_check is set.",
+  "sources": [
+    {
+      "id": "R01",
+      "title": "Ontario Living Concussion Guidelines — Vestibular (Balance/Dizziness) & Vision Dysfunction",
+      "url": "https://concussionsontario.org/concussion/guideline-section/vestibular-balance-dizziness-vision-dysfunction",
+      "type_and_population": "Clinical guideline; adult-oriented Ontario Living Concussion Guidelines; page states last updated May 2023.",
+      "supports_and_limits": "Supports VOMS screening, further assessment for persistent functional symptoms, consideration of vestibular interventions after assessment, BPPV suspicion/management, and specialist vision referral. Does not validate the workbook’s specific YouTube video or every home exercise.",
+      "used_by_current_steps": true,
+      "claude_spot_check": null,
+      "do_not_use": false
+    },
+    {
+      "id": "R02",
+      "title": "Association between post-concussion symptoms and oculomotor deficits among adolescents",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/34383619/",
+      "type_and_population": "Peer-reviewed observational study; adolescents; published 2021.",
+      "supports_and_limits": "Supports an association between post-concussion symptoms and oculomotor deficits in the studied adolescents. It is not a treatment trial, not a guideline, and does not directly support reading aids, generic home exercises, or general therapy claims.",
+      "used_by_current_steps": true,
+      "claude_spot_check": null,
+      "do_not_use": false
+    },
+    {
+      "id": "R03",
+      "title": "Harcourt Brain Center — Post-Concussion Dizziness and Vision Problems: Causes, Testing and Treatment",
+      "url": "https://harcourtbraincenter.com/post-concussion-dizziness-vision-problems/",
+      "type_and_population": "Commercial clinic’s secondary summary webpage; not a primary study or formal guideline.",
+      "supports_and_limits": "Useful only as a secondary lead to evidence. It is not strong enough as the sole citation for the dataset’s neck, sensory-exposure, and self-management claims; use the underlying trials/guidelines directly.",
+      "used_by_current_steps": false,
+      "claude_spot_check": null,
+      "do_not_use": false
+    },
+    {
+      "id": "R04",
+      "title": "Multimodal Therapeutic Approach for Post-Concussive Symptoms and Cognitive Recovery: A Case Report",
+      "url": "https://www.scirp.org/pdf/crcm2025142_72772104.pdf",
+      "type_and_population": "2025 case report; one 60-year-old female; multimodal protocol included hyperbaric therapy, photobiomodulation, and molecular hydrogen.",
+      "supports_and_limits": "Does not test or establish standard fatigue assessment, activity pacing, planned rest, referral for complex fatigue, or the workbook’s metabolic/cellular explanations. One case report cannot establish general effectiveness.",
+      "used_by_current_steps": false,
+      "claude_spot_check": null,
+      "do_not_use": false
+    },
+    {
+      "id": "R05",
+      "title": "Cerebrovascular reactivity changes in acute concussion: a controlled cohort study",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/34737921/",
+      "type_and_population": "Small controlled cohort: 12 adults aged 18–40 with concussion less than one week earlier, plus matched controls.",
+      "supports_and_limits": "Studies an acute-phase cerebrovascular-reactivity measurement using MRI/CO2 methods. It does not establish that symptoms diagnose cerebrovascular dysregulation, provide a persistent-symptom treatment, or validate personal effort thresholds.",
+      "used_by_current_steps": false,
+      "claude_spot_check": "Spot-checked: matches (12 adults, acute concussion, MRI)",
+      "do_not_use": false
+    },
+    {
+      "id": "R06",
+      "title": "Neuroendocrine Abnormalities Following Traumatic Brain Injury: An Important Contributor to Neuropsychiatric Sequelae",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/29922224/",
+      "type_and_population": "2018 review of neuroendocrine abnormalities after TBI.",
+      "supports_and_limits": "Supports the general possibility that endocrine dysfunction may contribute to symptoms after TBI. It is not, by itself, a screening protocol and does not support universal testing, routine referral for all concussion cases, or sleep-management instructions.",
+      "used_by_current_steps": true,
+      "claude_spot_check": null,
+      "do_not_use": false
+    },
+    {
+      "id": "R07",
+      "title": "Ontario Living Concussion Guidelines — Fatigue",
+      "url": "https://concussionsontario.org/concussion/guideline-section/fatigue",
+      "type_and_population": "Clinical guideline; adult-oriented; last updated May 2023.",
+      "supports_and_limits": "Directly supports taking a focused fatigue history, considering alternative/contributing causes, gradual return to activity after brief initial rest, pacing/planning, distributing breaks, using a diary/log, sleep management, and considering interdisciplinary referral for persistent fatigue. Adult guidance should not be automatically generalized to children.",
+      "used_by_current_steps": true,
+      "claude_spot_check": null,
+      "do_not_use": false
+    },
+    {
+      "id": "R08",
+      "title": "Ontario Living Concussion Guidelines — Management of Prolonged Symptoms",
+      "url": "https://concussionsontario.org/concussion/guideline-section/management-of-prolonged-symptoms",
+      "type_and_population": "Clinical guideline; adult-oriented; last updated April 2023.",
+      "supports_and_limits": "Supports monitoring prolonged symptoms, identifying potentially treatable contributors, and gradual activity resumption. It says mild, transient symptom worsening can occur; more-than-mild or prolonged worsening warrants monitored, slower progression.",
+      "used_by_current_steps": true,
+      "claude_spot_check": null,
+      "do_not_use": false
+    },
+    {
+      "id": "R09",
+      "title": "Ontario Living Concussion Guidelines — Return-to-Activity / Work / School Considerations",
+      "url": "https://concussionsontario.org/concussion/guideline-section/return-to-activity_work_school_considerations",
+      "type_and_population": "Clinical guideline; adult-oriented; last updated August 2022.",
+      "supports_and_limits": "Supports brief relative rest followed by gradual, tolerance-based resumption of normal activities and avoiding reinjury-risk activity. Does not establish a cerebrovascular mechanism for exertional symptoms.",
+      "used_by_current_steps": true,
+      "claude_spot_check": null,
+      "do_not_use": false
+    },
+    {
+      "id": "R10",
+      "title": "Ontario Living Concussion Guidelines — Sleep-Wake Disturbances",
+      "url": "https://concussionsontario.org/concussion/guideline-section/sleep-wake-disturbances",
+      "type_and_population": "Clinical guideline; adult-oriented; last updated May 2023.",
+      "supports_and_limits": "Supports assessment and management of sleep disturbance after concussion, including sleep-management/self-management strategies. It is a better direct citation for sleep advice than the neuroendocrine review.",
+      "used_by_current_steps": true,
+      "claude_spot_check": null,
+      "do_not_use": false
+    },
+    {
+      "id": "R11",
+      "title": "BC Guidelines — Concussion / Mild Traumatic Brain Injury",
+      "url": "https://www2.gov.bc.ca/gov/content/health/practitioner-professional-resources/bc-guidelines/concussion-mild-traumatic-brain-injury-mtbi",
+      "type_and_population": "Provincial clinical guideline for concussion/mTBI.",
+      "supports_and_limits": "Supports initial relative rest of 24–48 hours, graded return to activity as tolerated, mild and brief symptom exacerbation being acceptable, reducing pace for significant worsening, and avoiding reinjury risk. Check the current page for any updates before deployment.",
+      "used_by_current_steps": true,
+      "claude_spot_check": null,
+      "do_not_use": false
+    },
+    {
+      "id": "R12",
+      "title": "Consensus statement on concussion in sport: 6th International Conference on Concussion in Sport — Amsterdam",
+      "url": "https://doi.org/10.1136/BJSPORTS-2023-106898",
+      "type_and_population": "International consensus statement published 2023 based on the October 2022 conference; sport-related concussion; includes children, adolescents and adults in rehabilitation recommendations.",
+      "supports_and_limits": "Supports symptom-targeted rehabilitation, cervicovestibular rehabilitation for persistent dizziness/neck pain/headache beyond 10 days, and prescribed subsymptom-threshold aerobic exercise in suitable cases. These recommendations are not proof of a cerebrovascular cause for any one patient’s symptoms.",
+      "used_by_current_steps": true,
+      "claude_spot_check": "Spot-checked: citation matches Br J Sports Med 2023;57(11):695-711",
+      "do_not_use": false
+    },
+    {
+      "id": "R13",
+      "title": "CDC — Safety Guidelines for Pediatric Mild TBI",
+      "url": "https://www.cdc.gov/traumatic-brain-injury/hcp/clinical-guidance/pediatric-mtbi.html",
+      "type_and_population": "Official pediatric mTBI clinical guidance; page updated July 29, 2025.",
+      "supports_and_limits": "Supports age-appropriate assessment, gradual return to non-sport activity after 1–2 days of rest as tolerated, clear return-to-activity instructions, referral when symptoms do not resolve as expected after 2–4 weeks, and attention to red flags. Does not support every specialized intervention in the workbook.",
+      "used_by_current_steps": true,
+      "claude_spot_check": null,
+      "do_not_use": false
+    },
+    {
+      "id": "R14",
+      "title": "CONCUSS randomised clinical trial of vergence/accommodative therapy for concussion-related symptomatic convergence insufficiency",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41033748/",
+      "type_and_population": "Randomized clinical trial; participants aged 11–25 with symptomatic concussion-related convergence insufficiency and persistent symptoms 4–24 weeks after injury; published online in 2025 / collected in 2026.",
+      "supports_and_limits": "Directly supports office-based vergence/accommodative therapy for that defined diagnosis and population. It does not establish efficacy for all eye-movement complaints, generic home exercises, unsupervised videos, or all adult ages.",
+      "used_by_current_steps": true,
+      "claude_spot_check": "Spot-checked: BJSM 2025 RCT, ages 11-25, 4-24 weeks post-injury, convergence insufficiency, office-based therapy",
+      "do_not_use": false
+    },
+    {
+      "id": "R15",
+      "title": "Cervicovestibular rehabilitation in sport-related concussion: a randomised controlled trial",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/24855132/",
+      "type_and_population": "Randomized controlled trial; youth and young adults with persistent dizziness, neck pain, and/or headache after sport-related concussion; published 2014.",
+      "supports_and_limits": "Directly supports considering combined cervical and vestibular rehabilitation for a defined symptom group. It does not justify routine neck therapy for every patient or broad sensory-exposure claims.",
+      "used_by_current_steps": true,
+      "claude_spot_check": null,
+      "do_not_use": false
+    },
+    {
+      "id": "R16",
+      "title": "The screening and management of pituitary dysfunction following traumatic brain injury in adults: British Neurotrauma Group guidance",
+      "url": "https://jnnp.bmj.com/content/88/11/971",
+      "type_and_population": "Adult clinical guidance; published 2017.",
+      "supports_and_limits": "Supports risk- and symptom-informed screening after TBI, including screening after hospital admission longer than 48 hours and consideration in patients with ongoing symptoms compatible with pituitary dysfunction; abnormal findings warrant endocrinology assessment. Not pediatric guidance and not a universal-screening recommendation for every concussion.",
+      "used_by_current_steps": true,
+      "claude_spot_check": null,
+      "do_not_use": false
+    },
+    {
+      "id": "R17",
+      "title": "Ontario concussion clinical-practice guideline resources (adult and pediatric guideline links)",
+      "url": "https://concussionsontario.org/concussion/resources/tools-resources/concussion-clinical-practice-guidelines",
+      "type_and_population": "Guideline resource hub that lists separate adult and pediatric concussion guidelines.",
+      "supports_and_limits": "Supports the audit’s distinction that adult Ontario Living Concussion Guidelines should not be assumed to establish every step for ages 13–17. Select the matching guideline directly for each age-specific claim.",
+      "used_by_current_steps": false,
+      "claude_spot_check": null,
+      "do_not_use": false
+    },
+    {
+      "id": "R18",
+      "title": "Workbook-supplied YouTube exercise video",
+      "url": "https://www.youtube.com/watch?v=_jfpf32w6hA",
+      "type_and_population": "User workbook link; content/title could not be independently verified through the available page retrieval/search during this audit.",
+      "supports_and_limits": "The same URL appears under vestibular and home-eye-exercise steps. Do not use it as evidence until a qualified reviewer confirms the video’s identity, intended population, content, indications, contraindications, and safety.",
+      "used_by_current_steps": false,
+      "claude_spot_check": null,
+      "do_not_use": true
+    }
+  ]
+}

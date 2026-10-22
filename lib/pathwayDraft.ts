@@ -1,5 +1,6 @@
 import {
   categoryById,
+  categoryDescription,
   evidenceBadge,
   practitionerTypesFor,
   sourcesFor,
@@ -58,7 +59,7 @@ export function fallbackPathway(categoryId: string, ageBand: AgeBand): DraftPath
   }
   return {
     category_id: category.id,
-    why_it_may_apply: category.possible_mechanism,
+    why_it_may_apply: categoryDescription(category),
     steps: [
       {
         order: 1,
@@ -108,7 +109,7 @@ function readPathway(value: unknown, ageBand: AgeBand): DraftPathway | null {
     .map((step, index) => ({ ...step, order: index + 1 }));
   const written =
     typeof value.why_it_may_apply === "string" ? value.why_it_may_apply.trim() : "";
-  const whyItMayApply = written !== "" ? written : category.possible_mechanism;
+  const whyItMayApply = written !== "" ? written : categoryDescription(category);
   if (steps.length === 0) {
     const fallback = fallbackPathway(category.id, ageBand);
     if (!fallback) {
@@ -134,8 +135,8 @@ export function demoPathways(symptoms: string[], ageBand: AgeBand): DraftPathway
     const noted = symptomsForCategory(symptoms, categoryId);
     draft.why_it_may_apply =
       noted.length > 0
-        ? `You noted ${noted.join(", ")}. ${category.possible_mechanism}`
-        : category.possible_mechanism;
+        ? `You noted ${noted.join(", ")}. ${categoryDescription(category)}`
+        : categoryDescription(category);
     pathways.push(draft);
     if (pathways.length === PROVISIONAL_LIMIT) {
       break;

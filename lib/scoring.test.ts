@@ -10,8 +10,8 @@ import { surveyRules } from "./surveyMatrix";
 
 it("reads the six category ids from the category file", () => {
   expect(categoryIds()).toEqual([
-    "metabolic_cellular",
-    "cerebrovascular",
+    "fatigue_activity",
+    "exertional_symptoms",
     "neuroendocrine",
     "vestibular",
     "oculomotor",
@@ -20,8 +20,8 @@ it("reads the six category ids from the category file", () => {
 });
 
 it("computes each category max from the survey file", () => {
-  expect(categoryMaxPoints("metabolic_cellular")).toBe(5);
-  expect(categoryMaxPoints("cerebrovascular")).toBe(7);
+  expect(categoryMaxPoints("fatigue_activity")).toBe(5);
+  expect(categoryMaxPoints("exertional_symptoms")).toBe(7);
   expect(categoryMaxPoints("neuroendocrine")).toBe(7);
   expect(categoryMaxPoints("vestibular")).toBe(6);
   expect(categoryMaxPoints("oculomotor")).toBe(5);
@@ -43,7 +43,7 @@ it("gives None / not sure and other exclusive answers zero points", () => {
 it("does not add both single-select options for the same category", () => {
   const scored = scoreSurvey([{ question_id: "Q1", option_ids: ["A", "B"] }]);
   const metabolic = scored.categories.find(
-    (category) => category.category_id === "metabolic_cellular",
+    (category) => category.category_id === "fatigue_activity",
   );
 
   expect(metabolic?.points).toBe(3);
@@ -58,14 +58,14 @@ it("scores an exclusive option as zero even when another option is sent with it"
   expect(neuroendocrine?.points).toBe(0);
 });
 
-it("labels a full metabolic match as strong and primary", () => {
+it("labels a full fatigue activity match as strong and primary", () => {
   const scored = scoreSurvey([
     { question_id: "Q1", option_ids: ["A"] },
     { question_id: "Q2", option_ids: ["B"] },
   ]);
   const metabolic = scored.displayed[0];
 
-  expect(scored.primary_ids).toEqual(["metabolic_cellular"]);
+  expect(scored.primary_ids).toEqual(["fatigue_activity"]);
   expect(metabolic.points).toBe(5);
   expect(metabolic.percentage).toBe(100);
   expect(metabolic.strength_label).toBe("Strong");
@@ -107,7 +107,7 @@ it("returns co-primary categories when percentages match", () => {
   ]);
 
   expect(scored.tie).toBe(true);
-  expect(scored.primary_ids.sort()).toEqual(["cerebrovascular", "neuroendocrine"]);
+  expect(scored.primary_ids.sort()).toEqual(["exertional_symptoms", "neuroendocrine"]);
   expect(scored.displayed.map((category) => category.role)).toEqual([
     "co-primary",
     "co-primary",
@@ -115,9 +115,9 @@ it("returns co-primary categories when percentages match", () => {
   expect(scored.follow_up_question_ids).toEqual(["Q3", "Q4"]);
 });
 
-it("lists Q2 when cerebrovascular and metabolic are the tied pair", () => {
+it("lists Q2 when exertional symptoms and fatigue activity are the tied pair", () => {
   expect(
-    followUpQuestionIds(["cerebrovascular", "metabolic_cellular"]),
+    followUpQuestionIds(["exertional_symptoms", "fatigue_activity"]),
   ).toEqual(["Q2"]);
 });
 
@@ -165,16 +165,16 @@ it("scores Q6B alone as oculomotor 60%", () => {
   expect(oculomotor?.drivers.map((driver) => driver.option_id)).toEqual(["B"]);
 });
 
-it("scores Q1A plus Q2A as metabolic 60% primary and cerebrovascular about 42.9% secondary", () => {
+it("scores Q1A plus Q2A as fatigue activity 60% primary and exertional symptoms about 42.9% secondary", () => {
   const scored = scoreSurvey([
     { question_id: "Q1", option_ids: ["A"] },
     { question_id: "Q2", option_ids: ["A"] },
   ]);
   const metabolic = scored.categories.find(
-    (category) => category.category_id === "metabolic_cellular",
+    (category) => category.category_id === "fatigue_activity",
   );
-  const cerebrovascular = scored.categories.find(
-    (category) => category.category_id === "cerebrovascular",
+  const exertional = scored.categories.find(
+    (category) => category.category_id === "exertional_symptoms",
   );
 
   expect(metabolic?.points).toBe(3);
@@ -183,16 +183,16 @@ it("scores Q1A plus Q2A as metabolic 60% primary and cerebrovascular about 42.9%
   expect(metabolic?.strength_label).toBe("Moderate");
   expect(metabolic?.role).toBe("primary");
   expect(metabolic?.drivers.map((driver) => driver.option_id)).toEqual(["A"]);
-  expect(scored.primary_ids).toEqual(["metabolic_cellular"]);
+  expect(scored.primary_ids).toEqual(["fatigue_activity"]);
 
-  expect(cerebrovascular?.points).toBe(3);
-  expect(cerebrovascular?.max_points).toBe(7);
-  expect(cerebrovascular?.percentage).toBeCloseTo(42.857, 2);
-  expect(formatPercentage(cerebrovascular?.percentage ?? 0)).toBe("42.9%");
-  expect(cerebrovascular?.strength_label).toBe("Moderate");
-  expect(cerebrovascular?.role).toBe("secondary");
-  expect(scored.secondary_ids).toEqual(["cerebrovascular"]);
-  expect(cerebrovascular?.drivers.map((driver) => driver.option_id)).toEqual([
+  expect(exertional?.points).toBe(3);
+  expect(exertional?.max_points).toBe(7);
+  expect(exertional?.percentage).toBeCloseTo(42.857, 2);
+  expect(formatPercentage(exertional?.percentage ?? 0)).toBe("42.9%");
+  expect(exertional?.strength_label).toBe("Moderate");
+  expect(exertional?.role).toBe("secondary");
+  expect(scored.secondary_ids).toEqual(["exertional_symptoms"]);
+  expect(exertional?.drivers.map((driver) => driver.option_id)).toEqual([
     "A",
   ]);
 });
@@ -203,10 +203,10 @@ it("gives an exclusive option such as Q3C no points, even with other choices", (
     { question_id: "Q3", option_ids: ["A", "B", "C"] },
   ]);
   const aloneCerebro = alone.categories.find(
-    (category) => category.category_id === "cerebrovascular",
+    (category) => category.category_id === "exertional_symptoms",
   );
   const mixedCerebro = mixed.categories.find(
-    (category) => category.category_id === "cerebrovascular",
+    (category) => category.category_id === "exertional_symptoms",
   );
 
   expect(aloneCerebro?.points).toBe(0);

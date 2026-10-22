@@ -277,5 +277,33 @@
       "accepting_new_patients": true
     },
     "sees_ages": ["teen", "adult"]
+  },
+  {
+    "id": "p016",
+    "name": "Nell Amberly",
+    "practitioner_type": "optometrist",
+    "city": "Kelowna",
+    "clinic": "Orchard Glass Optometry",
+    "about": "Nell is a fictional optometrist who talks with people about eye strain, focusing, and tracking after a concussion. A visit is a chance to describe those visual symptoms and decide what to raise with a GP. This profile is sample data for the demo.",
+    "details": {
+      "availability": "Tuesday and Thursday mornings",
+      "languages": ["English"],
+      "accepting_new_patients": true
+    },
+    "sees_ages": ["teen", "adult"]
+  },
+  {
+    "id": "p017",
+    "name": "Felix Dunmore",
+    "practitioner_type": "optometrist",
+    "city": "Calgary",
+    "clinic": "Bowlight Optometry Room",
+    "about": "Felix is a fictional optometrist who meets people bothered by reading fatigue or screen strain after a concussion. The conversation is about those symptoms and which questions to take to a doctor. This clinic is invented for the demo.",
+    "details": {
+      "availability": "Wednesday afternoons and Friday mornings",
+      "languages": ["English"],
+      "accepting_new_patients": true
+    },
+    "sees_ages": ["teen", "adult"]
   }
 ]

@@ -32,6 +32,15 @@ it("hides an adult-only practitioner from a teen and still shows them to an adul
   ).toEqual(["p011"]);
 });
 
+it("matches optometrists in Kelowna and Calgary for teens and adults", () => {
+  expect(
+    matchPractitioners("optometrist", "Kelowna", "13-17").map((person) => person.id),
+  ).toEqual(["p016"]);
+  expect(
+    matchPractitioners("optometrist", "Calgary", "18+").map((person) => person.id),
+  ).toEqual(["p017"]);
+});
+
 it("does not match a different city or practitioner type", () => {
   expect(matchPractitioners("vestibular_physio", "Calgary").map((person) => person.id)).toEqual([
     "p002",

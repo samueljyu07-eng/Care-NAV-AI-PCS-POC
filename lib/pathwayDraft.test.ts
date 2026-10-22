@@ -34,18 +34,18 @@ it("keeps at most four unique categories and drops a practitioner type the categ
             {
               order: 1,
               title: "Describe screens",
-              practitioner_type: "vision_therapist",
-              rationale: "A vision therapist can help list screen symptoms.",
+              practitioner_type: "optometrist",
+              rationale: "An optometrist can help list screen symptoms.",
             },
           ],
         },
         {
-          category_id: "metabolic_cellular",
+          category_id: "fatigue_activity",
           why_it_may_apply: "",
           steps: [],
         },
         {
-          category_id: "cerebrovascular",
+          category_id: "exertional_symptoms",
           why_it_may_apply: "Possible activity pattern.",
           steps: [
             {
@@ -76,14 +76,14 @@ it("keeps at most four unique categories and drops a practitioner type the categ
   expect(pathways.map((pathway) => pathway.category_id)).toEqual([
     "vestibular",
     "oculomotor",
-    "metabolic_cellular",
-    "cerebrovascular",
+    "fatigue_activity",
+    "exertional_symptoms",
   ]);
   expect(pathways[0].steps.map((step) => step.practitioner_type)).toEqual([
     "vestibular_physio",
   ]);
   expect(pathways[2].why_it_may_apply.length).toBeGreaterThan(0);
-  expect(pathways[2].steps[0].practitioner_type).toBe("sports_medicine_physician");
+  expect(pathways[2].steps[0].practitioner_type).toBe("gp_family_physician");
 });
 
 it("reorders explanations without taking numbers from the model", () => {
@@ -140,8 +140,8 @@ it("reorders explanations without taking numbers from the model", () => {
 
 it("hides adult-only sources and the adult evidence label for teens", () => {
   for (const id of [
-    "metabolic_cellular",
-    "cerebrovascular",
+    "fatigue_activity",
+    "exertional_symptoms",
     "neuroendocrine",
     "vestibular",
     "oculomotor",
@@ -152,12 +152,21 @@ it("hides adult-only sources and the adult evidence label for teens", () => {
     if (!category) {
       continue;
     }
-    expect(sourcesFor(category, "13-17")).toEqual([]);
     expect(evidenceBadge(category, "13-17")).toBe("Pending clinician review");
+    expect(
+      sourcesFor(category, "13-17").some((source) =>
+        source.name.startsWith("Ontario Living Concussion Guidelines"),
+      ),
+    ).toBe(false);
   }
 
   const vestibular = categoryById("vestibular");
-  expect(vestibular && sourcesFor(vestibular, "18+").length).toBeGreaterThan(0);
+  expect(
+    vestibular &&
+      sourcesFor(vestibular, "18+").some((source) =>
+        source.name.startsWith("Ontario Living Concussion Guidelines"),
+      ),
+  ).toBe(true);
   expect(vestibular && evidenceBadge(vestibular, "18+")).toBe("Guideline");
 });
 

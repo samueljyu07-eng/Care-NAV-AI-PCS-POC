@@ -103,19 +103,16 @@ export default function SurveyForm({
               <div className="mt-3 flex flex-col gap-2">
                 {question.options.map((option) => {
                   const checked = (selected[question.id] ?? []).includes(option.id);
-                  const inputId = `${question.id}-${option.id}`;
                   return (
-                    <label key={option.id} htmlFor={inputId} className={choiceClass(checked)}>
-                      <input
-                        id={inputId}
-                        type={question.selection === "multi" ? "checkbox" : "radio"}
-                        name={question.id}
-                        checked={checked}
-                        onChange={() => choose(question, option.id, option.exclusive)}
-                        className="sr-only"
-                      />
-                      <span>{option.text}</span>
-                    </label>
+                    <button
+                      key={option.id}
+                      type="button"
+                      aria-pressed={checked}
+                      onClick={() => choose(question, option.id, option.exclusive)}
+                      className={choiceClass(checked)}
+                    >
+                      {option.text}
+                    </button>
                   );
                 })}
               </div>
