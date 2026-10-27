@@ -1,5 +1,5 @@
 import type { AgeBand } from "./catalog";
-import type { IntakeData } from "./redFlags";
+import { checkRedFlags, type IntakeData } from "./redFlags";
 import type { SurveyAnswer } from "./scoring";
 
 export type AgeInput = AgeBand | "under-13";
@@ -91,4 +91,23 @@ export function toRedFlagIntake(intake: IntakeRequest): IntakeData {
       symptoms: intake.primary_symptoms.join(" "),
     },
   };
+}
+
+export function intakeTextIsUrgent(input: {
+  concerns: string;
+  pastAttempts: string;
+  symptoms: string[];
+  ageBand: AgeInput;
+}): boolean {
+  return checkRedFlags(
+    toRedFlagIntake({
+      address: "",
+      concerns: input.concerns,
+      primary_symptoms: input.symptoms,
+      past_attempts: input.pastAttempts,
+      timeline: "",
+      age_band: input.ageBand,
+      survey_answers: [],
+    }),
+  ).triggered;
 }

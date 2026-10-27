@@ -83,7 +83,7 @@ export async function POST(request: Request) {
     pathways,
     notice:
       pathways.length === 0
-        ? "Suggested paths from the intake are not available right now. The survey below still scores your answers."
+        ? "Suggested paths are not available right now."
         : null,
   });
 }

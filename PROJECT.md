@@ -2,34 +2,71 @@
 
 ## Purpose
 A web app demo that helps people with post-concussion syndrome (PCS) navigate care.
-A user fills in an intake form and receives care pathways shown as a tree
-diagram. Each step of a pathway slides open to show practitioners they can choose
-from. This is a proof of concept for a demo, not a production medical product.
+One visit has three pages: an intake form, nine survey questions, and a care
+pathway shown with the patient's answers. Pathways appear as cards and as a tree
+diagram. Each card starts closed. Its header shows the pattern name, a Guideline
+tag, how closely the answers match, and a small pie chart of that match. Opening
+a card shows why it may apply and the numbered steps. In the tree, each step
+slides open to show practitioners they can choose from. This is a proof of
+concept for a demo, not a production medical product.
 
 ## Tech stack
 - Next.js with TypeScript and Tailwind CSS
 - React Flow for the tree diagram
-- Claude API for generating pathways, called from the Next.js route /api/pathways
+- Claude API for generating pathways, called from the Next.js routes /api/pathways and /api/refine
 - Zod to check that Claude's pathway reply matches the pathway data shape
 - Vitest for tests
 - All data is synthetic. No real patient data is ever stored or sent.
 
 ## Current status
-- Done: intake form, and the /results tree UI with practitioner panels. Submitting
-  the form saves the answers for this visit. The results page asks /api/pathways
-  for pathways. A hard-coded red-flag check runs first. If it finds an urgent
-  warning, the page tells the person to get urgent care and does not build a
-  pathway. Otherwise Claude builds the sections from the Primary symptoms
-  checkboxes, one section for each symptom group, with no limit of three. Written
-  concerns can add or change a section. If no symptoms are checked, the sections
-  come from the written concerns and past attempts. Claude's reply is checked
-  against the pathway data shape. If that check fails, the route tries once more,
-  then shows a short error and does not show the raw reply. Each step opens
-  sample practitioners whose type matches the step and whose city matches the
-  intake city, ignoring letter case.
+- Done: the three-page visit described below, and the pathway builder.
+  A hard-coded red-flag check runs first. If it finds an urgent warning, the
+  page tells the person to get urgent care and does not build a pathway.
+  Otherwise Claude builds the sections from the Primary symptoms checkboxes, one
+  section for each symptom group, with no limit of three. Written concerns can
+  add or change a section. If no symptoms are checked, the sections come from
+  the written concerns and past attempts. Claude's reply is checked against the
+  pathway data shape. If that check fails, the route tries once more, then shows
+  a short error and does not show the raw reply. /api/refine then rewrites the
+  explanations using the survey answers. It does not change the scores. Each
+  tree step opens sample practitioners whose type matches the step and whose
+  city matches the intake city, ignoring letter case.
 - The sample pathways in data/sample-pathways.json are still in the project.
   The results page no longer shows them for every visit.
 - Next: clinician review of the hard-coded red-flag list.
+
+## Visit flow
+Answers for a visit stay in this browser tab. Closing the tab clears them.
+Changing the intake and submitting again clears the survey answers.
+
+1. Intake (`/`). The form collects city, age, timeline, primary symptoms, main
+   concerns, and past attempts. Under 13 is not accepted. If the red-flag check
+   finds urgent wording, the app skips the questions and opens the pathway page
+   with the urgent-care message. Otherwise it opens the questions page. Back
+   from the questions page returns here and keeps what was typed.
+2. Nine questions (`/questions`). The questions come from
+   data/survey-matrix.json. Questions that match the checked symptoms come
+   first. If Light sensitivity was checked, the matching answer on question 7
+   starts selected. Any question can be left blank. Answer text is centered.
+   Continue saves the answers and opens the pathway page. Opening the pathway
+   page before Continue, on a visit that is not urgent, sends the person back
+   to these questions.
+3. Care pathway (`/results`). This page shows the saved intake answers, the
+   medical disclaimer, and the pathways. The nine questions are not on this
+   page. Back returns to the questions so an answer can be changed and the
+   pathway updates. On an urgent visit, Back returns to the intake.
+   While the pathway is building, a progress bar sits under the disclaimer. It
+   first says "Looking at the intake…", then "Building your care pathway…".
+   The bar is a timer so the wait is visible. It is not a real percent from
+   the server. Cards appear only after /api/refine finishes. If that rewrite
+   fails, the first pathways are still shown and the scores still stand.
+   Scoring is done in code, not by the AI. A score line looks like
+   "Strong · 9 of 9 · 100%": a strength word when one applies, points out of
+   the category maximum, and the percent. Each pathway card starts closed. The
+   header keeps the name, the Guideline tag, that score line, a small pie chart
+   of the percent (black for the match, light gray for the rest), and a
+   chevron. Opening the card shows the explanation, the numbered steps, and
+   the sources. The tree diagram is still below the cards.
 
 ## Intake data shape
 {

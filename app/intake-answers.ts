@@ -1,5 +1,6 @@
 export const INTAKE_STORAGE_KEY = "care-nav-intake";
 export const SURVEY_STORAGE_KEY = "care-nav-survey";
+export const SURVEY_SUBMITTED_KEY = "care-nav-survey-submitted";
 
 const PENDING_INTAKE = "__pending__";
 
@@ -31,8 +32,33 @@ export type IntakeAnswers = {
 };
 
 export function saveIntakeAnswers(answers: IntakeAnswers) {
-  sessionStorage.setItem(INTAKE_STORAGE_KEY, JSON.stringify(answers));
-  sessionStorage.removeItem(SURVEY_STORAGE_KEY);
+  const next = JSON.stringify(answers);
+  const previous = sessionStorage.getItem(INTAKE_STORAGE_KEY);
+  if (previous !== next) {
+    sessionStorage.removeItem(SURVEY_STORAGE_KEY);
+    sessionStorage.removeItem(SURVEY_SUBMITTED_KEY);
+  }
+  sessionStorage.setItem(INTAKE_STORAGE_KEY, next);
+}
+
+export function subscribeToSurveySubmitted() {
+  return () => {};
+}
+
+export function getSurveySubmittedSnapshot() {
+  return sessionStorage.getItem(SURVEY_SUBMITTED_KEY) ?? "";
+}
+
+export function getSurveySubmittedServerSnapshot() {
+  return "";
+}
+
+export function markSurveySubmitted() {
+  sessionStorage.setItem(SURVEY_SUBMITTED_KEY, "yes");
+}
+
+export function isSurveySubmitted() {
+  return getSurveySubmittedSnapshot() === "yes";
 }
 
 export function subscribeToSurvey() {

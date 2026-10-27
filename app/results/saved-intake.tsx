@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import type { AgeBand } from "../../lib/catalog";
 import { categoryById } from "../../lib/catalog";
@@ -9,16 +10,23 @@ import {
   TEEN_FRAMING,
   pathwayDisclaimer,
 } from "../../lib/copy";
+import { intakeTextIsUrgent } from "../../lib/intakeBody";
 import {
   getIntakeServerSnapshot,
   getIntakeSnapshot,
+  getSurveySnapshot,
+  getSurveySubmittedServerSnapshot,
+  getSurveySubmittedSnapshot,
   isIntakePending,
+  isSurveySubmitted,
   readIntakeAnswers,
+  readSurveySelection,
   subscribeToIntake,
+  subscribeToSurveySubmitted,
 } from "../intake-answers";
+import { surveyAnswersFromSelection } from "../questions/survey-form";
 import CareTree, { type CarePathway } from "./care-tree";
 import { ProvisionalCards, type CardPathway } from "./path-details";
-import SurveyForm from "./survey-form";
 import type { DisplayPathway, PresentedPathway } from "../../lib/pathwayDraft";
 import {
   formatPercentage,
@@ -80,18 +88,73 @@ type ProvisionalState =
 type RefineState =
   | { kind: "idle" }
   | { kind: "loading" }
-  | { kind: "ready"; pathways: DisplayPathway[] }
+  | { kind: "ready"; pathways: DisplayPathway[]; note: string | null }
   | { kind: "urgent"; message: string }
   | { kind: "message"; text: string };
 
+const PATHS_UNAVAILABLE =
+  "Suggested paths are not available right now. Go back and try again.";
+
+function PathwayProgress({ label, cap }: { label: string; cap: number }) {
+  const [value, setValue] = useState(8);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setValue((current) => {
+        if (current >= cap) {
+          return current;
+        }
+        return Math.min(cap, current + Math.max(0.6, (cap - current) * 0.06));
+      });
+    }, 200);
+    return () => window.clearInterval(timer);
+  }, [cap]);
+
+  const shown = Math.round(value);
+
+  return (
+    <div className="flex flex-col gap-3">
+      <p className="text-base leading-7 text-[#545454]">{label}</p>
+      <div
+        role="progressbar"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={shown}
+        aria-label={label}
+        className="h-2 w-full overflow-hidden rounded-full bg-[#E2E2E2]"
+      >
+        <div className="h-full rounded-full bg-black" style={{ width: `${value}%` }} />
+      </div>
+    </div>
+  );
+}
+
 export default function SavedIntake({ children }: { children?: ReactNode }) {
+  const router = useRouter();
   const storedAnswers = useSyncExternalStore(
     subscribeToIntake,
     getIntakeSnapshot,
     getIntakeServerSnapshot,
   );
+  const surveySubmittedFlag = useSyncExternalStore(
+    subscribeToSurveySubmitted,
+    getSurveySubmittedSnapshot,
+    getSurveySubmittedServerSnapshot,
+  );
   const pending = isIntakePending(storedAnswers);
   const answers = readIntakeAnswers(storedAnswers);
+  const textUrgent = Boolean(
+    answers?.ageBand &&
+      intakeTextIsUrgent({
+        concerns: answers.concerns,
+        pastAttempts: answers.pastAttempts,
+        symptoms: answers.symptoms,
+        ageBand: answers.ageBand,
+      }),
+  );
+  const surveySubmitted = surveySubmittedFlag === "yes";
+  const shouldAskQuestions =
+    !pending && Boolean(answers?.ageBand) && !textUrgent && !surveySubmitted;
   const [provisionalRecord, setProvisionalRecord] = useState<{
     id: string;
     state: ProvisionalState;
@@ -122,6 +185,18 @@ export default function SavedIntake({ children }: { children?: ReactNode }) {
     }
     const saved = readIntakeAnswers(storedAnswers);
     if (!saved || !saved.ageBand) {
+      return;
+    }
+    if (
+      !intakeTextIsUrgent({
+        concerns: saved.concerns,
+        pastAttempts: saved.pastAttempts,
+        symptoms: saved.symptoms,
+        ageBand: saved.ageBand,
+      }) &&
+      !isSurveySubmitted()
+    ) {
+      router.replace("/questions");
       return;
     }
 
@@ -173,21 +248,27 @@ export default function SavedIntake({ children }: { children?: ReactNode }) {
             id: requestKey,
             state: {
               kind: "message",
-              text:
-                payload.error ??
-                "Suggested paths from the intake are not available right now. You can still answer the survey.",
+              text: payload.error ?? PATHS_UNAVAILABLE,
             },
           });
           return;
         }
+        const pathways = payload.pathways ?? [];
         setProvisionalRecord({
           id: requestKey,
           state: {
             kind: "ready",
-            pathways: payload.pathways ?? [],
+            pathways,
             notice: payload.notice ?? null,
           },
         });
+        const selected = readSurveySelection(getSurveySnapshot());
+        submitSurvey(
+          surveyAnswersFromSelection(saved.symptoms, selected),
+          pathways,
+          saved,
+          requestKey,
+        );
       })
       .catch((error: unknown) => {
         if (error instanceof DOMException && error.name === "AbortError") {
@@ -200,7 +281,7 @@ export default function SavedIntake({ children }: { children?: ReactNode }) {
           id: requestKey,
           state: {
             kind: "message",
-            text: "Suggested paths from the intake are not available right now. You can still answer the survey.",
+            text: PATHS_UNAVAILABLE,
           },
         });
       });
@@ -209,32 +290,35 @@ export default function SavedIntake({ children }: { children?: ReactNode }) {
       controller.abort();
       refineAbort.current?.abort();
     };
-  }, [pending, storedAnswers]);
+  }, [pending, storedAnswers, router]);
 
-  function submitSurvey(surveyAnswers: SurveyAnswer[]) {
-    if (!answers?.ageBand) {
+  function submitSurvey(
+    surveyAnswers: SurveyAnswer[],
+    provisionalPaths: PresentedPathway[],
+    saved: NonNullable<typeof answers>,
+    requestKey: string,
+  ) {
+    if (!saved.ageBand) {
       return;
     }
     const result = scoreSurvey(surveyAnswers);
-    setScoreRecord({ id: storedAnswers, result });
+    setScoreRecord({ id: requestKey, result });
     refineAbort.current?.abort();
     const controller = new AbortController();
     refineAbort.current = controller;
-    const requestKey = storedAnswers;
     latestIntake.current = requestKey;
     setRefineRecord({ id: requestKey, state: { kind: "loading" } });
-    const provisionalPaths = provisional.kind === "ready" ? provisional.pathways : [];
     fetch("/api/refine", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       signal: controller.signal,
       body: JSON.stringify({
-        address: answers.city,
-        concerns: answers.concerns,
-        primary_symptoms: answers.symptoms,
-        past_attempts: answers.pastAttempts,
-        timeline: answers.timeline,
-        age_band: answers.ageBand,
+        address: saved.city,
+        concerns: saved.concerns,
+        primary_symptoms: saved.symptoms,
+        past_attempts: saved.pastAttempts,
+        timeline: saved.timeline,
+        age_band: saved.ageBand,
         survey_answers: surveyAnswers,
         provisional_paths: provisionalPaths,
       }),
@@ -268,7 +352,11 @@ export default function SavedIntake({ children }: { children?: ReactNode }) {
         }
         setRefineRecord({
           id: requestKey,
-          state: { kind: "ready", pathways: payload.pathways ?? [] },
+          state: {
+            kind: "ready",
+            pathways: payload.pathways ?? [],
+            note: payload.message ?? null,
+          },
         });
       })
       .catch((error: unknown) => {
@@ -293,20 +381,30 @@ export default function SavedIntake({ children }: { children?: ReactNode }) {
     answers && answers.symptoms.length > 0
       ? answers.symptoms.join(", ")
       : "None selected";
+  const pathwaySettled = refine.kind === "ready" || refine.kind === "message";
   const shownPathways: PresentedPathway[] =
     refine.kind === "ready"
       ? refine.pathways
-      : provisional.kind === "ready"
+      : refine.kind === "message" && provisional.kind === "ready"
         ? provisional.pathways
         : [];
   const cardPathways = withScores(shownPathways, scores);
   const treePathways = toTree(cardPathways);
-  const showSurvey =
-    Boolean(ageBand) &&
+  const backHref =
+    answers?.ageBand &&
+    !textUrgent &&
     provisional.kind !== "urgent" &&
-    provisional.kind !== "unsupported" &&
-    provisional.kind !== "waiting" &&
-    refine.kind !== "urgent";
+    refine.kind !== "urgent"
+      ? "/questions"
+      : "/";
+
+  if (shouldAskQuestions) {
+    return (
+      <p className="text-base leading-7 text-[#545454]">
+        Taking you to the questions…
+      </p>
+    );
+  }
 
   return (
     <>
@@ -355,14 +453,6 @@ export default function SavedIntake({ children }: { children?: ReactNode }) {
         )}
       </section>
 
-      {showSurvey && answers ? (
-        <SurveyForm
-          key={storedAnswers}
-          symptoms={answers.symptoms}
-          onSubmit={submitSurvey}
-        />
-      ) : null}
-
       {ageBand === "13-17" ? (
         <aside className="rounded-xl border border-[#E2E2E2] bg-[#F6F6F6] px-4 py-4" role="note">
           <p className="text-base leading-7 text-black">{TEEN_FRAMING}</p>
@@ -385,10 +475,16 @@ export default function SavedIntake({ children }: { children?: ReactNode }) {
         </p>
       ) : null}
 
-      {provisional.kind === "loading" ? (
-        <p className="text-base leading-7 text-[#545454]">
-          Looking at the intake…
-        </p>
+      {provisional.kind === "loading" ||
+      (provisional.kind === "ready" && !pathwaySettled && refine.kind !== "urgent") ? (
+        <PathwayProgress
+          label={
+            provisional.kind === "loading"
+              ? "Looking at the intake…"
+              : "Building your care pathway…"
+          }
+          cap={provisional.kind === "loading" ? 55 : 92}
+        />
       ) : null}
       {provisional.kind === "urgent" || refine.kind === "urgent" ? (
         <aside className="rounded-xl border border-red-200 bg-red-50 px-4 py-4" role="alert">
@@ -404,7 +500,7 @@ export default function SavedIntake({ children }: { children?: ReactNode }) {
       {provisional.kind === "message" ? (
         <p className="text-base leading-7 text-[#545454]">{provisional.text}</p>
       ) : null}
-      {provisional.kind === "ready" && refine.kind !== "urgent" ? (
+      {provisional.kind === "ready" && pathwaySettled ? (
         <>
           {provisional.notice && refine.kind !== "ready" ? (
             <p className="text-base leading-7 text-[#545454]">{provisional.notice}</p>
@@ -415,11 +511,11 @@ export default function SavedIntake({ children }: { children?: ReactNode }) {
           />
         </>
       ) : null}
-      {refine.kind === "loading" ? (
-        <p className="text-base leading-7 text-[#545454]">Updating the explanations…</p>
-      ) : null}
       {refine.kind === "message" ? (
         <p className="text-base leading-7 text-[#545454]">{refine.text}</p>
+      ) : null}
+      {refine.kind === "ready" && refine.note ? (
+        <p className="text-base leading-7 text-[#545454]">{refine.note}</p>
       ) : null}
 
       {treePathways.length > 0 && provisional.kind !== "urgent" && refine.kind !== "urgent" ? (
@@ -438,7 +534,7 @@ export default function SavedIntake({ children }: { children?: ReactNode }) {
         </div>
       ) : null}
 
-      {scores && treePathways.length === 0 ? (
+      {scores && treePathways.length === 0 && pathwaySettled ? (
         <section aria-label="Survey scores" className="flex flex-col gap-2">
           <h2 className="text-base font-semibold text-black">Survey scores</h2>
           <ul className="flex flex-col gap-2">
@@ -456,7 +552,7 @@ export default function SavedIntake({ children }: { children?: ReactNode }) {
 
       <p>
         <Link
-          href="/"
+          href={backHref}
           className="text-base font-medium text-black underline decoration-black underline-offset-4"
         >
           Back

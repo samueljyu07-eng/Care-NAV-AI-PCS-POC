@@ -4,6 +4,7 @@ import { useMemo, useState, useSyncExternalStore } from "react";
 import {
   getSurveyServerSnapshot,
   getSurveySnapshot,
+  markSurveySubmitted,
   readSurveySelection,
   saveSurveySelection,
   subscribeToSurvey,
@@ -14,8 +15,8 @@ import type { SurveyQuestion } from "../../lib/surveyMatrix";
 
 function choiceClass(selected: boolean) {
   return selected
-    ? "flex min-h-12 cursor-pointer items-start gap-3 rounded-xl border border-black bg-black px-4 py-3 text-base leading-7 text-white"
-    : "flex min-h-12 cursor-pointer items-start gap-3 rounded-xl border border-[#E2E2E2] bg-white px-4 py-3 text-base leading-7 text-black";
+    ? "flex min-h-12 w-full cursor-pointer items-center justify-center rounded-xl border border-black bg-black px-4 py-3 text-center text-base leading-7 text-white"
+    : "flex min-h-12 w-full cursor-pointer items-center justify-center rounded-xl border border-[#E2E2E2] bg-white px-4 py-3 text-center text-base leading-7 text-black";
 }
 
 function prefillSelection(symptoms: string[]): Record<string, string[]> {
@@ -24,6 +25,16 @@ function prefillSelection(symptoms: string[]): Record<string, string[]> {
     selected[answer.question_id] = answer.option_ids;
   }
   return selected;
+}
+
+export function surveyAnswersFromSelection(
+  symptoms: string[],
+  selected: Record<string, string[]>,
+): SurveyAnswer[] {
+  return orderQuestions({ symptoms }).map((question) => ({
+    question_id: question.id,
+    option_ids: selected[question.id] ?? [],
+  }));
 }
 
 export default function SurveyForm({
@@ -67,27 +78,16 @@ export default function SurveyForm({
   }
 
   function handleSubmit() {
-    const answers = questions.map((question) => ({
-      question_id: question.id,
-      option_ids: selected[question.id] ?? [],
-    }));
+    const answers = surveyAnswersFromSelection(symptoms, selected);
     saveSurveySelection(
       Object.fromEntries(answers.map((answer) => [answer.question_id, answer.option_ids])),
     );
+    markSurveySubmitted();
     onSubmit(answers);
   }
 
   return (
     <section aria-label="Help us narrow this down" className="flex flex-col gap-6">
-      <div>
-        <h2 className="text-2xl font-bold tracking-tight text-black">
-          Help us narrow this down
-        </h2>
-        <p className="mt-2 max-w-3xl text-base leading-7 text-[#545454]">
-          These answers are saved for this visit. Change any filled-in answer,
-          then update your results.
-        </p>
-      </div>
       <ol className="flex flex-col gap-8">
         {questions.map((question, index) => (
           <li key={question.id}>
@@ -123,9 +123,9 @@ export default function SurveyForm({
       <button
         type="button"
         onClick={handleSubmit}
-        className="inline-flex min-h-14 w-full items-center justify-center rounded-full bg-black px-5 text-base font-medium text-white transition-colors duration-200 hover:bg-[#1A1A1A] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black sm:w-auto"
+        className="inline-flex min-h-14 w-full items-center justify-center rounded-full bg-black px-5 text-base font-medium text-white transition-colors duration-200 hover:bg-[#1A1A1A] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
       >
-        Update my results
+        Continue
       </button>
     </section>
   );

@@ -1,9 +1,15 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
-import { saveIntakeAnswers, type AgeBand } from "./intake-answers";
+import { FormEvent, useEffect, useState } from "react";
+import {
+  getIntakeSnapshot,
+  readIntakeAnswers,
+  saveIntakeAnswers,
+  type AgeBand,
+} from "./intake-answers";
 import { UNDER_13_MESSAGE } from "../lib/copy";
+import { intakeTextIsUrgent } from "../lib/intakeBody";
 
 const TIMELINE_STOPS = [
   "1 week",
@@ -36,6 +42,29 @@ export default function Home() {
   const [timelineIndex, setTimelineIndex] = useState(0);
   const [pastAttempts, setPastAttempts] = useState("");
   const [ageChoice, setAgeChoice] = useState<AgeBand | "under-13" | "">("");
+  const [restored, setRestored] = useState(false);
+
+  useEffect(() => {
+    const saved = readIntakeAnswers(getIntakeSnapshot());
+    if (saved) {
+      setLocation(saved.city);
+      setConcerns(saved.concerns);
+      setPastAttempts(saved.pastAttempts);
+      setSymptoms(
+        SYMPTOMS.filter((symptom) => saved.symptoms.includes(symptom.label)).map(
+          (symptom) => symptom.id,
+        ),
+      );
+      const index = TIMELINE_STOPS.findIndex((stop) => stop === saved.timeline);
+      if (index >= 0) {
+        setTimelineIndex(index);
+      }
+      if (saved.ageBand) {
+        setAgeChoice(saved.ageBand);
+      }
+    }
+    setRestored(true);
+  }, []);
 
   function toggleSymptom(id: string) {
     setSymptoms((current) =>
@@ -50,7 +79,7 @@ export default function Home() {
     if (ageChoice !== "13-17" && ageChoice !== "18+") {
       return;
     }
-    saveIntakeAnswers({
+    const saved = {
       city: location.trim(),
       concerns: concerns.trim(),
       symptoms: SYMPTOMS.filter((symptom) => symptoms.includes(symptom.id)).map(
@@ -59,8 +88,28 @@ export default function Home() {
       timeline: TIMELINE_STOPS[timelineIndex],
       pastAttempts: pastAttempts.trim(),
       ageBand: ageChoice,
-    });
-    router.push("/results");
+    };
+    saveIntakeAnswers(saved);
+    if (
+      intakeTextIsUrgent({
+        concerns: saved.concerns,
+        pastAttempts: saved.pastAttempts,
+        symptoms: saved.symptoms,
+        ageBand: saved.ageBand,
+      })
+    ) {
+      router.push("/results");
+      return;
+    }
+    router.push("/questions");
+  }
+
+  if (!restored) {
+    return (
+      <main className="mx-auto w-full max-w-[640px] flex-1 px-4 py-10 sm:px-6 sm:py-16">
+        <p className="text-base leading-7 text-[#545454]">Loading…</p>
+      </main>
+    );
   }
 
   return (
