@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { pathwayResponseSchema } from "./schema";
 
 type JsonSchema = Record<string, unknown>;
 
@@ -62,16 +61,14 @@ function outputSchema(node: JsonSchema): JsonSchema {
   return next;
 }
 
-export function pathwayOutputFormat(): {
+export function structuredOutputFormat(schema: z.ZodType): {
   type: "json_schema";
   schema: JsonSchema;
   parse: (content: string) => unknown;
 } {
   return {
     type: "json_schema",
-    schema: outputSchema(
-      z.toJSONSchema(pathwayResponseSchema, { reused: "ref" }) as JsonSchema,
-    ),
+    schema: outputSchema(z.toJSONSchema(schema, { reused: "ref" }) as JsonSchema),
     parse(content) {
       try {
         return JSON.parse(content);

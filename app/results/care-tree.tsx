@@ -15,52 +15,54 @@ import {
 import "@xyflow/react/dist/style.css";
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
   useRef,
   useState,
   useSyncExternalStore,
+  type CSSProperties,
   type MouseEvent,
 } from "react";
-import PractitionerPanel from "./practitioner-panel";
+import type { AgeBand } from "../../lib/catalog";
+import { practitionerTypeLabel } from "../../lib/catalog";
+import { libraryStepById, libraryStepType } from "../../lib/careSteps";
+import { pathwayColor } from "../../lib/pathwayColors";
+import { pathwayIcon, stepTileIcon } from "./node-icons";
+import { visibleStepNodeLines } from "./step-node-text";
+import StepWindow from "./step-window";
 
 const NODE_WIDTH = 260;
+const TILE_SIZE = 80;
+const SIMPLE_NODE_WIDTH = 128;
+const SIMPLE_GAP = 56;
+const SIMPLE_ROW_SPAN = 210;
 const HORIZONTAL_GAP = 48;
 const CONTENT_PAD = 48;
 const INTAKE_GAP = 80;
 const ROW_START_Y = 24;
 const CLOSED_ROW_SPAN = 170;
-const OPEN_ROW_SPAN = 860;
 const PHONE_QUERY = "(max-width: 639px)";
-
-const PATHWAY_COLORS = [
-  { background: "#e5f2eb", border: "#6d9b86" },
-  { background: "#e6f0f7", border: "#7593ad" },
-  { background: "#f6f1e6", border: "#b19772" },
-];
-
-const PRACTITIONER_TYPE_LABELS: Record<string, string> = {
-  vestibular_physio: "Vestibular physiotherapist",
-  physiotherapist: "Physiotherapist",
-  vision_therapist: "Vision therapist",
-  sports_medicine_physician: "Sports medicine physician",
-  sleep_specialist: "Sleep specialist",
-  psychologist: "Psychologist",
-};
 
 export type CarePathway = {
   name: string;
+  scoreText?: string | null;
   steps: {
     order: number;
     title: string;
     practitioner_type: string;
+    step_id?: string | null;
+    rationale?: string;
+    draft_label?: string | null;
+    safety_note?: string;
+    sources?: { title: string; url: string; limits: string }[];
   }[];
 };
 
 type IntakeNode = Node<{ label: string }, "intake">;
 type PathwayNode = Node<
-  { label: string; background: string; border: string },
+  { label: string; scoreText?: string | null; background: string; border: string },
   "pathway"
 >;
 type StepNode = Node<
@@ -68,27 +70,115 @@ type StepNode = Node<
     title: string;
     practitionerType: string;
     practitionerTypeId: string;
+    shortLabel: string;
+    background: string;
+    stepTypeLabel: string | null;
+    libraryStepId: string | null;
     border: string;
+    rationale: string;
+    draftLabel: string | null;
+    safetyNote: string;
+    sources: { title: string; url: string; limits: string }[];
   },
   "step"
 >;
 type CareNode = IntakeNode | PathwayNode | StepNode;
 
 function practitionerLabel(type: string) {
-  return PRACTITIONER_TYPE_LABELS[type] ?? type.replaceAll("_", " ");
+  return practitionerTypeLabel(type);
 }
 
-function columnX(column: number) {
+function stepTypeLabel(stepType: string | null): string | null {
+  if (stepType === "assessment") {
+    return "Assessment";
+  }
+  if (stepType === "care") {
+    return "Care";
+  }
+  if (stepType === "self_management") {
+    return "Self-management";
+  }
+  if (stepType === "ask_your_gp") {
+    return "Ask your GP";
+  }
+  return stepType;
+}
+
+function columnX(column: number, simple = false) {
   if (column <= 0) {
     return CONTENT_PAD;
   }
 
-  return (
-    CONTENT_PAD +
-    NODE_WIDTH +
-    INTAKE_GAP +
-    (column - 1) * (NODE_WIDTH + HORIZONTAL_GAP)
-  );
+  if (!simple) {
+    return (
+      CONTENT_PAD +
+      NODE_WIDTH +
+      INTAKE_GAP +
+      (column - 1) * (NODE_WIDTH + HORIZONTAL_GAP)
+    );
+  }
+
+  const afterIntake = CONTENT_PAD + NODE_WIDTH + INTAKE_GAP;
+  return afterIntake + (column - 1) * (SIMPLE_NODE_WIDTH + SIMPLE_GAP);
+}
+
+function connectionDot(color: string, side: "left" | "right"): CSSProperties {
+  const edge = (SIMPLE_NODE_WIDTH - TILE_SIZE) / 2 - 5;
+  return {
+    width: 10,
+    height: 10,
+    background: "#ffffff",
+    border: `2px solid ${color}`,
+    borderRadius: 999,
+    top: TILE_SIZE / 2,
+    ...(side === "left" ? { left: edge } : { right: edge }),
+  };
+}
+
+function tileStyle(background: string, border: string): CSSProperties {
+  return {
+    boxSizing: "border-box",
+    width: TILE_SIZE,
+    height: TILE_SIZE,
+    margin: "0 auto",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 16,
+    borderStyle: "solid",
+    borderWidth: 2,
+    borderColor: border,
+    background,
+  };
+}
+
+const captionStyle: CSSProperties = {
+  width: SIMPLE_NODE_WIDTH,
+  marginTop: 8,
+  overflow: "hidden",
+  color: "#1e293b",
+  fontSize: 12,
+  lineHeight: "16px",
+  textAlign: "center",
+  display: "-webkit-box",
+  WebkitBoxOrient: "vertical",
+  WebkitLineClamp: 2,
+};
+
+function matchReadout(scoreText: string | null | undefined): {
+  strength: string | null;
+  percent: number | null;
+} {
+  if (!scoreText) {
+    return { strength: null, percent: null };
+  }
+  const percentMatch = /(\d+(?:\.\d+)?)%\s*$/.exec(scoreText);
+  const parsed = percentMatch ? Number(percentMatch[1]) : null;
+  const percent =
+    parsed !== null && Number.isFinite(parsed) ? Math.min(100, Math.max(0, parsed)) : null;
+  const first = scoreText.split("·")[0]?.trim() ?? "";
+  const strength = first !== "" && !/^\d/.test(first) ? first : null;
+  return { strength, percent };
 }
 
 function subscribeToPhone(onStoreChange: () => void) {
@@ -118,15 +208,91 @@ const shellStyle = {
 };
 
 function IntakeNodeView({ data }: NodeProps<IntakeNode>) {
+  const ui = useContext(StepUiContext);
+  const simple = ui?.detail === "simple";
   return (
     <div style={{ ...shellStyle, background: "#f8faf9", borderColor: "#94a3b8" }}>
       <div style={{ fontWeight: 600 }}>{data.label}</div>
-      <Handle type="source" position={Position.Right} />
+      <Handle
+        type="source"
+        position={Position.Right}
+        style={
+          simple
+            ? {
+                width: 10,
+                height: 10,
+                background: "#ffffff",
+                border: "2px solid #64748b",
+                borderRadius: 999,
+              }
+            : undefined
+        }
+      />
     </div>
   );
 }
 
 function PathwayNodeView({ data }: NodeProps<PathwayNode>) {
+  const ui = useContext(StepUiContext);
+  if (ui?.detail === "simple") {
+    const Icon = pathwayIcon(data.label);
+    const readout = matchReadout(data.scoreText);
+    return (
+      <div style={{ width: SIMPLE_NODE_WIDTH }}>
+        <div style={{ position: "relative", height: TILE_SIZE }}>
+          <Handle type="target" position={Position.Left} style={connectionDot(data.border, "left")} />
+          <div aria-hidden="true" style={tileStyle(data.background, data.border)}>
+            <Icon size={28} color={data.border} strokeWidth={1.75} />
+          </div>
+          <Handle type="source" position={Position.Right} style={connectionDot(data.border, "right")} />
+        </div>
+        <div style={captionStyle} title={data.label}>
+          {data.label}
+        </div>
+        {readout.percent !== null ? (
+          <div style={{ marginTop: 6 }}>
+            {readout.strength ? (
+              <div
+                style={{
+                  color: "#1e293b",
+                  fontSize: 12,
+                  lineHeight: "16px",
+                  textAlign: "center",
+                }}
+              >
+                {readout.strength}
+              </div>
+            ) : null}
+            <div
+              role="meter"
+              aria-label={readout.strength ? `${readout.strength} match` : "Match"}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-valuenow={Math.round(readout.percent)}
+              style={{
+                width: 72,
+                height: 6,
+                margin: "4px auto 0",
+                overflow: "hidden",
+                borderRadius: 999,
+                background: "#E2E2E2",
+              }}
+            >
+              <div
+                style={{
+                  width: `${readout.percent}%`,
+                  height: "100%",
+                  borderRadius: 999,
+                  background: data.border,
+                }}
+              />
+            </div>
+          </div>
+        ) : null}
+      </div>
+    );
+  }
+
   return (
     <div
       style={{
@@ -137,16 +303,21 @@ function PathwayNodeView({ data }: NodeProps<PathwayNode>) {
     >
       <Handle type="target" position={Position.Left} />
       <div style={{ fontWeight: 600 }}>{data.label}</div>
+      {data.scoreText ? (
+        <div style={{ marginTop: 6, fontSize: 13, color: "#334155" }}>{data.scoreText}</div>
+      ) : null}
       <Handle type="source" position={Position.Right} />
     </div>
   );
 }
 
+type TreeDetail = "simple" | "detailed";
+
 type StepUi = {
+  detail: TreeDetail;
+  isPhone: boolean;
   selectedStepId: string | null;
-  chosenByStep: Record<string, string>;
-  patientCity: string;
-  onChoose: (practitionerId: string) => void;
+  bookedStepIds: Record<string, boolean>;
 };
 
 const StepUiContext = createContext<StepUi | null>(null);
@@ -154,7 +325,49 @@ const StepUiContext = createContext<StepUi | null>(null);
 function StepNodeView({ id, data }: NodeProps<StepNode>) {
   const ui = useContext(StepUiContext);
   const selected = ui?.selectedStepId === id;
-  const chosen = Boolean(ui && ui.chosenByStep[id]);
+  const booked = Boolean(ui?.bookedStepIds[id]);
+  const detailed = ui?.detail === "detailed";
+  const lines = visibleStepNodeLines({
+    mode: detailed ? "detailed" : "simple",
+    title: data.title,
+    shortLabel: data.shortLabel,
+    stepTypeLabel: data.stepTypeLabel,
+    practitionerType: data.practitionerType,
+    draftLabel: data.draftLabel,
+    rationale: data.rationale,
+    safetyNote: data.safetyNote,
+    sourceTitles: data.sources.map((source) => source.title),
+  });
+  const showStepType = lines.includes(data.stepTypeLabel ?? "");
+
+  if (!detailed) {
+    const Icon = stepTileIcon(data.libraryStepId, data.practitionerTypeId);
+    const border = booked ? "#15803d" : selected ? "#0f766e" : data.border;
+    const background = booked ? "#dcfce7" : data.background;
+    return (
+      <div style={{ width: SIMPLE_NODE_WIDTH, cursor: "pointer" }}>
+        <div style={{ position: "relative", height: TILE_SIZE }}>
+          <Handle type="target" position={Position.Left} style={connectionDot(border, "left")} />
+          <div
+            aria-pressed={selected}
+            style={{
+              ...tileStyle(background, border),
+              borderWidth: booked || selected ? 3 : 2,
+              boxShadow: booked
+                ? "0 0 0 3px rgba(21, 128, 61, 0.2)"
+                : selected
+                  ? "0 0 0 3px rgba(15, 118, 110, 0.25)"
+                  : "none",
+            }}
+          >
+            <Icon size={28} color={border} strokeWidth={1.75} aria-hidden />
+          </div>
+          <Handle type="source" position={Position.Right} style={connectionDot(border, "right")} />
+        </div>
+        <div style={captionStyle}>{lines[0]}</div>
+      </div>
+    );
+  }
 
   return (
     <div style={{ width: NODE_WIDTH }}>
@@ -162,10 +375,11 @@ function StepNodeView({ id, data }: NodeProps<StepNode>) {
         aria-pressed={selected}
         style={{
           ...shellStyle,
-          background: chosen ? "#dcfce7" : selected ? "#f0fdfa" : "#ffffff",
-          borderColor: chosen ? "#15803d" : selected ? "#0f766e" : data.border,
-          borderWidth: chosen || selected ? 3 : 1,
-          boxShadow: chosen
+          minHeight: ui?.isPhone ? 72 : undefined,
+          background: booked ? "#dcfce7" : selected ? "#f0fdfa" : "#ffffff",
+          borderColor: booked ? "#15803d" : selected ? "#0f766e" : data.border,
+          borderWidth: booked || selected ? 3 : 1,
+          boxShadow: booked
             ? "0 0 0 3px rgba(21, 128, 61, 0.2)"
             : selected
               ? "0 0 0 3px rgba(15, 118, 110, 0.25)"
@@ -174,27 +388,28 @@ function StepNodeView({ id, data }: NodeProps<StepNode>) {
         }}
       >
         <Handle type="target" position={Position.Left} style={{ top: 48 }} />
-        <div>{data.title}</div>
+        <div>{lines[0]}</div>
+        {showStepType && data.stepTypeLabel ? (
+          <div
+            style={{
+              display: "inline-block",
+              marginTop: 8,
+              borderRadius: 999,
+              background: "#F6F6F6",
+              padding: "2px 8px",
+              fontSize: 12,
+              lineHeight: 1.4,
+              color: "#1e293b",
+            }}
+          >
+            {data.stepTypeLabel}
+          </div>
+        ) : null}
         <div style={{ marginTop: 6, fontSize: 13, color: "#475569" }}>
           {data.practitionerType}
         </div>
         <Handle type="source" position={Position.Right} style={{ top: 48 }} />
       </div>
-      {selected && ui ? (
-        <div
-          onClick={(event) => event.stopPropagation()}
-          onMouseDown={(event) => event.stopPropagation()}
-        >
-          <PractitionerPanel
-            open
-            stepTitle={data.title}
-            practitionerType={data.practitionerTypeId}
-            patientCity={ui.patientCity}
-            chosenId={ui.chosenByStep[id] ?? null}
-            onChoose={ui.onChoose}
-          />
-        </div>
-      ) : null}
     </div>
   );
 }
@@ -211,8 +426,8 @@ function PathwayLegend({ pathways }: { pathways: CarePathway[] }) {
       aria-label="Pathway colors"
       className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:gap-x-5 sm:gap-y-2"
     >
-      {pathways.map((pathway, index) => {
-        const color = PATHWAY_COLORS[index % PATHWAY_COLORS.length];
+      {pathways.map((pathway) => {
+        const color = pathwayColor(pathway.name);
         return (
           <li
             key={pathway.name}
@@ -223,7 +438,14 @@ function PathwayLegend({ pathways }: { pathways: CarePathway[] }) {
               className="size-3.5 shrink-0 rounded-sm border"
               style={{ background: color.background, borderColor: color.border }}
             />
-            {pathway.name}
+            <span>
+              {pathway.name}
+              {pathway.scoreText ? (
+                <span className="mt-0.5 block text-sm leading-6 text-[#545454]">
+                  {pathway.scoreText}
+                </span>
+              ) : null}
+            </span>
           </li>
         );
       })}
@@ -231,13 +453,19 @@ function PathwayLegend({ pathways }: { pathways: CarePathway[] }) {
   );
 }
 
-function buildCareTree(pathways: CarePathway[], selectedStepId: string | null) {
-  const closedSpan = Math.max(pathways.length - 1, 0) * CLOSED_ROW_SPAN;
+function buildCareTree(
+  pathways: CarePathway[],
+  selectedStepId: string | null,
+  simple: boolean,
+) {
+  const rowSpan = simple ? SIMPLE_ROW_SPAN : CLOSED_ROW_SPAN;
+  const nodeWidth = simple ? SIMPLE_NODE_WIDTH : NODE_WIDTH;
+  const closedSpan = Math.max(pathways.length - 1, 0) * rowSpan;
   const nodes: CareNode[] = [
     {
       id: "intake",
       type: "intake",
-      position: { x: columnX(0), y: ROW_START_Y + closedSpan / 2 },
+      position: { x: columnX(0, simple), y: ROW_START_Y + closedSpan / 2 },
       data: { label: "Your intake" },
       draggable: false,
       style: { width: NODE_WIDTH },
@@ -248,24 +476,22 @@ function buildCareTree(pathways: CarePathway[], selectedStepId: string | null) {
   let rowY = ROW_START_Y;
 
   pathways.forEach((pathway, pathwayIndex) => {
-    const color = PATHWAY_COLORS[pathwayIndex % PATHWAY_COLORS.length];
+    const color = pathwayColor(pathway.name);
     const pathwayId = `pathway-${pathwayIndex}`;
     const steps = [...pathway.steps].sort((a, b) => a.order - b.order);
-    const rowIsOpen = steps.some(
-      (step) => `step-${pathwayIndex}-${step.order}` === selectedStepId,
-    );
 
     nodes.push({
       id: pathwayId,
       type: "pathway",
-      position: { x: columnX(1), y: rowY },
+      position: { x: columnX(1, simple), y: rowY },
       data: {
         label: pathway.name,
+        scoreText: pathway.scoreText,
         background: color.background,
         border: color.border,
       },
       draggable: false,
-      style: { width: NODE_WIDTH },
+      style: { width: nodeWidth },
     });
 
     edges.push({
@@ -282,16 +508,24 @@ function buildCareTree(pathways: CarePathway[], selectedStepId: string | null) {
       nodes.push({
         id: stepId,
         type: "step",
-        position: { x: columnX(stepIndex + 2), y: rowY },
+        position: { x: columnX(stepIndex + 2, simple), y: rowY },
         data: {
           title: step.title,
           practitionerType: practitionerLabel(step.practitioner_type),
           practitionerTypeId: step.practitioner_type,
+          shortLabel: libraryStepById(step.step_id)?.short_label ?? "",
+          background: color.background,
+          stepTypeLabel: stepTypeLabel(libraryStepType(step.step_id)),
+          libraryStepId: step.step_id ?? null,
           border: color.border,
+          rationale: step.rationale ?? "",
+          draftLabel: step.draft_label ?? null,
+          safetyNote: step.safety_note ?? "",
+          sources: step.sources ?? [],
         },
         draggable: false,
         zIndex: selectedStepId === stepId ? 20 : 0,
-        style: { width: NODE_WIDTH, cursor: "pointer" },
+        style: { width: nodeWidth, cursor: "pointer" },
       });
 
       const source =
@@ -308,7 +542,7 @@ function buildCareTree(pathways: CarePathway[], selectedStepId: string | null) {
       });
     });
 
-    rowY += rowIsOpen ? OPEN_ROW_SPAN : CLOSED_ROW_SPAN;
+    rowY += rowSpan;
   });
 
   return { nodes, edges };
@@ -317,20 +551,36 @@ function buildCareTree(pathways: CarePathway[], selectedStepId: string | null) {
 export default function CareTree({
   pathways,
   patientCity,
+  ageBand,
 }: {
   pathways: CarePathway[];
   patientCity: string;
+  ageBand: AgeBand | null;
 }) {
+  const [detail, setDetail] = useState<TreeDetail>("simple");
   const [selectedStepId, setSelectedStepId] = useState<string | null>(null);
-  const [chosenByStep, setChosenByStep] = useState<Record<string, string>>({});
+  const [bookedStepIds, setBookedStepIds] = useState<Record<string, boolean>>({});
+  const closeStep = useCallback(() => setSelectedStepId(null), []);
+  const finishBooking = useCallback(() => {
+    setBookedStepIds((booked) =>
+      selectedStepId ? { ...booked, [selectedStepId]: true } : booked,
+    );
+    setSelectedStepId(null);
+  }, [selectedStepId]);
   const isPhone = useSyncExternalStore(
     subscribeToPhone,
     phoneSnapshot,
     phoneServerSnapshot,
   );
+
+  useEffect(() => {
+    if (isPhone) {
+      setDetail("simple");
+    }
+  }, [isPhone]);
   const { nodes, edges } = useMemo(
-    () => buildCareTree(pathways, selectedStepId),
-    [pathways, selectedStepId],
+    () => buildCareTree(pathways, selectedStepId, detail === "simple"),
+    [pathways, selectedStepId, detail],
   );
   const flowRef = useRef<ReactFlowInstance<CareNode, Edge> | null>(null);
 
@@ -346,24 +596,7 @@ export default function CareTree({
     }
 
     instance.fitView({ padding: 0.12 });
-  }, [isPhone]);
-
-  useEffect(() => {
-    const instance = flowRef.current;
-    if (!selectedStepId || !instance) {
-      return;
-    }
-
-    const node = instance.getNode(selectedStepId);
-    if (!node) {
-      return;
-    }
-
-    instance.setCenter(node.position.x + NODE_WIDTH / 2, node.position.y + 260, {
-      zoom: instance.getZoom(),
-      duration: 300,
-    });
-  }, [selectedStepId, nodes]);
+  }, [isPhone, detail, pathways]);
 
   function handleNodeClick(_event: MouseEvent, node: Node) {
     if (node.type !== "step") {
@@ -373,19 +606,42 @@ export default function CareTree({
     setSelectedStepId((current) => (current === node.id ? null : node.id));
   }
 
-  function choosePractitioner(practitionerId: string) {
-    if (!selectedStepId) {
-      return;
-    }
-
-    setChosenByStep((current) => ({
-      ...current,
-      [selectedStepId]: practitionerId,
-    }));
-  }
+  const selected = selectedStep(nodes, selectedStepId);
 
   return (
     <div className="flex flex-col gap-3">
+      <div
+        role="radiogroup"
+        aria-label="How much each step shows"
+        className="inline-flex w-fit gap-1 rounded-full border border-[#E2E2E2] bg-white p-1"
+      >
+        <button
+          type="button"
+          role="radio"
+          aria-checked={detail === "simple"}
+          onClick={() => setDetail("simple")}
+          className={
+            detail === "simple"
+              ? "cursor-pointer rounded-full bg-black px-4 py-2 text-sm font-medium text-white"
+              : "cursor-pointer rounded-full px-4 py-2 text-sm font-medium text-black"
+          }
+        >
+          Simple
+        </button>
+        <button
+          type="button"
+          role="radio"
+          aria-checked={detail === "detailed"}
+          onClick={() => setDetail("detailed")}
+          className={
+            detail === "detailed"
+              ? "cursor-pointer rounded-full bg-black px-4 py-2 text-sm font-medium text-white"
+              : "cursor-pointer rounded-full px-4 py-2 text-sm font-medium text-black"
+          }
+        >
+          Detailed
+        </button>
+      </div>
       <PathwayLegend pathways={pathways} />
       <div
         role="region"
@@ -399,10 +655,10 @@ export default function CareTree({
         <div className="h-full w-full">
           <StepUiContext.Provider
             value={{
+              detail,
+              isPhone,
               selectedStepId,
-              chosenByStep,
-              patientCity,
-              onChoose: choosePractitioner,
+              bookedStepIds,
             }}
           >
             <ReactFlow
@@ -436,6 +692,32 @@ export default function CareTree({
           </StepUiContext.Provider>
         </div>
       </div>
+      {selected ? (
+        <StepWindow
+          title={selected.title}
+          stepId={selected.stepId}
+          practitionerType={selected.practitionerType}
+          patientCity={patientCity}
+          ageBand={ageBand}
+          onClose={closeStep}
+          onBooked={finishBooking}
+        />
+      ) : null}
     </div>
   );
+}
+
+function selectedStep(nodes: CareNode[], selectedStepId: string | null) {
+  if (!selectedStepId) {
+    return null;
+  }
+  const node = nodes.find((item) => item.id === selectedStepId);
+  if (!node || node.type !== "step") {
+    return null;
+  }
+  return {
+    title: node.data.title,
+    stepId: node.data.libraryStepId,
+    practitionerType: node.data.practitionerTypeId,
+  };
 }

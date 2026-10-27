@@ -1,8 +1,15 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
-import { saveIntakeAnswers } from "./intake-answers";
+import { FormEvent, useEffect, useState } from "react";
+import {
+  getIntakeSnapshot,
+  readIntakeAnswers,
+  saveIntakeAnswers,
+  type AgeBand,
+} from "./intake-answers";
+import { UNDER_13_MESSAGE } from "../lib/copy";
+import { intakeTextIsUrgent } from "../lib/intakeBody";
 
 const TIMELINE_STOPS = [
   "1 week",
@@ -34,6 +41,30 @@ export default function Home() {
   const [symptoms, setSymptoms] = useState<string[]>([]);
   const [timelineIndex, setTimelineIndex] = useState(0);
   const [pastAttempts, setPastAttempts] = useState("");
+  const [ageChoice, setAgeChoice] = useState<AgeBand | "under-13" | "">("");
+  const [restored, setRestored] = useState(false);
+
+  useEffect(() => {
+    const saved = readIntakeAnswers(getIntakeSnapshot());
+    if (saved) {
+      setLocation(saved.city);
+      setConcerns(saved.concerns);
+      setPastAttempts(saved.pastAttempts);
+      setSymptoms(
+        SYMPTOMS.filter((symptom) => saved.symptoms.includes(symptom.label)).map(
+          (symptom) => symptom.id,
+        ),
+      );
+      const index = TIMELINE_STOPS.findIndex((stop) => stop === saved.timeline);
+      if (index >= 0) {
+        setTimelineIndex(index);
+      }
+      if (saved.ageBand) {
+        setAgeChoice(saved.ageBand);
+      }
+    }
+    setRestored(true);
+  }, []);
 
   function toggleSymptom(id: string) {
     setSymptoms((current) =>
@@ -45,7 +76,10 @@ export default function Home() {
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    saveIntakeAnswers({
+    if (ageChoice !== "13-17" && ageChoice !== "18+") {
+      return;
+    }
+    const saved = {
       city: location.trim(),
       concerns: concerns.trim(),
       symptoms: SYMPTOMS.filter((symptom) => symptoms.includes(symptom.id)).map(
@@ -53,8 +87,29 @@ export default function Home() {
       ),
       timeline: TIMELINE_STOPS[timelineIndex],
       pastAttempts: pastAttempts.trim(),
-    });
-    router.push("/results");
+      ageBand: ageChoice,
+    };
+    saveIntakeAnswers(saved);
+    if (
+      intakeTextIsUrgent({
+        concerns: saved.concerns,
+        pastAttempts: saved.pastAttempts,
+        symptoms: saved.symptoms,
+        ageBand: saved.ageBand,
+      })
+    ) {
+      router.push("/results");
+      return;
+    }
+    router.push("/questions");
+  }
+
+  if (!restored) {
+    return (
+      <main className="mx-auto w-full max-w-[640px] flex-1 px-4 py-10 sm:px-6 sm:py-16">
+        <p className="text-base leading-7 text-[#545454]">Loading…</p>
+      </main>
+    );
   }
 
   return (
@@ -88,6 +143,52 @@ export default function Home() {
         className="space-y-10"
       >
         <div className="space-y-8">
+          <fieldset>
+            <legend className="text-base font-medium text-black">
+              Who are these answers about?
+            </legend>
+            <p className="mt-1 text-sm leading-6 text-[#545454]">
+              This demo is for teens and adults.
+            </p>
+            <div className="mt-4 flex flex-col gap-2" role="group" aria-label="Age">
+              {(
+                [
+                  ["13-17", "Teen, 13 to 17"],
+                  ["18+", "Adult, 18 or older"],
+                  ["under-13", "Child, 12 or younger"],
+                ] as const
+              ).map(([value, label]) => {
+                const selected = ageChoice === value;
+                return (
+                  <button
+                    key={value}
+                    type="button"
+                    aria-pressed={selected}
+                    onClick={() => setAgeChoice(value)}
+                    className={
+                      selected
+                        ? "flex min-h-12 cursor-pointer items-center rounded-xl bg-black px-4 text-left text-base text-white"
+                        : "flex min-h-12 cursor-pointer items-center rounded-xl bg-[#F6F6F6] px-4 text-left text-base text-black"
+                    }
+                  >
+                    {label}
+                  </button>
+                );
+              })}
+            </div>
+            {ageChoice === "13-17" ? (
+              <p className="mt-3 text-sm leading-6 text-[#545454]">
+                A parent or guardian should complete this with the teen. Results
+                are written for a pediatric clinician.
+              </p>
+            ) : null}
+            {ageChoice === "under-13" ? (
+              <p className="mt-3 text-base leading-7 text-black" role="status">
+                {UNDER_13_MESSAGE}
+              </p>
+            ) : null}
+          </fieldset>
+
           <div>
             <label
               htmlFor="location"
@@ -143,7 +244,7 @@ export default function Home() {
                 <label
                   key={symptom.id}
                   htmlFor={symptom.id}
-                  className="inline-flex min-h-11 cursor-pointer items-center rounded-full bg-[#F6F6F6] px-4 text-base text-black has-[:checked]:bg-black has-[:checked]:text-white has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black"
+                  className="relative inline-flex min-h-11 cursor-pointer items-center rounded-full bg-[#F6F6F6] px-4 text-base text-black has-[:checked]:bg-black has-[:checked]:text-white has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-black"
                 >
                   <input
                     id={symptom.id}
@@ -151,9 +252,9 @@ export default function Home() {
                     value={symptom.id}
                     checked={symptoms.includes(symptom.id)}
                     onChange={() => toggleSymptom(symptom.id)}
-                    className="sr-only"
+                    className="absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0"
                   />
-                  {symptom.label}
+                  <span className="pointer-events-none">{symptom.label}</span>
                 </label>
               ))}
             </div>
@@ -221,10 +322,17 @@ export default function Home() {
 
         <button
           type="submit"
+          disabled={ageChoice !== "13-17" && ageChoice !== "18+"}
           className="mt-10 inline-flex min-h-14 w-full items-center justify-center rounded-full bg-black px-5 text-base font-medium text-white transition-colors duration-200 hover:bg-[#1A1A1A] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black disabled:cursor-not-allowed disabled:opacity-40"
         >
           Submit
         </button>
+        {ageChoice !== "13-17" && ageChoice !== "18+" ? (
+          <p className="mt-3 text-sm leading-6 text-[#545454]">
+            Choose Teen, 13 to 17 or Adult, 18 or older above. Submit stays off
+            until one of those is selected. A child 12 or younger cannot continue.
+          </p>
+        ) : null}
       </form>
     </main>
   );

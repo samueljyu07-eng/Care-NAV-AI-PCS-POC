@@ -1,0 +1,341 @@
+{
+  "version": "draft-3",
+  "status": "DRAFT. Weights, category definitions and wording pending clinician review. Categories renamed per the fact-check audit: metabolic_cellular -> fatigue_activity, cerebrovascular -> exertional_symptoms. Weights unchanged.",
+  "categories": [
+    {
+      "id": "fatigue_activity",
+      "label": "Fatigue/Activity"
+    },
+    {
+      "id": "exertional_symptoms",
+      "label": "Exertional symptoms"
+    },
+    {
+      "id": "neuroendocrine",
+      "label": "Neuroendocrine"
+    },
+    {
+      "id": "vestibular",
+      "label": "Vestibular"
+    },
+    {
+      "id": "oculomotor",
+      "label": "Oculomotor"
+    },
+    {
+      "id": "sensory_peripheral",
+      "label": "Sensory/Peripheral"
+    }
+  ],
+  "rules": {
+    "percentage_formula": "category_points / category_max_points * 100",
+    "primary": "highest percentage; ties produce co-primary categories plus follow-up questions",
+    "secondary_min_percent": 40,
+    "secondary_within_percentage_points_of_primary": 20,
+    "match_labels_draft": [
+      {
+        "min_percent": 70,
+        "label": "Strong"
+      },
+      {
+        "min_percent": 40,
+        "label": "Moderate"
+      },
+      {
+        "min_percent": 1,
+        "label": "Possible"
+      }
+    ],
+    "tie_follow_up_examples": {
+      "Q2": "separates cerebrovascular from metabolic/cellular by timing",
+      "Q5_vs_Q6": "separates vestibular (crowds, visual-motion nausea) from oculomotor (screens, reading, tracking)"
+    }
+  },
+  "questions": [
+    {
+      "id": "Q1",
+      "summary": "Exhaustion after minor mental/physical effort",
+      "patient_text": null,
+      "select": "single",
+      "options": [
+        {
+          "id": "A",
+          "text": "Constant brain fog and deep physical exhaustion lasting days",
+          "category": "fatigue_activity",
+          "weight": 3,
+          "exclusive": false,
+          "source_reference": null
+        },
+        {
+          "id": "B",
+          "text": "Sudden physical fatigue or worsening across all thinking/physical domains",
+          "category": "fatigue_activity",
+          "weight": 3,
+          "exclusive": false,
+          "source_reference": null
+        },
+        {
+          "id": "C",
+          "text": "None of these / not sure",
+          "category": null,
+          "weight": 0,
+          "exclusive": true,
+          "source_reference": null,
+          "proposed_addition": true
+        }
+      ]
+    },
+    {
+      "id": "Q2",
+      "summary": "Symptom onset timing with physical activity / heart rate",
+      "patient_text": null,
+      "select": "single",
+      "options": [
+        {
+          "id": "A",
+          "text": "Predictably within minutes of physical activity or heart rate elevation",
+          "category": "exertional_symptoms",
+          "weight": 3,
+          "exclusive": false,
+          "source_reference": null
+        },
+        {
+          "id": "B",
+          "text": "Shows up later or the next day rather than immediately",
+          "category": "fatigue_activity",
+          "weight": 2,
+          "exclusive": false,
+          "source_reference": null
+        },
+        {
+          "id": "C",
+          "text": "Neither / not sure",
+          "category": null,
+          "weight": 0,
+          "exclusive": true,
+          "source_reference": null,
+          "proposed_addition": true
+        }
+      ]
+    },
+    {
+      "id": "Q3",
+      "summary": "Exertional physical sensations in head/balance",
+      "patient_text": null,
+      "select": "multi",
+      "options": [
+        {
+          "id": "A",
+          "text": "Noticeable headaches specifically triggered by exertion",
+          "category": "exertional_symptoms",
+          "weight": 2,
+          "exclusive": false,
+          "source_reference": null
+        },
+        {
+          "id": "B",
+          "text": "Lightheadedness or brief temporary \"spacing out\" / transient focal fog",
+          "category": "exertional_symptoms",
+          "weight": 2,
+          "exclusive": false,
+          "source_reference": null
+        },
+        {
+          "id": "C",
+          "text": "Neither of these",
+          "category": null,
+          "weight": 0,
+          "exclusive": true,
+          "source_reference": null
+        }
+      ]
+    },
+    {
+      "id": "Q4",
+      "summary": "Unexplained hormonal & systemic shifts",
+      "patient_text": null,
+      "select": "multi",
+      "options": [
+        {
+          "id": "A",
+          "text": "Chronic sleep maintenance issues",
+          "category": "neuroendocrine",
+          "weight": 2,
+          "exclusive": false,
+          "source_reference": null
+        },
+        {
+          "id": "B",
+          "text": "Unexplained weight shifts",
+          "category": "neuroendocrine",
+          "weight": 3,
+          "exclusive": false,
+          "source_reference": null
+        },
+        {
+          "id": "C",
+          "text": "Sudden, hard-to-explain mood changes or emotional shifts",
+          "category": "neuroendocrine",
+          "weight": 2,
+          "exclusive": false,
+          "source_reference": null
+        },
+        {
+          "id": "D",
+          "text": "None of these",
+          "category": null,
+          "weight": 0,
+          "exclusive": true,
+          "source_reference": null
+        }
+      ]
+    },
+    {
+      "id": "Q5",
+      "summary": "Crowd dizziness & motion sickness",
+      "patient_text": null,
+      "select": "multi",
+      "options": [
+        {
+          "id": "A",
+          "text": "Feel dizzy, disoriented, or overwhelmed in crowded places",
+          "category": "vestibular",
+          "weight": 3,
+          "exclusive": false,
+          "source_reference": null
+        },
+        {
+          "id": "B",
+          "text": "Experience motion sickness or physical nausea easily from visual movement",
+          "category": "vestibular",
+          "weight": 3,
+          "exclusive": false,
+          "source_reference": null
+        },
+        {
+          "id": "C",
+          "text": "Neither of these",
+          "category": null,
+          "weight": 0,
+          "exclusive": true,
+          "source_reference": null,
+          "proposed_addition": true
+        }
+      ]
+    },
+    {
+      "id": "Q6",
+      "summary": "Screen & reading strain",
+      "patient_text": null,
+      "select": "multi",
+      "options": [
+        {
+          "id": "A",
+          "text": "Eye strain quickly or reading fatigue",
+          "category": "oculomotor",
+          "weight": 2,
+          "exclusive": false,
+          "source_reference": null
+        },
+        {
+          "id": "B",
+          "text": "Scrolling on a phone screen or tracking moving targets triggers symptoms",
+          "category": "oculomotor",
+          "weight": 3,
+          "exclusive": false,
+          "source_reference": null
+        },
+        {
+          "id": "C",
+          "text": "Neither",
+          "category": null,
+          "weight": 0,
+          "exclusive": true,
+          "source_reference": null
+        }
+      ]
+    },
+    {
+      "id": "Q7",
+      "summary": "Sensitivity to light",
+      "patient_text": null,
+      "select": "single",
+      "options": [
+        {
+          "id": "A",
+          "text": "High hyper-reactivity or discomfort when exposed to bright lights",
+          "category": "sensory_peripheral",
+          "weight": 3,
+          "exclusive": false,
+          "source_reference": null
+        },
+        {
+          "id": "B",
+          "text": "No / not really",
+          "category": null,
+          "weight": 0,
+          "exclusive": true,
+          "source_reference": null,
+          "proposed_addition": true
+        }
+      ]
+    },
+    {
+      "id": "Q8",
+      "summary": "Daily tension headaches",
+      "patient_text": null,
+      "select": "single",
+      "options": [
+        {
+          "id": "A",
+          "text": "Experience daily tension headaches",
+          "category": "sensory_peripheral",
+          "weight": 3,
+          "exclusive": false,
+          "source_reference": null
+        },
+        {
+          "id": "B",
+          "text": "No / not really",
+          "category": null,
+          "weight": 0,
+          "exclusive": true,
+          "source_reference": null,
+          "proposed_addition": true
+        }
+      ]
+    },
+    {
+      "id": "Q9",
+      "summary": "Neck & suboccipital tenderness",
+      "patient_text": null,
+      "select": "single",
+      "options": [
+        {
+          "id": "A",
+          "text": "Noticeable, localized tenderness in upper neck and suboccipital musculature",
+          "category": "sensory_peripheral",
+          "weight": 3,
+          "exclusive": false,
+          "source_reference": null
+        },
+        {
+          "id": "B",
+          "text": "No",
+          "category": null,
+          "weight": 0,
+          "exclusive": true,
+          "source_reference": null
+        }
+      ]
+    }
+  ],
+  "expected_category_maximums": {
+    "fatigue_activity": 5,
+    "exertional_symptoms": 7,
+    "neuroendocrine": 7,
+    "vestibular": 6,
+    "oculomotor": 5,
+    "sensory_peripheral": 9
+  }
+}

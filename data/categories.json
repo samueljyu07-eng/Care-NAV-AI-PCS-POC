@@ -1,0 +1,146 @@
+{
+  "version": "draft-3",
+  "status": "DRAFT. Rebuilt from the revised workbook, Fact Check and Source Register. practitioner_types and source_ids are derived from the steps in the workbook. Needs clinician approval.",
+  "supported_age_bands": [
+    "13-17",
+    "18+"
+  ],
+  "age_notes": "Ontario Living Concussion Guidelines linked here are adult-oriented. Steps use applies_to_ages and teen_note; teen content needs clinician approval.",
+  "categories": [
+    {
+      "id": "fatigue_activity",
+      "label": "Fatigue/Activity",
+      "renamed_from": "metabolic_cellular",
+      "patient_label": "Energy and recovery after effort",
+      "mechanism": null,
+      "mechanism_note": "Energy-production explanations are not established by the cited sources. Do not state a mechanism to patients.",
+      "typical_features": "Ongoing physical or cognitive fatigue, brain fog, and symptoms that worsen after activity",
+      "distinguishing_factors": "Symptoms that worsen across thinking and physical tasks after minor effort. Edited from the original sheet wording; 'post-exertional malaise' removed unless a clinician uses it.",
+      "flags": [
+        "Original sheet mechanism (mitochondrial ATP failure) cited a single case report and was removed per the audit."
+      ],
+      "practitioner_types": [
+        "gp_family_physician"
+      ],
+      "source_ids": [
+        "R07",
+        "R08",
+        "R09",
+        "R11",
+        "R13"
+      ]
+    },
+    {
+      "id": "exertional_symptoms",
+      "label": "Exertional symptoms",
+      "renamed_from": "cerebrovascular",
+      "patient_label": "Symptoms triggered by exertion",
+      "mechanism": null,
+      "mechanism_note": "A blood-flow (cerebrovascular) explanation is not established for individual patients by the cited sources. Do not state a mechanism to patients.",
+      "typical_features": "Headache, lightheadedness, or foggy thinking during or after physical activity",
+      "distinguishing_factors": "Symptoms appear within minutes of physical activity or a raised heart rate.",
+      "flags": [
+        "Original sheet cited an acute-phase MRI study of 12 adults; it does not support a persistent-care pathway."
+      ],
+      "practitioner_types": [
+        "gp_family_physician",
+        "sports_medicine_physician"
+      ],
+      "source_ids": [
+        "R08",
+        "R11",
+        "R12",
+        "R13"
+      ]
+    },
+    {
+      "id": "neuroendocrine",
+      "label": "Neuroendocrine",
+      "patient_label": "Hormonal and body-system changes",
+      "mechanism": "Possible pituitary or hormone-system contributor",
+      "mechanism_note": "Testing is not routine for every concussion and depends on injury history and symptom pattern. Adult screening guidance only; teens need pediatric clinician input.",
+      "typical_features": "Fatigue, cold intolerance, unexplained weight shifts, and mood changes",
+      "distinguishing_factors": "Can resemble endocrine conditions such as hypothyroidism; only a clinician can tell, usually with blood tests. 'Adrenal fatigue' removed (not a recognized diagnosis).",
+      "flags": [
+        "Symptoms are nonspecific. Do not imply they establish an endocrine problem."
+      ],
+      "practitioner_types": [
+        "gp_family_physician"
+      ],
+      "source_ids": [
+        "R06",
+        "R07",
+        "R08",
+        "R10",
+        "R13",
+        "R16"
+      ]
+    },
+    {
+      "id": "vestibular",
+      "label": "Vestibular",
+      "split_from": "vestibular_visual",
+      "patient_label": "Balance, dizziness and visual motion",
+      "mechanism": "VOR mismatch",
+      "typical_features": "Dizziness in crowds and motion sickness",
+      "distinguishing_factors": "Provoked explicitly by visual motion or head turns.",
+      "practitioner_types": [
+        "vestibular_physio"
+      ],
+      "source_ids": [
+        "R01",
+        "R08",
+        "R09",
+        "R11",
+        "R12",
+        "R13"
+      ]
+    },
+    {
+      "id": "oculomotor",
+      "label": "Oculomotor",
+      "split_from": "vestibular_visual",
+      "patient_label": "Eye tracking, focusing and screen strain",
+      "mechanism": "Convergence insufficiency & tracking failure",
+      "typical_features": "Eye strain and reading fatigue",
+      "distinguishing_factors": "Provoked explicitly by scrolling screens or tracking targets.",
+      "flags": [
+        "Vision therapy evidence applies to diagnosed concussion-related convergence insufficiency, ages 11-25 (CONCUSS trial). Clinician to confirm which Canadian provider types deliver it; the trial used certified vision therapists."
+      ],
+      "practitioner_types": [
+        "optometrist"
+      ],
+      "source_ids": [
+        "R01",
+        "R02",
+        "R13",
+        "R14"
+      ]
+    },
+    {
+      "id": "sensory_peripheral",
+      "label": "Sensory/Peripheral",
+      "patient_label": "Neck tension and sensory sensitivity",
+      "mechanism": null,
+      "mechanism_note": "Central sensitization and neck-driven light/noise sensitivity are not established by the cited sources. Do not state a mechanism to patients.",
+      "typical_features": "Daily tension headaches, neck stiffness, and sensitivity to light or noise",
+      "distinguishing_factors": "Localized tenderness in the upper neck muscles.",
+      "flags": [
+        "Audit recommends splitting neck/vestibular symptoms from sensory sensitivity. Clinician to decide.",
+        "'Positive VOMS oculomotor triggers' was removed here because it overlaps with Vestibular and Oculomotor."
+      ],
+      "practitioner_types": [
+        "physiotherapist"
+      ],
+      "source_ids": [
+        "R01",
+        "R08",
+        "R09",
+        "R11",
+        "R12",
+        "R13",
+        "R15"
+      ]
+    }
+  ]
+}

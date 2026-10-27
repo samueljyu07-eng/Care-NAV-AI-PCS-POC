@@ -8,9 +8,15 @@
     "about": "Rowan is a fictional vestibular physiotherapist who talks with people about dizziness, balance, and motion sensitivity after a concussion. A visit is a chance to describe those symptoms and ask what kind of follow-up to raise with a GP. This profile is sample data for the demo.",
     "details": {
       "availability": "Tuesday and Thursday afternoons",
-      "languages": ["English"],
+      "languages": [
+        "English"
+      ],
       "accepting_new_patients": true
-    }
+    },
+    "sees_ages": [
+      "teen",
+      "adult"
+    ]
   },
   {
     "id": "p002",
@@ -21,9 +27,16 @@
     "about": "Mira is a fictional vestibular physiotherapist focused on balance and inner-ear symptoms that can linger after a concussion. People use this kind of visit to walk through what sets their dizziness off and what to mention at their next GP appointment. This listing is not a real clinic.",
     "details": {
       "availability": "Weekday mornings",
-      "languages": ["English", "French"],
+      "languages": [
+        "English",
+        "French"
+      ],
       "accepting_new_patients": true
-    }
+    },
+    "sees_ages": [
+      "teen",
+      "adult"
+    ]
   },
   {
     "id": "p003",
@@ -34,9 +47,15 @@
     "about": "Ellis is a fictional vision therapist who meets people bothered by reading strain, double vision, or light sensitivity after a concussion. The conversation is about those visual symptoms and which questions to bring back to a doctor. This profile is placeholder data only.",
     "details": {
       "availability": "Mondays, Wednesdays, and Fridays",
-      "languages": ["English"],
+      "languages": [
+        "English"
+      ],
       "accepting_new_patients": true
-    }
+    },
+    "sees_ages": [
+      "teen",
+      "adult"
+    ]
   },
   {
     "id": "p004",
@@ -47,9 +66,16 @@
     "about": "Sable is a fictional vision therapist who helps people describe screen fatigue, focusing trouble, and visual discomfort after a concussion. A visit is for sorting those details before a conversation with a GP. This clinic name is invented for the demo.",
     "details": {
       "availability": "Thursday evenings and Saturday mornings",
-      "languages": ["English", "Mandarin"],
+      "languages": [
+        "English",
+        "Mandarin"
+      ],
       "accepting_new_patients": false
-    }
+    },
+    "sees_ages": [
+      "teen",
+      "adult"
+    ]
   },
   {
     "id": "p005",
@@ -60,9 +86,15 @@
     "about": "Jonah is a fictional sleep specialist who talks with people about trouble falling asleep, waking often, or daytime sleepiness after a concussion. The visit is a place to map those sleep patterns and decide what to raise with a GP. This profile is sample data.",
     "details": {
       "availability": "Wednesday afternoons",
-      "languages": ["English"],
+      "languages": [
+        "English"
+      ],
       "accepting_new_patients": true
-    }
+    },
+    "sees_ages": [
+      "teen",
+      "adult"
+    ]
   },
   {
     "id": "p006",
@@ -73,9 +105,16 @@
     "about": "Priya is a fictional sleep specialist who meets people whose nights have stayed unsettled after a concussion. Together they review sleep habits and the questions worth taking to a doctor. This listing does not represent a real practitioner.",
     "details": {
       "availability": "Tuesday mornings and Friday afternoons",
-      "languages": ["English", "Punjabi"],
+      "languages": [
+        "English",
+        "Punjabi"
+      ],
       "accepting_new_patients": true
-    }
+    },
+    "sees_ages": [
+      "teen",
+      "adult"
+    ]
   },
   {
     "id": "p007",
@@ -86,9 +125,15 @@
     "about": "Casey is a fictional psychologist who talks with people about mood, worry, and the mental load that can follow a concussion. A visit is for naming those experiences and choosing what to discuss with a GP. This profile is fictional demo data.",
     "details": {
       "availability": "Monday to Thursday, by appointment",
-      "languages": ["English"],
+      "languages": [
+        "English"
+      ],
       "accepting_new_patients": true
-    }
+    },
+    "sees_ages": [
+      "teen",
+      "adult"
+    ]
   },
   {
     "id": "p008",
@@ -99,9 +144,16 @@
     "about": "Harper is a fictional psychologist who meets people dealing with irritability, low mood, or feeling overwhelmed after a concussion. The conversation stays on what they are noticing and which questions to bring to a doctor. This clinic is invented for the demo.",
     "details": {
       "availability": "Weekday evenings",
-      "languages": ["English", "French"],
+      "languages": [
+        "English",
+        "French"
+      ],
       "accepting_new_patients": false
-    }
+    },
+    "sees_ages": [
+      "teen",
+      "adult"
+    ]
   },
   {
     "id": "p009",
@@ -112,9 +164,16 @@
     "about": "Theo is a fictional physiotherapist who talks with people about neck pain, stiffness, and everyday movement after a concussion. A visit is a chance to describe those body symptoms and what to mention at a GP appointment. This profile is placeholder data.",
     "details": {
       "availability": "Monday, Wednesday, and Friday mornings",
-      "languages": ["English", "Spanish"],
+      "languages": [
+        "English",
+        "Spanish"
+      ],
       "accepting_new_patients": true
-    }
+    },
+    "sees_ages": [
+      "teen",
+      "adult"
+    ]
   },
   {
     "id": "p010",
@@ -125,8 +184,126 @@
     "about": "Lila is a fictional sports medicine physician who meets people sorting return-to-activity questions after a concussion. The visit is for gathering those questions to take to a GP, not for a diagnosis or a promised outcome. This listing is sample data only.",
     "details": {
       "availability": "Friday mornings",
-      "languages": ["English"],
+      "languages": [
+        "English"
+      ],
+      "accepting_new_patients": true
+    },
+    "sees_ages": [
+      "teen",
+      "adult"
+    ]
+  },
+  {
+    "id": "p011",
+    "name": "Nia Calder",
+    "practitioner_type": "sports_medicine_physician",
+    "city": "Kelowna",
+    "sees_ages": [
+      "teen",
+      "adult"
+    ],
+    "clinic": "Bramble Peak Sports Clinic",
+    "about": "Nia is a fictional sports medicine physician who talks with people about how activity and energy line up after a concussion. A visit is for writing those details down to take to a GP or pediatric clinician. This profile is sample data, not a treatment plan.",
+    "details": {
+      "availability": "Tuesday and Friday mornings",
+      "languages": [
+        "English"
+      ],
       "accepting_new_patients": true
     }
+  },
+  {
+    "id": "p012",
+    "name": "Owen Hartwell",
+    "practitioner_type": "sports_medicine_physician",
+    "city": "Vancouver",
+    "sees_ages": [
+      "adult"
+    ],
+    "clinic": "Harbour Line Sports Clinic",
+    "about": "Owen is a fictional sports medicine physician who meets adults sorting activity and energy questions after a concussion. The visit gathers those questions for a GP. This listing is invented for the demo and is marked for adults.",
+    "details": {
+      "availability": "Thursday mornings",
+      "languages": [
+        "English"
+      ],
+      "accepting_new_patients": true
+    }
+  },
+  {
+    "id": "p013",
+    "name": "June Pell",
+    "practitioner_type": "physiotherapist",
+    "city": "Calgary",
+    "sees_ages": [
+      "teen",
+      "adult"
+    ],
+    "clinic": "Foothill Thread Movement",
+    "about": "June is a fictional physiotherapist who talks with people about neck comfort and sensitivity to light or sound after a concussion. A visit is for describing those symptoms to take to a GP or pediatric clinician. This clinic is not real.",
+    "details": {
+      "availability": "Wednesday afternoons",
+      "languages": [
+        "English"
+      ],
+      "accepting_new_patients": true
+    }
+  },
+  {
+    "id": "p014",
+    "name": "Willa Thornberry",
+    "practitioner_type": "gp_family_physician",
+    "city": "Kelowna",
+    "clinic": "Orchard Lamp Family Practice",
+    "about": "Willa is a fictional family physician. People use a visit to gather questions after a concussion and decide what to raise next. This clinic is invented for the demo and is not a real practice.",
+    "details": {
+      "availability": "Monday and Wednesday mornings",
+      "languages": ["English"],
+      "accepting_new_patients": true
+    },
+    "sees_ages": ["teen", "adult"]
+  },
+  {
+    "id": "p015",
+    "name": "Ned Plumwick",
+    "practitioner_type": "gp_family_physician",
+    "city": "Calgary",
+    "clinic": "Cinder Street Family Practice",
+    "about": "Ned is a fictional family physician. A visit is for listing what someone has noticed after a concussion so those notes can be reviewed. This listing does not represent a real person or clinic.",
+    "details": {
+      "availability": "Thursday afternoons",
+      "languages": ["English"],
+      "accepting_new_patients": true
+    },
+    "sees_ages": ["teen", "adult"]
+  },
+  {
+    "id": "p016",
+    "name": "Nell Amberly",
+    "practitioner_type": "optometrist",
+    "city": "Kelowna",
+    "clinic": "Orchard Glass Optometry",
+    "about": "Nell is a fictional optometrist who talks with people about eye strain, focusing, and tracking after a concussion. A visit is a chance to describe those visual symptoms and decide what to raise with a GP. This profile is sample data for the demo.",
+    "details": {
+      "availability": "Tuesday and Thursday mornings",
+      "languages": ["English"],
+      "accepting_new_patients": true
+    },
+    "sees_ages": ["teen", "adult"]
+  },
+  {
+    "id": "p017",
+    "name": "Felix Dunmore",
+    "practitioner_type": "optometrist",
+    "city": "Calgary",
+    "clinic": "Bowlight Optometry Room",
+    "about": "Felix is a fictional optometrist who meets people bothered by reading fatigue or screen strain after a concussion. The conversation is about those symptoms and which questions to take to a doctor. This clinic is invented for the demo.",
+    "details": {
+      "availability": "Wednesday afternoons and Friday mornings",
+      "languages": ["English"],
+      "accepting_new_patients": true
+    },
+    "sees_ages": ["teen", "adult"]
   }
 ]

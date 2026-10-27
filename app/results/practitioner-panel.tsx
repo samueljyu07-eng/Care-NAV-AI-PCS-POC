@@ -1,5 +1,6 @@
 "use client";
 
+import type { AgeBand } from "../../lib/catalog";
 import { matchPractitioners } from "../../lib/matchPractitioners";
 
 function emptyMessage(patientCity: string) {
@@ -16,6 +17,7 @@ export default function PractitionerPanel({
   stepTitle,
   practitionerType,
   patientCity,
+  ageBand,
   chosenId,
   onChoose,
 }: {
@@ -23,11 +25,12 @@ export default function PractitionerPanel({
   stepTitle: string | null;
   practitionerType: string | null;
   patientCity: string;
+  ageBand: AgeBand | null;
   chosenId: string | null;
   onChoose: (practitionerId: string) => void;
 }) {
   const matches = practitionerType
-    ? matchPractitioners(practitionerType, patientCity)
+    ? matchPractitioners(practitionerType, patientCity, ageBand ?? undefined)
     : [];
 
   return (
@@ -88,6 +91,12 @@ export default function PractitionerPanel({
                     <p className="mt-3 text-base leading-7 text-black">
                       {person.about}
                     </p>
+                    {ageBand === "13-17" ? (
+                      <p className="mt-3 text-base leading-7 text-black">
+                        For a teen, a parent or guardian can use this visit to
+                        gather questions for a pediatric clinician.
+                      </p>
+                    ) : null}
                     <p className="mt-3 text-base text-[#545454]">
                       Availability: {person.details.availability}
                     </p>

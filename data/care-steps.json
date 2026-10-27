@@ -1,0 +1,668 @@
+[
+  {
+    "step_id": "VES-01",
+    "category_id": "vestibular",
+    "order_hint": 1,
+    "step_type": "assessment",
+    "title": "Get a balance and dizziness assessment",
+    "short_label": "Assess balance and dizziness",
+    "who_to_see": "vestibular_physio",
+    "what_it_involves": "A qualified clinician asks about your symptoms and checks balance, eye movements, and dizziness. A screening tool may guide further assessment but cannot diagnose the cause by itself.",
+    "why_it_may_help": "It may help identify which symptoms or findings need follow-up and guide next steps in care.",
+    "safety_note": "",
+    "applies_to_ages": "both",
+    "teen_note": "For ages 13–17, use age-appropriate pediatric concussion care and involve a parent/guardian as appropriate.",
+    "source_title": [
+      "Ontario Living Concussion Guidelines — Vestibular (Balance/Dizziness) & Vision Dysfunction",
+      "CDC — Safety Guidelines for Pediatric Mild TBI"
+    ],
+    "source_url": [
+      "https://concussionsontario.org/concussion/guideline-section/vestibular-balance-dizziness-vision-dysfunction",
+      "https://www.cdc.gov/traumatic-brain-injury/hcp/clinical-guidance/pediatric-mtbi.html"
+    ],
+    "evidence_level": "guideline_supported",
+    "clinician_status": "draft",
+    "clinician_notes": "",
+    "claim_verification": "scope-limited"
+  },
+  {
+    "step_id": "VES-02",
+    "category_id": "vestibular",
+    "order_hint": 2,
+    "step_type": "care",
+    "title": "Clinician-directed vestibular rehabilitation",
+    "short_label": "Get guided balance care",
+    "who_to_see": "vestibular_physio",
+    "what_it_involves": "After an assessment, a trained clinician may recommend activities tailored to your balance, dizziness, or movement findings. The plan and difficulty should be adjusted to your symptoms and assessment.",
+    "why_it_may_help": "It may help some people with identified vestibular problems improve balance, dizziness, or movement tolerance; benefit is not guaranteed.",
+    "safety_note": "",
+    "applies_to_ages": "both",
+    "teen_note": "For ages 13–17, use age-appropriate pediatric concussion care and involve a parent/guardian as appropriate.",
+    "source_title": [
+      "Ontario Living Concussion Guidelines — Vestibular (Balance/Dizziness) & Vision Dysfunction",
+      "Consensus statement on concussion in sport: 6th International Conference on Concussion in Sport — Amsterdam",
+      "CDC — Safety Guidelines for Pediatric Mild TBI"
+    ],
+    "source_url": [
+      "https://concussionsontario.org/concussion/guideline-section/vestibular-balance-dizziness-vision-dysfunction",
+      "https://doi.org/10.1136/BJSPORTS-2023-106898",
+      "https://www.cdc.gov/traumatic-brain-injury/hcp/clinical-guidance/pediatric-mtbi.html"
+    ],
+    "evidence_level": "guideline_supported",
+    "clinician_status": "draft",
+    "clinician_notes": "",
+    "claim_verification": "scope-limited"
+  },
+  {
+    "step_id": "VES-03",
+    "category_id": "vestibular",
+    "order_hint": 3,
+    "step_type": "care",
+    "title": "Assess brief positional spinning (possible BPPV)",
+    "short_label": "Assess brief spinning",
+    "who_to_see": "vestibular_physio",
+    "what_it_involves": "If brief spinning occurs with changes in head position, a qualified clinician can assess for benign paroxysmal positional vertigo (BPPV). If it is found, the clinician can recommend appropriate treatment.",
+    "why_it_may_help": "It may identify a treatable cause of position-triggered dizziness.",
+    "safety_note": "",
+    "applies_to_ages": "18+",
+    "teen_note": "",
+    "source_title": [
+      "Ontario Living Concussion Guidelines — Vestibular (Balance/Dizziness) & Vision Dysfunction"
+    ],
+    "source_url": [
+      "https://concussionsontario.org/concussion/guideline-section/vestibular-balance-dizziness-vision-dysfunction"
+    ],
+    "evidence_level": "guideline_supported",
+    "clinician_status": "draft",
+    "clinician_notes": "",
+    "claim_verification": "scope-limited"
+  },
+  {
+    "step_id": "VES-04",
+    "category_id": "vestibular",
+    "order_hint": 4,
+    "step_type": "self_management",
+    "title": "Follow an individualized movement plan at home",
+    "short_label": "Follow your movement plan",
+    "who_to_see": "vestibular_physio",
+    "what_it_involves": "Use only balance or head-movement activities recommended for you after assessment. Resume usual daily activities gradually as tolerated, and avoid activities with a risk of another head injury.",
+    "why_it_may_help": "It may support a gradual return to daily activities without relying on an unverified generic exercise video.",
+    "safety_note": "Mild, brief symptom worsening can occur. Reduce activity and contact your clinician if worsening is more than mild, prolonged, or unsafe. Seek emergency care for a worsening headache that does not go away, repeated vomiting, weakness or numbness, seizure, confusion, slurred speech, or difficulty waking.",
+    "applies_to_ages": "both",
+    "teen_note": "For ages 13–17, use age-appropriate pediatric concussion care and involve a parent/guardian as appropriate.",
+    "source_title": [
+      "Ontario Living Concussion Guidelines — Management of Prolonged Symptoms",
+      "Ontario Living Concussion Guidelines — Return-to-Activity / Work / School Considerations",
+      "BC Guidelines — Concussion / Mild Traumatic Brain Injury",
+      "CDC — Safety Guidelines for Pediatric Mild TBI"
+    ],
+    "source_url": [
+      "https://concussionsontario.org/concussion/guideline-section/management-of-prolonged-symptoms",
+      "https://concussionsontario.org/concussion/guideline-section/return-to-activity_work_school_considerations",
+      "https://www2.gov.bc.ca/gov/content/health/practitioner-professional-resources/bc-guidelines/concussion-mild-traumatic-brain-injury-mtbi",
+      "https://www.cdc.gov/traumatic-brain-injury/hcp/clinical-guidance/pediatric-mtbi.html"
+    ],
+    "evidence_level": "guideline_supported",
+    "clinician_status": "draft",
+    "clinician_notes": "",
+    "claim_verification": "scope-limited"
+  },
+  {
+    "step_id": "OCU-01",
+    "category_id": "oculomotor",
+    "order_hint": 1,
+    "step_type": "assessment",
+    "title": "Get a vision and eye-movement assessment",
+    "short_label": "Get an eye assessment",
+    "who_to_see": "optometrist",
+    "what_it_involves": "A qualified eye-care professional, such as an optometrist with relevant experience, may assess focusing, eye teaming, tracking, and other visual symptoms. Double vision, reduced vision, or complex symptoms may need prompt medical or ophthalmology/neuro-ophthalmology assessment.",
+    "why_it_may_help": "It may help identify visual problems that need follow-up; screening alone is not a diagnosis.",
+    "safety_note": "",
+    "applies_to_ages": "both",
+    "teen_note": "For ages 13–17, use a qualified eye-care professional experienced in pediatric concussion and involve a parent/guardian as appropriate.",
+    "source_title": [
+      "Ontario Living Concussion Guidelines — Vestibular (Balance/Dizziness) & Vision Dysfunction",
+      "Association between post-concussion symptoms and oculomotor deficits among adolescents",
+      "CDC — Safety Guidelines for Pediatric Mild TBI"
+    ],
+    "source_url": [
+      "https://concussionsontario.org/concussion/guideline-section/vestibular-balance-dizziness-vision-dysfunction",
+      "https://pubmed.ncbi.nlm.nih.gov/34383619/",
+      "https://www.cdc.gov/traumatic-brain-injury/hcp/clinical-guidance/pediatric-mtbi.html"
+    ],
+    "evidence_level": "guideline_supported",
+    "clinician_status": "draft",
+    "clinician_notes": "",
+    "claim_verification": "scope-limited"
+  },
+  {
+    "step_id": "OCU-02",
+    "category_id": "oculomotor",
+    "order_hint": 2,
+    "step_type": "care",
+    "title": "Discuss diagnosis-specific vision therapy",
+    "short_label": "Ask about vision therapy",
+    "who_to_see": "optometrist",
+    "what_it_involves": "If an eye/oculomotor assessment confirms concussion-related symptomatic convergence insufficiency, ask whether office-based vergence/accommodative therapy is appropriate. The cited trial applies to ages 11–25 with that specific diagnosis; it should not be generalized to every visual complaint or older adults.",
+    "why_it_may_help": "It may help people in the studied group with the diagnosed condition; expected benefit depends on the condition and clinical assessment.",
+    "safety_note": "",
+    "applies_to_ages": "13-17",
+    "teen_note": "The cited trial included ages 11–25 with diagnosed concussion-related symptomatic convergence insufficiency. For teens, involve a parent/guardian as appropriate and use a qualified clinician.",
+    "source_title": [
+      "CONCUSS randomized clinical trial of vergence/accommodative therapy for concussion-related symptomatic convergence insufficiency",
+      "Ontario Living Concussion Guidelines — Vestibular (Balance/Dizziness) & Vision Dysfunction"
+    ],
+    "source_url": [
+      "https://pubmed.ncbi.nlm.nih.gov/41033748/",
+      "https://concussionsontario.org/concussion/guideline-section/vestibular-balance-dizziness-vision-dysfunction"
+    ],
+    "evidence_level": "emerging",
+    "clinician_status": "draft",
+    "clinician_notes": "",
+    "claim_verification": "scope-limited"
+  },
+  {
+    "step_id": "OCU-03",
+    "category_id": "oculomotor",
+    "order_hint": 3,
+    "step_type": "care",
+    "title": "Ask about assessment before using visual supports",
+    "short_label": "Ask about visual supports",
+    "who_to_see": "optometrist",
+    "what_it_involves": "Ask a qualified eye-care professional whether a refractive, focusing, or binocular-vision problem is present and whether any specific support is indicated. Do not assume reading glasses or other visual supports generally treat concussion symptoms.",
+    "why_it_may_help": "It may help connect symptoms to an assessed visual issue and avoid using supports that are not appropriate.",
+    "safety_note": "",
+    "applies_to_ages": "both",
+    "teen_note": "For ages 13–17, involve a parent/guardian as appropriate and use age-appropriate eye-care assessment.",
+    "source_title": [
+      "Ontario Living Concussion Guidelines — Vestibular (Balance/Dizziness) & Vision Dysfunction",
+      "Association between post-concussion symptoms and oculomotor deficits among adolescents",
+      "CDC — Safety Guidelines for Pediatric Mild TBI"
+    ],
+    "source_url": [
+      "https://concussionsontario.org/concussion/guideline-section/vestibular-balance-dizziness-vision-dysfunction",
+      "https://pubmed.ncbi.nlm.nih.gov/34383619/",
+      "https://www.cdc.gov/traumatic-brain-injury/hcp/clinical-guidance/pediatric-mtbi.html"
+    ],
+    "evidence_level": "guideline_supported",
+    "clinician_status": "draft",
+    "clinician_notes": "",
+    "claim_verification": "scope-limited"
+  },
+  {
+    "step_id": "OCU-04",
+    "category_id": "oculomotor",
+    "order_hint": 4,
+    "step_type": "self_management",
+    "title": "Follow clinician-prescribed home eye exercises",
+    "short_label": "Follow home eye exercises",
+    "who_to_see": "optometrist",
+    "what_it_involves": "After assessment, follow only home exercises your qualified eye-care clinician prescribes for the specific visual problem. Do not rely on a generic video or copy exercises intended for someone with a different diagnosis.",
+    "why_it_may_help": "A prescribed plan may complement in-clinic care when appropriate; its usefulness depends on the diagnosed condition and plan.",
+    "safety_note": "Stop the exercise and contact your clinician if it causes significant or lasting worsening, new double vision, reduced vision, or symptoms that do not settle. Seek urgent assessment for sudden vision loss or other new severe neurological symptoms.",
+    "applies_to_ages": "13-17",
+    "teen_note": "Use only a clinician-prescribed plan for a diagnosed visual problem; involve a parent/guardian as appropriate. Evidence from the cited trial is limited to specific therapy and ages 11–25.",
+    "source_title": [
+      "CONCUSS randomized clinical trial of vergence/accommodative therapy for concussion-related symptomatic convergence insufficiency",
+      "Ontario Living Concussion Guidelines — Vestibular (Balance/Dizziness) & Vision Dysfunction"
+    ],
+    "source_url": [
+      "https://pubmed.ncbi.nlm.nih.gov/41033748/",
+      "https://concussionsontario.org/concussion/guideline-section/vestibular-balance-dizziness-vision-dysfunction"
+    ],
+    "evidence_level": "emerging",
+    "clinician_status": "draft",
+    "clinician_notes": "",
+    "claim_verification": "scope-limited"
+  },
+  {
+    "step_id": "SEN-01",
+    "category_id": "sensory_peripheral",
+    "order_hint": 1,
+    "step_type": "assessment",
+    "title": "Assess persistent neck pain, dizziness, or headache",
+    "short_label": "Assess neck pain",
+    "who_to_see": "physiotherapist",
+    "what_it_involves": "A clinician assesses neck pain and dizziness or headache patterns after concussion. Sensitivity to light, noise, or busy settings can have different causes and should not automatically be attributed to a neck or vestibular problem.",
+    "why_it_may_help": "It may help identify whether neck or vestibular assessment is relevant and which symptoms need separate evaluation.",
+    "safety_note": "",
+    "applies_to_ages": "both",
+    "teen_note": "For ages 13–17, use age-appropriate pediatric concussion care and involve a parent/guardian as appropriate.",
+    "source_title": [
+      "Cervicovestibular rehabilitation in sport-related concussion: a randomised controlled trial",
+      "Consensus statement on concussion in sport: 6th International Conference on Concussion in Sport — Amsterdam",
+      "Ontario Living Concussion Guidelines — Vestibular (Balance/Dizziness) & Vision Dysfunction"
+    ],
+    "source_url": [
+      "https://pubmed.ncbi.nlm.nih.gov/24855132/",
+      "https://doi.org/10.1136/BJSPORTS-2023-106898",
+      "https://concussionsontario.org/concussion/guideline-section/vestibular-balance-dizziness-vision-dysfunction"
+    ],
+    "evidence_level": "guideline_supported",
+    "clinician_status": "draft",
+    "clinician_notes": "",
+    "claim_verification": "scope-limited"
+  },
+  {
+    "step_id": "SEN-02",
+    "category_id": "sensory_peripheral",
+    "order_hint": 2,
+    "step_type": "care",
+    "title": "Clinician-directed cervicovestibular rehabilitation",
+    "short_label": "Get guided neck care",
+    "who_to_see": "physiotherapist",
+    "what_it_involves": "For persistent neck pain, dizziness, or headache after concussion, a clinician may consider combined neck and vestibular rehabilitation when assessment supports it. It is not needed for every patient, and the plan should be individualized.",
+    "why_it_may_help": "It may help selected patients with relevant neck or vestibular findings; a particular outcome is not guaranteed.",
+    "safety_note": "",
+    "applies_to_ages": "both",
+    "teen_note": "For ages 13–17, use age-appropriate pediatric concussion care and involve a parent/guardian as appropriate.",
+    "source_title": [
+      "Cervicovestibular rehabilitation in sport-related concussion: a randomised controlled trial",
+      "Consensus statement on concussion in sport: 6th International Conference on Concussion in Sport — Amsterdam",
+      "BC Guidelines — Concussion / Mild Traumatic Brain Injury"
+    ],
+    "source_url": [
+      "https://pubmed.ncbi.nlm.nih.gov/24855132/",
+      "https://doi.org/10.1136/BJSPORTS-2023-106898",
+      "https://www2.gov.bc.ca/gov/content/health/practitioner-professional-resources/bc-guidelines/concussion-mild-traumatic-brain-injury-mtbi"
+    ],
+    "evidence_level": "guideline_supported",
+    "clinician_status": "draft",
+    "clinician_notes": "",
+    "claim_verification": "scope-limited"
+  },
+  {
+    "step_id": "SEN-03",
+    "category_id": "sensory_peripheral",
+    "order_hint": 3,
+    "step_type": "care",
+    "title": "Manage sensory triggers during gradual return to activity",
+    "short_label": "Manage sensory triggers",
+    "who_to_see": "physiotherapist",
+    "what_it_involves": "Discuss light, noise, or visually busy settings that worsen symptoms with your clinician. They may suggest simple adjustments and a gradual return to activities within tolerance; do not force exposure or follow a fixed desensitization routine unless it is specifically prescribed.",
+    "why_it_may_help": "It may make everyday activities more manageable while symptoms are monitored; the cited sources do not establish a specific sensory-exposure protocol.",
+    "safety_note": "",
+    "applies_to_ages": "both",
+    "teen_note": "For ages 13–17, use age-appropriate pediatric concussion care and involve a parent/guardian as appropriate.",
+    "source_title": [
+      "Ontario Living Concussion Guidelines — Management of Prolonged Symptoms",
+      "Ontario Living Concussion Guidelines — Return-to-Activity / Work / School Considerations",
+      "Consensus statement on concussion in sport: 6th International Conference on Concussion in Sport — Amsterdam",
+      "CDC — Safety Guidelines for Pediatric Mild TBI"
+    ],
+    "source_url": [
+      "https://concussionsontario.org/concussion/guideline-section/management-of-prolonged-symptoms",
+      "https://concussionsontario.org/concussion/guideline-section/return-to-activity_work_school_considerations",
+      "https://doi.org/10.1136/BJSPORTS-2023-106898",
+      "https://www.cdc.gov/traumatic-brain-injury/hcp/clinical-guidance/pediatric-mtbi.html"
+    ],
+    "evidence_level": "guideline_supported",
+    "clinician_status": "draft",
+    "clinician_notes": "",
+    "claim_verification": "partially supported"
+  },
+  {
+    "step_id": "SEN-04",
+    "category_id": "sensory_peripheral",
+    "order_hint": 4,
+    "step_type": "self_management",
+    "title": "Follow clinician-approved home neck activities",
+    "short_label": "Follow home neck activities",
+    "who_to_see": "physiotherapist",
+    "what_it_involves": "If your clinician recommends home neck movement or position-sense activities, use only the activities and range judged suitable for you. Keep sensory pacing separate and do not push through new or worsening symptoms.",
+    "why_it_may_help": "It may support a specific neck rehabilitation plan but is not a proven combined neck-and-sensory treatment.",
+    "safety_note": "Stop the activity and contact your clinician if neck pain, dizziness, or headache becomes more than mild, lasts longer than expected, or repeatedly worsens. Seek urgent medical assessment for new numbness, weakness, severe worsening headache, or other new neurological symptoms.",
+    "applies_to_ages": "both",
+    "teen_note": "For ages 13–17, use age-appropriate pediatric concussion care and involve a parent/guardian as appropriate.",
+    "source_title": [
+      "Cervicovestibular rehabilitation in sport-related concussion: a randomised controlled trial",
+      "Consensus statement on concussion in sport: 6th International Conference on Concussion in Sport — Amsterdam",
+      "BC Guidelines — Concussion / Mild Traumatic Brain Injury"
+    ],
+    "source_url": [
+      "https://pubmed.ncbi.nlm.nih.gov/24855132/",
+      "https://doi.org/10.1136/BJSPORTS-2023-106898",
+      "https://www2.gov.bc.ca/gov/content/health/practitioner-professional-resources/bc-guidelines/concussion-mild-traumatic-brain-injury-mtbi"
+    ],
+    "evidence_level": "guideline_supported",
+    "clinician_status": "draft",
+    "clinician_notes": "",
+    "claim_verification": "partially supported"
+  },
+  {
+    "step_id": "MET-01",
+    "category_id": "fatigue_activity",
+    "order_hint": 1,
+    "step_type": "assessment",
+    "title": "Discuss fatigue and symptoms with your GP",
+    "short_label": "Discuss fatigue with GP",
+    "who_to_see": "gp_family_physician",
+    "what_it_involves": "Describe ongoing physical or cognitive fatigue, brain fog, and symptoms that worsen after activity. Discuss when they occur, how long they last, sleep, mood, medications, and effects on daily function.",
+    "why_it_may_help": "It may help identify other or treatable contributors to fatigue and guide appropriate follow-up.",
+    "safety_note": "",
+    "applies_to_ages": "both",
+    "teen_note": "For ages 13–17, use age-appropriate pediatric concussion care and involve a parent/guardian as appropriate.",
+    "source_title": [
+      "Ontario Living Concussion Guidelines — Fatigue",
+      "Ontario Living Concussion Guidelines — Management of Prolonged Symptoms",
+      "CDC — Safety Guidelines for Pediatric Mild TBI"
+    ],
+    "source_url": [
+      "https://concussionsontario.org/concussion/guideline-section/fatigue",
+      "https://concussionsontario.org/concussion/guideline-section/management-of-prolonged-symptoms",
+      "https://www.cdc.gov/traumatic-brain-injury/hcp/clinical-guidance/pediatric-mtbi.html"
+    ],
+    "evidence_level": "guideline_supported",
+    "clinician_status": "draft",
+    "clinician_notes": "",
+    "claim_verification": "supported"
+  },
+  {
+    "step_id": "MET-02",
+    "category_id": "fatigue_activity",
+    "order_hint": 2,
+    "step_type": "care",
+    "title": "Get support with pacing and activity planning",
+    "short_label": "Plan your pacing",
+    "who_to_see": "gp_family_physician",
+    "what_it_involves": "Ask your clinician about planning activities, spreading demanding tasks and breaks across the day, and keeping a simple activity/fatigue log. Gradually resume normal activity as tolerated rather than using prolonged complete rest.",
+    "why_it_may_help": "It may help you notice patterns and manage activity within your current tolerance.",
+    "safety_note": "",
+    "applies_to_ages": "both",
+    "teen_note": "For ages 13–17, use age-appropriate pediatric concussion care and involve a parent/guardian as appropriate.",
+    "source_title": [
+      "Ontario Living Concussion Guidelines — Fatigue",
+      "Ontario Living Concussion Guidelines — Return-to-Activity / Work / School Considerations",
+      "CDC — Safety Guidelines for Pediatric Mild TBI"
+    ],
+    "source_url": [
+      "https://concussionsontario.org/concussion/guideline-section/fatigue",
+      "https://concussionsontario.org/concussion/guideline-section/return-to-activity_work_school_considerations",
+      "https://www.cdc.gov/traumatic-brain-injury/hcp/clinical-guidance/pediatric-mtbi.html"
+    ],
+    "evidence_level": "guideline_supported",
+    "clinician_status": "draft",
+    "clinician_notes": "",
+    "claim_verification": "supported"
+  },
+  {
+    "step_id": "MET-03",
+    "category_id": "fatigue_activity",
+    "order_hint": 3,
+    "step_type": "care",
+    "title": "Ask about referral if fatigue stays limiting",
+    "short_label": "Ask about a referral",
+    "who_to_see": "gp_family_physician",
+    "what_it_involves": "If fatigue remains functionally limiting, ask your GP what other contributors should be assessed and whether an interdisciplinary concussion service or another referral is appropriate.",
+    "why_it_may_help": "It may help clarify next steps when fatigue keeps interfering with daily activities, without assuming a specific energy-production problem.",
+    "safety_note": "",
+    "applies_to_ages": "both",
+    "teen_note": "For ages 13–17, use age-appropriate pediatric concussion care and involve a parent/guardian as appropriate.",
+    "source_title": [
+      "Ontario Living Concussion Guidelines — Fatigue",
+      "Ontario Living Concussion Guidelines — Management of Prolonged Symptoms",
+      "CDC — Safety Guidelines for Pediatric Mild TBI"
+    ],
+    "source_url": [
+      "https://concussionsontario.org/concussion/guideline-section/fatigue",
+      "https://concussionsontario.org/concussion/guideline-section/management-of-prolonged-symptoms",
+      "https://www.cdc.gov/traumatic-brain-injury/hcp/clinical-guidance/pediatric-mtbi.html"
+    ],
+    "evidence_level": "guideline_supported",
+    "clinician_status": "draft",
+    "clinician_notes": "",
+    "claim_verification": "supported"
+  },
+  {
+    "step_id": "MET-04",
+    "category_id": "fatigue_activity",
+    "order_hint": 4,
+    "step_type": "self_management",
+    "title": "Pace activity and plan breaks",
+    "short_label": "Pace activity and breaks",
+    "who_to_see": "gp_family_physician",
+    "what_it_involves": "Plan activities across the day, alternate demanding and easier tasks, include breaks, and keep a brief log if useful. Continue a gradual return to normal activity rather than complete rest, while avoiding activities with a risk of another head injury.",
+    "why_it_may_help": "It may help manage fatigue and identify patterns without requiring zero symptom change.",
+    "safety_note": "A mild, brief symptom increase can occur. Reduce activity and contact your clinician if worsening is more than mild, prolonged, or unsafe. Seek emergency care for a worsening headache that does not go away, repeated vomiting, weakness or numbness, seizure, confusion, slurred speech, or difficulty waking.",
+    "applies_to_ages": "both",
+    "teen_note": "For ages 13–17, use age-appropriate pediatric concussion care and involve a parent/guardian as appropriate.",
+    "source_title": [
+      "Ontario Living Concussion Guidelines — Fatigue",
+      "Ontario Living Concussion Guidelines — Return-to-Activity / Work / School Considerations",
+      "BC Guidelines — Concussion / Mild Traumatic Brain Injury",
+      "CDC — Safety Guidelines for Pediatric Mild TBI"
+    ],
+    "source_url": [
+      "https://concussionsontario.org/concussion/guideline-section/fatigue",
+      "https://concussionsontario.org/concussion/guideline-section/return-to-activity_work_school_considerations",
+      "https://www2.gov.bc.ca/gov/content/health/practitioner-professional-resources/bc-guidelines/concussion-mild-traumatic-brain-injury-mtbi",
+      "https://www.cdc.gov/traumatic-brain-injury/hcp/clinical-guidance/pediatric-mtbi.html"
+    ],
+    "evidence_level": "guideline_supported",
+    "clinician_status": "draft",
+    "clinician_notes": "",
+    "claim_verification": "supported"
+  },
+  {
+    "step_id": "CER-01",
+    "category_id": "exertional_symptoms",
+    "order_hint": 1,
+    "step_type": "assessment",
+    "title": "Discuss exercise-related symptoms with a clinician",
+    "short_label": "Discuss activity symptoms",
+    "who_to_see": "gp_family_physician",
+    "what_it_involves": "Tell a clinician if headache, lightheadedness, or brain fog appears or worsens during or after activity. These symptoms need clinical context; they do not by themselves show that blood-flow regulation is the cause.",
+    "why_it_may_help": "It may help guide assessment and an individualized return-to-activity plan.",
+    "safety_note": "",
+    "applies_to_ages": "both",
+    "teen_note": "For ages 13–17, use age-appropriate pediatric concussion care and involve a parent/guardian as appropriate.",
+    "source_title": [
+      "Consensus statement on concussion in sport: 6th International Conference on Concussion in Sport — Amsterdam",
+      "BC Guidelines — Concussion / Mild Traumatic Brain Injury",
+      "CDC — Safety Guidelines for Pediatric Mild TBI"
+    ],
+    "source_url": [
+      "https://doi.org/10.1136/BJSPORTS-2023-106898",
+      "https://www2.gov.bc.ca/gov/content/health/practitioner-professional-resources/bc-guidelines/concussion-mild-traumatic-brain-injury-mtbi",
+      "https://www.cdc.gov/traumatic-brain-injury/hcp/clinical-guidance/pediatric-mtbi.html"
+    ],
+    "evidence_level": "guideline_supported",
+    "clinician_status": "draft",
+    "clinician_notes": "",
+    "claim_verification": "supported"
+  },
+  {
+    "step_id": "CER-02",
+    "category_id": "exertional_symptoms",
+    "order_hint": 2,
+    "step_type": "care",
+    "title": "Clinician-guided gradual activity plan",
+    "short_label": "Follow a gradual plan",
+    "who_to_see": "sports_medicine_physician",
+    "what_it_involves": "A qualified clinician may guide gradual increases in low-risk physical activity based on symptoms, assessment, and injury context. Avoid contact, collision, or fall-risk activities until medically cleared.",
+    "why_it_may_help": "It may support a safe return to activity when progression is individualized and reinjury risk is managed.",
+    "safety_note": "",
+    "applies_to_ages": "both",
+    "teen_note": "For ages 13–17, use age-appropriate pediatric concussion care and involve a parent/guardian as appropriate.",
+    "source_title": [
+      "Consensus statement on concussion in sport: 6th International Conference on Concussion in Sport — Amsterdam",
+      "BC Guidelines — Concussion / Mild Traumatic Brain Injury",
+      "CDC — Safety Guidelines for Pediatric Mild TBI"
+    ],
+    "source_url": [
+      "https://doi.org/10.1136/BJSPORTS-2023-106898",
+      "https://www2.gov.bc.ca/gov/content/health/practitioner-professional-resources/bc-guidelines/concussion-mild-traumatic-brain-injury-mtbi",
+      "https://www.cdc.gov/traumatic-brain-injury/hcp/clinical-guidance/pediatric-mtbi.html"
+    ],
+    "evidence_level": "guideline_supported",
+    "clinician_status": "draft",
+    "clinician_notes": "",
+    "claim_verification": "supported"
+  },
+  {
+    "step_id": "CER-03",
+    "category_id": "exertional_symptoms",
+    "order_hint": 3,
+    "step_type": "care",
+    "title": "Use clinician-guided activity targets",
+    "short_label": "Use activity targets",
+    "who_to_see": "sports_medicine_physician",
+    "what_it_involves": "Your clinician may help set an individualized exercise target or symptom threshold when appropriate. Track how you feel, but do not use heart rate or symptoms as a test for cerebral blood-flow problems.",
+    "why_it_may_help": "It may help you progress activity gradually and recognize when a plan needs adjustment.",
+    "safety_note": "",
+    "applies_to_ages": "both",
+    "teen_note": "For ages 13–17, use age-appropriate pediatric concussion care and involve a parent/guardian as appropriate.",
+    "source_title": [
+      "Consensus statement on concussion in sport: 6th International Conference on Concussion in Sport — Amsterdam",
+      "BC Guidelines — Concussion / Mild Traumatic Brain Injury",
+      "CDC — Safety Guidelines for Pediatric Mild TBI"
+    ],
+    "source_url": [
+      "https://doi.org/10.1136/BJSPORTS-2023-106898",
+      "https://www2.gov.bc.ca/gov/content/health/practitioner-professional-resources/bc-guidelines/concussion-mild-traumatic-brain-injury-mtbi",
+      "https://www.cdc.gov/traumatic-brain-injury/hcp/clinical-guidance/pediatric-mtbi.html"
+    ],
+    "evidence_level": "guideline_supported",
+    "clinician_status": "draft",
+    "clinician_notes": "",
+    "claim_verification": "supported"
+  },
+  {
+    "step_id": "CER-04",
+    "category_id": "exertional_symptoms",
+    "order_hint": 4,
+    "step_type": "self_management",
+    "title": "Gradual low-risk activity within tolerance",
+    "short_label": "Resume low-risk activity",
+    "who_to_see": "sports_medicine_physician",
+    "what_it_involves": "After brief initial relative rest as advised, gradually resume low-risk activity such as walking as tolerated. A mild, brief symptom increase can occur; reduce activity and seek clinical guidance if worsening is more than mild, lasts longer than expected, or interferes with function. Avoid reinjury-risk activity until cleared.",
+    "why_it_may_help": "It may help build activity tolerance without requiring zero symptom increase.",
+    "safety_note": "Reduce or stop and contact your clinician if symptoms worsen more than mildly, remain worse longer than expected, or make activity unsafe. Avoid contact, collision, or fall-risk activities until medically cleared. Seek emergency care for a worsening headache that does not go away, repeated vomiting, weakness or numbness, seizure, confusion, slurred speech, or difficulty waking.",
+    "applies_to_ages": "both",
+    "teen_note": "For ages 13–17, use age-appropriate pediatric concussion care and involve a parent/guardian as appropriate.",
+    "source_title": [
+      "Ontario Living Concussion Guidelines — Management of Prolonged Symptoms",
+      "BC Guidelines — Concussion / Mild Traumatic Brain Injury",
+      "Consensus statement on concussion in sport: 6th International Conference on Concussion in Sport — Amsterdam",
+      "CDC — Safety Guidelines for Pediatric Mild TBI"
+    ],
+    "source_url": [
+      "https://concussionsontario.org/concussion/guideline-section/management-of-prolonged-symptoms",
+      "https://www2.gov.bc.ca/gov/content/health/practitioner-professional-resources/bc-guidelines/concussion-mild-traumatic-brain-injury-mtbi",
+      "https://doi.org/10.1136/BJSPORTS-2023-106898",
+      "https://www.cdc.gov/traumatic-brain-injury/hcp/clinical-guidance/pediatric-mtbi.html"
+    ],
+    "evidence_level": "guideline_supported",
+    "clinician_status": "draft",
+    "clinician_notes": "",
+    "claim_verification": "supported"
+  },
+  {
+    "step_id": "NEU-01",
+    "category_id": "neuroendocrine",
+    "order_hint": 1,
+    "step_type": "ask_your_gp",
+    "title": "Ask your GP whether hormone testing is appropriate",
+    "short_label": "Ask about hormone checks",
+    "who_to_see": "gp_family_physician",
+    "what_it_involves": "Ask whether your symptoms and injury history make pituitary or hormone evaluation appropriate. Testing depends on the clinical history and assessment and is not routine for every concussion.",
+    "why_it_may_help": "It may help identify a treatable endocrine contributor in selected patients; fatigue, mood changes, and sleep problems alone do not establish a hormone disorder.",
+    "safety_note": "",
+    "applies_to_ages": "18+",
+    "teen_note": "",
+    "source_title": [
+      "The screening and management of pituitary dysfunction following traumatic brain injury in adults: British Neurotrauma Group guidance",
+      "Neuroendocrine Abnormalities Following Traumatic Brain Injury: An Important Contributor to Neuropsychiatric Sequelae"
+    ],
+    "source_url": [
+      "https://jnnp.bmj.com/content/88/11/971",
+      "https://pubmed.ncbi.nlm.nih.gov/29922224/"
+    ],
+    "evidence_level": "guideline_supported",
+    "clinician_status": "draft",
+    "clinician_notes": "",
+    "claim_verification": "scope-limited"
+  },
+  {
+    "step_id": "NEU-02",
+    "category_id": "neuroendocrine",
+    "order_hint": 2,
+    "step_type": "care",
+    "title": "Follow up if your clinician recommends it",
+    "short_label": "Keep recommended follow-up",
+    "who_to_see": "gp_family_physician",
+    "what_it_involves": "If assessment or tests suggest a possible pituitary problem, follow your GP's advice about repeat checks or referral to an endocrinologist. Do not order or interpret hormone tests on your own.",
+    "why_it_may_help": "It may support appropriate follow-up when symptoms, injury history, or test results warrant it.",
+    "safety_note": "",
+    "applies_to_ages": "18+",
+    "teen_note": "",
+    "source_title": [
+      "The screening and management of pituitary dysfunction following traumatic brain injury in adults: British Neurotrauma Group guidance",
+      "Neuroendocrine Abnormalities Following Traumatic Brain Injury: An Important Contributor to Neuropsychiatric Sequelae"
+    ],
+    "source_url": [
+      "https://jnnp.bmj.com/content/88/11/971",
+      "https://pubmed.ncbi.nlm.nih.gov/29922224/"
+    ],
+    "evidence_level": "guideline_supported",
+    "clinician_status": "draft",
+    "clinician_notes": "",
+    "claim_verification": "scope-limited"
+  },
+  {
+    "step_id": "NEU-03",
+    "category_id": "neuroendocrine",
+    "order_hint": 3,
+    "step_type": "care",
+    "title": "Coordinate care for ongoing symptoms",
+    "short_label": "Coordinate ongoing care",
+    "who_to_see": "gp_family_physician",
+    "what_it_involves": "Work with your GP and relevant professionals to address fatigue, mood, sleep, cognitive concerns, or other symptoms. Care can target these problems whether or not an endocrine cause is found.",
+    "why_it_may_help": "It may help ensure persistent symptoms are assessed and treatable contributors are considered, without assuming a hormone problem.",
+    "safety_note": "",
+    "applies_to_ages": "both",
+    "teen_note": "For ages 13–17, use age-appropriate pediatric concussion care and involve a parent/guardian as appropriate.",
+    "source_title": [
+      "Ontario Living Concussion Guidelines — Management of Prolonged Symptoms",
+      "Ontario Living Concussion Guidelines — Fatigue",
+      "CDC — Safety Guidelines for Pediatric Mild TBI"
+    ],
+    "source_url": [
+      "https://concussionsontario.org/concussion/guideline-section/management-of-prolonged-symptoms",
+      "https://concussionsontario.org/concussion/guideline-section/fatigue",
+      "https://www.cdc.gov/traumatic-brain-injury/hcp/clinical-guidance/pediatric-mtbi.html"
+    ],
+    "evidence_level": "guideline_supported",
+    "clinician_status": "draft",
+    "clinician_notes": "",
+    "claim_verification": "supported"
+  },
+  {
+    "step_id": "NEU-04",
+    "category_id": "neuroendocrine",
+    "order_hint": 4,
+    "step_type": "self_management",
+    "title": "Keep regular sleep and activity routines",
+    "short_label": "Keep regular daily routines",
+    "who_to_see": "gp_family_physician",
+    "what_it_involves": "When appropriate, keep regular sleep and wake times, spread demanding activities and breaks across the day, and discuss persistent sleep or fatigue concerns with your clinician.",
+    "why_it_may_help": "It may support sleep and day-to-day function as part of broader concussion care; it does not treat an endocrine condition by itself.",
+    "safety_note": "Seek emergency care for a worsening headache that does not go away, repeated vomiting, weakness or numbness, seizure, confusion, slurred speech, or difficulty waking. Follow up with your clinician if sleep or fatigue remain limiting or worsen.",
+    "applies_to_ages": "both",
+    "teen_note": "For ages 13–17, use age-appropriate pediatric concussion care and involve a parent/guardian as appropriate.",
+    "source_title": [
+      "Ontario Living Concussion Guidelines — Sleep-Wake Disturbances",
+      "Ontario Living Concussion Guidelines — Fatigue",
+      "CDC — Safety Guidelines for Pediatric Mild TBI"
+    ],
+    "source_url": [
+      "https://concussionsontario.org/concussion/guideline-section/sleep-wake-disturbances",
+      "https://concussionsontario.org/concussion/guideline-section/fatigue",
+      "https://www.cdc.gov/traumatic-brain-injury/hcp/clinical-guidance/pediatric-mtbi.html"
+    ],
+    "evidence_level": "guideline_supported",
+    "clinician_status": "draft",
+    "clinician_notes": "",
+    "claim_verification": "supported"
+  }
+]
