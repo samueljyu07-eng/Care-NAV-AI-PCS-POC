@@ -38,6 +38,7 @@ const COLUMNS = [
   "order_hint",
   "step_type",
   "title",
+  "short_label",
   "who_to_see",
   "what_it_involves",
   "why_it_may_help",
@@ -60,6 +61,7 @@ export type CareStep = {
   order_hint: number;
   step_type: (typeof STEP_TYPES)[number];
   title: string;
+  short_label: string;
   who_to_see: string;
   what_it_involves: string;
   why_it_may_help: string;
@@ -190,6 +192,7 @@ function stepSchema(practitionerTypes: readonly string[]) {
         .transform(Number),
       step_type: z.enum(STEP_TYPES),
       title: z.string(),
+      short_label: z.string().trim().min(1, "short_label is required"),
       who_to_see: z.string().refine((value) => practitionerTypes.includes(value), {
         message: "must be a known practitioner type",
       }),
@@ -290,6 +293,7 @@ export function importCareSteps(
       order_hint: read("order_hint"),
       step_type: read("step_type").trim(),
       title: read("title"),
+      short_label: read("short_label"),
       who_to_see: read("who_to_see").trim(),
       what_it_involves: read("what_it_involves"),
       why_it_may_help: read("why_it_may_help"),

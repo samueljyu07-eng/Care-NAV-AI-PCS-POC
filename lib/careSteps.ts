@@ -11,6 +11,7 @@ export type LibraryStep = {
   order_hint: number;
   step_type: string;
   title: string;
+  short_label: string;
   who_to_see: string;
   what_it_involves: string;
   why_it_may_help: string;
@@ -61,6 +62,24 @@ export function libraryStepSources(step: LibraryStep): StepSource[] {
     sources.push({ title, url, limits: sourceLimits.get(url) ?? "" });
   }
   return sources;
+}
+
+export function libraryStepById(stepId: string | null | undefined): LibraryStep | null {
+  if (!stepId) {
+    return null;
+  }
+  return librarySteps.find((step) => step.step_id === stepId) ?? null;
+}
+
+export function libraryStepType(stepId: string | null | undefined): string | null {
+  return libraryStepById(stepId)?.step_type ?? null;
+}
+
+export function visibleLibraryStepSources(step: LibraryStep): StepSource[] {
+  if (HIDDEN_CLAIMS.has(step.claim_verification)) {
+    return [];
+  }
+  return libraryStepSources(step);
 }
 
 export function draftLabelFor(step: LibraryStep): string | null {

@@ -22,6 +22,7 @@ const HEADER = [
   "order_hint",
   "step_type",
   "title",
+  "short_label",
   "who_to_see",
   "what_it_involves",
   "why_it_may_help",
@@ -51,6 +52,7 @@ function base(overrides: Record<string, string> = {}): Record<string, string> {
     order_hint: "1",
     step_type: "assessment",
     title: "Get an assessment",
+    short_label: "Get an assessment",
     who_to_see: "vestibular_physio",
     what_it_involves: "A clinician asks about dizziness.",
     why_it_may_help: "It may guide next steps.",
@@ -244,6 +246,8 @@ it("imports the care step sheet without errors", () => {
   expect(result.steps).toHaveLength(24);
   expect(result.steps.some((step) => step.step_id.startsWith("EX-"))).toBe(false);
   const first = result.steps.find((step) => step.step_id === "VES-01");
+  expect(first?.short_label).toBe("Assess balance and dizziness");
+  expect(first?.title).toBe("Get a balance and dizziness assessment");
   expect(first?.source_title.length).toBeGreaterThan(1);
   expect(first?.source_url.length).toBe(first?.source_title.length);
   expect(result.warnings.filter((warning) => warning.includes("has "))).toEqual([]);

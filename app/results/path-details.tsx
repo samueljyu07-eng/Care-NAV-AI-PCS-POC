@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { PROVISIONAL_LABEL } from "../../lib/copy";
+import { pathwayColor } from "../../lib/pathwayColors";
 import type { DisplayPathway, PresentedPathway } from "../../lib/pathwayDraft";
 
 export type CardPathway = PresentedPathway & {
@@ -17,9 +18,6 @@ function StepList({ steps }: { steps: DisplayPathway["steps"] }) {
       {steps.map((step) => (
         <li key={`${step.order}-${step.title}`} className="text-base leading-7 text-black">
           <p className="font-medium">{step.title}</p>
-          {step.draft_label ? (
-            <p className="text-sm leading-6 text-[#545454]">{step.draft_label}</p>
-          ) : null}
           <p>{step.rationale}</p>
           {step.safety_note ? <p className="mt-2">{step.safety_note}</p> : null}
           {step.sources.length > 0 ? (
@@ -96,9 +94,13 @@ function PathwayCard({ pathway }: { pathway: CardPathway }) {
   const [open, setOpen] = useState(false);
   const bodyId = `${pathway.category_id}-details`;
   const percent = scorePercent(pathway.scoreText);
+  const color = pathwayColor(pathway.name);
 
   return (
-    <li className="rounded-xl border border-[#E2E2E2] bg-white px-4 py-4">
+    <li
+      className="rounded-xl border-2 bg-white px-4 py-4"
+      style={{ borderColor: color.border }}
+    >
       <button
         type="button"
         aria-expanded={open}
@@ -110,6 +112,11 @@ function PathwayCard({ pathway }: { pathway: CardPathway }) {
           {percent !== null ? <ScorePie percent={percent} /> : null}
           <span className="min-w-0">
             <span className="flex flex-wrap items-center gap-2">
+              <span
+                aria-hidden="true"
+                className="size-3.5 shrink-0 rounded-sm border"
+                style={{ background: color.background, borderColor: color.border }}
+              />
               <h3 className="text-xl font-bold tracking-tight text-black">{pathway.name}</h3>
               <span className="rounded-full bg-[#F6F6F6] px-3 py-1 text-sm text-black">
                 {pathway.evidence_badge}

@@ -40,3 +40,28 @@ body {
   background: #64748b;
   border: 0;
 }
+
+@keyframes step-sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.step-sheet {
+  animation: step-sheet-up 220ms ease-out;
+}
+
+.step-sheet-scroll {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .step-sheet {
+    animation: none;
+  }
+}

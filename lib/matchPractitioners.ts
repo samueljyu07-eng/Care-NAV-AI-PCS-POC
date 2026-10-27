@@ -38,3 +38,13 @@ export function matchPractitioners(
     return person.sees_ages.includes(needed);
   });
 }
+
+export function cliniciansForStep(
+  practitionerType: string,
+  city: string,
+  ageBand?: "13-17" | "18+",
+): Practitioner[] {
+  return matchPractitioners(practitionerType, city, ageBand)
+    .slice()
+    .sort((left, right) => left.name.localeCompare(right.name));
+}

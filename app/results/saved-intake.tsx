@@ -6,7 +6,9 @@ import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } fro
 import type { AgeBand } from "../../lib/catalog";
 import { categoryById } from "../../lib/catalog";
 import {
+  DRAFT_STEP_LABEL,
   RESULTS_FOOTER,
+  SHOW_DRAFT_STEPS,
   TEEN_FRAMING,
   pathwayDisclaimer,
 } from "../../lib/copy";
@@ -408,6 +410,11 @@ export default function SavedIntake({ children }: { children?: ReactNode }) {
 
   return (
     <>
+      {SHOW_DRAFT_STEPS ? (
+        <p className="rounded-xl border border-[#E2E2E2] bg-[#F6F6F6] px-4 py-4 text-base leading-7 text-black">
+          {DRAFT_STEP_LABEL}
+        </p>
+      ) : null}
       <section
         aria-label="Your intake answers"
         className="rounded-xl border border-[#E2E2E2] bg-[#F6F6F6] px-4 py-4"
