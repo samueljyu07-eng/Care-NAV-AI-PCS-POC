@@ -10,6 +10,7 @@ import {
 } from "./intake-answers";
 import { UNDER_13_MESSAGE } from "../lib/copy";
 import { intakeTextIsUrgent } from "../lib/intakeBody";
+import { JournalSidebar } from "./journal-sidebar";
 
 const TIMELINE_STOPS = [
   "1 week",
@@ -125,6 +126,7 @@ export default function Home() {
           Share a few details so a care navigator can better understand what
           you are looking for.
         </p>
+        <JournalSidebar />
       </header>
 
       <aside

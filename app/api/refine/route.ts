@@ -11,9 +11,15 @@ import {
   mergeNarratives,
   sanitizeProvisional,
 } from "../../../lib/pathwayDraft";
+import {
+  adjustScores,
+  journalChangeText,
+  journalModelBrief,
+} from "../../../lib/journalAdjustment";
+import { parseJournalEntries } from "../../../lib/journal";
 import { refineSystemPrompt, refineUserPayload } from "../../../lib/prompts";
 import { checkRedFlags } from "../../../lib/redFlags";
-import { modelPathwaySchema } from "../../../lib/schema";
+import { modelJournalPathwaySchema, modelPathwaySchema } from "../../../lib/schema";
 import { scoreSurvey } from "../../../lib/scoring";
 
 const URGENT_CARE_MESSAGE =
@@ -85,31 +91,68 @@ export async function POST(request: Request) {
     });
   }
 
+  const journalToday =
+    isRecord(body) && typeof body.journal_today === "string"
+      ? body.journal_today
+      : undefined;
+  const journalEntries = parseJournalEntries(
+    isRecord(body) ? body.journal_entries : undefined,
+  );
+  const adjustment = adjustScores(scored, journalEntries, journalToday);
+  const used = adjustment.applied ? adjustment.adjusted : scored;
+  const intakeForModel = {
+    address: intake.address,
+    concerns: intake.concerns,
+    primary_symptoms: intake.primary_symptoms,
+    past_attempts: intake.past_attempts,
+    timeline: intake.timeline,
+  };
+  const provisionalForModel = provisional.map((pathway) => ({
+    category_id: pathway.category_id,
+    why_it_may_apply: pathway.why_it_may_apply,
+  }));
+
   let narrative: unknown = { pathways: [] };
+  let journalNote: string | null = null;
   try {
-    const drafted = await askModel(
-      refineSystemPrompt(ageBand),
-      JSON.stringify(
-        refineUserPayload({
-          ageBand,
-          intake: {
-            address: intake.address,
-            concerns: intake.concerns,
-            primary_symptoms: intake.primary_symptoms,
-            past_attempts: intake.past_attempts,
-            timeline: intake.timeline,
-          },
-          provisional: provisional.map((pathway) => ({
-            category_id: pathway.category_id,
-            why_it_may_apply: pathway.why_it_may_apply,
-          })),
-          result: scored,
-        }),
-      ),
-      modelPathwaySchema,
-    );
-    if (drafted) {
-      narrative = drafted;
+    if (adjustment.applied) {
+      journalNote = journalChangeText(adjustment.reasons);
+      const drafted = await askModel(
+        refineSystemPrompt(ageBand, true),
+        JSON.stringify(
+          refineUserPayload({
+            ageBand,
+            intake: intakeForModel,
+            provisional: provisionalForModel,
+            result: used,
+            journal: journalModelBrief(adjustment),
+          }),
+        ),
+        modelJournalPathwaySchema,
+      );
+      if (drafted) {
+        narrative = drafted;
+        const note = drafted.journal_note.trim();
+        if (note) {
+          journalNote = note;
+        }
+      }
+    } else {
+      const drafted = await askModel(
+        refineSystemPrompt(ageBand),
+        JSON.stringify(
+          refineUserPayload({
+            ageBand,
+            intake: intakeForModel,
+            provisional: provisionalForModel,
+            result: scored,
+          }),
+        ),
+        modelPathwaySchema,
+      );
+      if (drafted) {
+        narrative = drafted;
+      }
     }
   } catch {
     narrative = { pathways: [] };
@@ -118,9 +161,10 @@ export async function POST(request: Request) {
   return Response.json({
     age_band: ageBand,
     disclaimer: pathwayDisclaimer(ageBand),
-    tie: scored.tie,
-    follow_ups: followUpQuestions(scored.follow_up_question_ids),
-    pathways: mergeNarratives(scored, narrative, ageBand),
+    tie: used.tie,
+    follow_ups: followUpQuestions(used.follow_up_question_ids),
+    pathways: mergeNarratives(used, narrative, ageBand),
     message: null,
+    ...(journalNote ? { journal_note: journalNote } : {}),
   });
 }

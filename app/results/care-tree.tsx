@@ -552,10 +552,14 @@ export default function CareTree({
   pathways,
   patientCity,
   ageBand,
+  showAllPatterns,
+  onShowAllPatterns,
 }: {
   pathways: CarePathway[];
   patientCity: string;
   ageBand: AgeBand | null;
+  showAllPatterns: boolean;
+  onShowAllPatterns: (showAll: boolean) => void;
 }) {
   const [detail, setDetail] = useState<TreeDetail>("simple");
   const [selectedStepId, setSelectedStepId] = useState<string | null>(null);
@@ -640,6 +644,38 @@ export default function CareTree({
           }
         >
           Detailed
+        </button>
+      </div>
+      <div
+        role="radiogroup"
+        aria-label="How many patterns to show"
+        className="inline-flex w-fit gap-1 rounded-full border border-[#E2E2E2] bg-white p-1"
+      >
+        <button
+          type="button"
+          role="radio"
+          aria-checked={!showAllPatterns}
+          onClick={() => onShowAllPatterns(false)}
+          className={
+            showAllPatterns
+              ? "cursor-pointer rounded-full px-4 py-2 text-sm font-medium text-black"
+              : "cursor-pointer rounded-full bg-black px-4 py-2 text-sm font-medium text-white"
+          }
+        >
+          Top 3
+        </button>
+        <button
+          type="button"
+          role="radio"
+          aria-checked={showAllPatterns}
+          onClick={() => onShowAllPatterns(true)}
+          className={
+            showAllPatterns
+              ? "cursor-pointer rounded-full bg-black px-4 py-2 text-sm font-medium text-white"
+              : "cursor-pointer rounded-full px-4 py-2 text-sm font-medium text-black"
+          }
+        >
+          All
         </button>
       </div>
       <PathwayLegend pathways={pathways} />

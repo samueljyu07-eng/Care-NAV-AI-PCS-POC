@@ -151,8 +151,8 @@ ${SHARED_RULES}
 Disclaimer to respect: ${pathwayDisclaimer(ageBand)}`;
 }
 
-export function refineSystemPrompt(ageBand: AgeBand): string {
-  return `ROLE
+export function refineSystemPrompt(ageBand: AgeBand, includeJournal = false): string {
+  const prompt = `ROLE
 You rewrite care-navigation explanations after a survey has been scored in code.
 You do not diagnose, prescribe, or promise outcomes.
 
@@ -175,6 +175,19 @@ ${careStepRules(ageBand)}
 
 ${SHARED_RULES}
 Disclaimer to respect: ${pathwayDisclaimer(ageBand)}`;
+  if (!includeJournal) {
+    return prompt;
+  }
+  return `${prompt}
+
+SYMPTOM JOURNAL
+A daily symptom journal was scored in code. The page already shows the match percentages.
+You will receive base percentages, adjusted percentages, and reasons: average severity, trend, and days. These numbers are aggregated. They are supporting information, not a diagnosis.
+Write journal_note in 2 to 4 short sentences for a section titled "What changed since your survey".
+Name the categories that moved, using the patient labels, and say whether each has been higher or easing.
+Say the journal is supporting information and not a diagnosis.
+Do not say the person is safe. Red-flag screening already ran and takes priority over the journal.
+Do not include digits in journal_note or in why_it_may_apply.`;
 }
 
 export function refineUserPayload(input: {
@@ -182,13 +195,26 @@ export function refineUserPayload(input: {
   intake: unknown;
   provisional: { category_id: string; why_it_may_apply: string }[];
   result: ScoreResult;
+  journal?: {
+    categories: {
+      category_id: string;
+      patient_label: string;
+      direction: "up" | "down" | "steady";
+      average: number;
+      trend: number;
+      days: number;
+      base_percentage: number;
+      adjusted_percentage: number;
+    }[];
+  } | null;
 }) {
-  return {
+  const payload = {
     age_band: input.ageBand,
     intake: input.intake,
     provisional_paths: input.provisional,
-    instruction:
-      "Rewrite why_it_may_apply for the computed categories. You may reorder them. Do not include digits, scores, or percentages. Do not change which categories were scored.",
+    instruction: input.journal
+      ? "Rewrite why_it_may_apply for the computed categories. You may reorder them. Do not include digits, scores, or percentages. Do not change which categories were scored. Write journal_note about what changed since the survey, using the journal averages and trends as supporting information. Do not diagnose. Do not include digits in journal_note."
+      : "Rewrite why_it_may_apply for the computed categories. You may reorder them. Do not include digits, scores, or percentages. Do not change which categories were scored.",
     computed: input.result.displayed.map((category) => {
       const record = categoryById(category.category_id);
       return {
@@ -204,4 +230,8 @@ export function refineUserPayload(input: {
     }),
     follow_up_question_ids: input.result.follow_up_question_ids,
   };
+  if (!input.journal) {
+    return payload;
+  }
+  return { ...payload, journal: input.journal };
 }
