@@ -30,6 +30,7 @@ import { surveyAnswersFromSelection } from "../questions/survey-form";
 import CareTree, { type CarePathway } from "./care-tree";
 import { ProvisionalCards, type CardPathway } from "./path-details";
 import type { DisplayPathway, PresentedPathway } from "../../lib/pathwayDraft";
+import { buildResultsFile } from "../../lib/booking/snapshot";
 import { adjustScores, journalChangeText } from "../../lib/journalAdjustment";
 import { todayIso } from "../../lib/journal";
 import { listJournalEntries } from "../../lib/journalStore";
@@ -61,6 +62,7 @@ function pathScoreText(score: CategoryScore): string {
 
 function toTree(pathways: CardPathway[]): CarePathway[] {
   return pathways.map((pathway) => ({
+    categoryId: pathway.category_id,
     name: pathway.name,
     scoreText: pathway.scoreText,
     steps: pathway.steps,
@@ -428,6 +430,39 @@ export default function SavedIntake({ children }: { children?: ReactNode }) {
           ? journalFallback
           : null;
   const treePathways = toTree(visibleCardPathways);
+  function buildFile(treeDetail: "simple" | "detailed") {
+    const selection = readSurveySelection(getSurveySnapshot());
+    return buildResultsFile({
+      capturedAt: new Date().toISOString(),
+      showAllPatterns,
+      treeDetail,
+      intake: answers
+        ? {
+            ageBand,
+            ageLabel: ageBand ? ageLabel(ageBand) : "Not added",
+            city: answerText(answers.city, "Not added"),
+            timeline: answerText(answers.timeline, "Not added"),
+            symptoms: answers.symptoms,
+            symptomText,
+            concerns: answerText(answers.concerns, "Not added"),
+            pastAttempts: answerText(answers.pastAttempts, "Not added"),
+          }
+        : null,
+      surveyAnswers: answers
+        ? surveyAnswersFromSelection(answers.symptoms, selection)
+        : [],
+      scores,
+      journalNote: journalCopy,
+      journalEntries: listJournalEntries(),
+      refineNote: refine.kind === "ready" ? refine.note : null,
+      draftBanner: SHOW_DRAFT_STEPS ? DRAFT_STEP_LABEL : null,
+      teenNote: ageBand === "13-17" ? TEEN_FRAMING : null,
+      disclaimer: pathwayDisclaimer(ageBand ?? "18+"),
+      footer: RESULTS_FOOTER,
+      visibleCategoryIds: visibleCardPathways.map((pathway) => pathway.category_id),
+      pathways: cardPathways,
+    });
+  }
   const backHref =
     answers?.ageBand &&
     !textUrgent &&
@@ -586,6 +621,7 @@ export default function SavedIntake({ children }: { children?: ReactNode }) {
             ageBand={ageBand}
             showAllPatterns={showAllPatterns}
             onShowAllPatterns={setShowAllPatterns}
+            buildSnapshot={buildFile}
           />
         </div>
       ) : null}

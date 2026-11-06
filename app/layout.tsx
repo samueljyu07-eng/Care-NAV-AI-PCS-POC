@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import BookingFollowUp from "./booking-follow-up";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -33,6 +34,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           />
         </div>
         {children}
+        <BookingFollowUp />
       </body>
     </html>
   );

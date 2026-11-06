@@ -1,11 +1,32 @@
 "use client";
 
-import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent, type PointerEvent as ReactPointerEvent } from "react";
 import { createPortal } from "react-dom";
 import type { AgeBand } from "../../lib/catalog";
+import {
+  getOrCreateSessionId,
+  newBookingId,
+  saveCurrentAttempt,
+} from "../../lib/booking/browser";
+import { clinicIdFromName, consentCanContinue, type BookingDestination } from "../../lib/booking/model";
+import {
+  BOOK_BUTTON,
+  CALL_BUTTON,
+  CANCEL_LABEL,
+  CONSENT_TEXT_VERSION,
+  CONSENT_UNCHECKED,
+  CONTINUE_LABEL,
+  PARENT_LABEL,
+  WEBSITE_BUTTON,
+  consentIntro,
+  shareLabel,
+} from "../../lib/booking/consent";
+import { SHARED_BOOKING_URL } from "../../lib/booking/link";
+import type { Practitioner } from "../../lib/booking/practitioners";
+import type { ResultsFile } from "../../lib/booking/snapshot";
 import { libraryStepById, visibleLibraryStepSources } from "../../lib/careSteps";
 import { SHOW_DRAFT_STEPS } from "../../lib/copy";
-import { cliniciansForStep, type Practitioner } from "../../lib/matchPractitioners";
+import { cliniciansForStep } from "../../lib/matchPractitioners";
 
 const PHONE_QUERY = "(max-width: 639px)";
 const sheetScrollStyle = {
@@ -20,20 +41,31 @@ export default function StepWindow({
   practitionerType,
   patientCity,
   ageBand,
+  pathwayId,
+  stepNodeId,
+  buildSnapshot,
   onClose,
-  onBooked,
 }: {
   title: string;
   stepId: string | null;
   practitionerType: string;
   patientCity: string;
   ageBand: AgeBand | null;
+  pathwayId: string;
+  stepNodeId: string;
+  buildSnapshot: () => ResultsFile;
   onClose: () => void;
-  onBooked: () => void;
 }) {
   const [isPhone, setIsPhone] = useState(false);
-  const [booking, setBooking] = useState<Booking | null>(null);
+  const [consent, setConsent] = useState<ConsentTarget | null>(null);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const resetKey = `${title}:${isPhone}`;
+  const [seenKey, setSeenKey] = useState(resetKey);
+  if (seenKey !== resetKey) {
+    setSeenKey(resetKey);
+    setOffset({ x: 0, y: 0 });
+    setConsent(null);
+  }
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const drag = useRef<{ x: number; y: number; ox: number; oy: number } | null>(null);
@@ -45,14 +77,6 @@ export default function StepWindow({
     media.addEventListener("change", update);
     return () => media.removeEventListener("change", update);
   }, []);
-
-  useEffect(() => {
-    setOffset({ x: 0, y: 0 });
-  }, [title, isPhone]);
-
-  useEffect(() => {
-    setBooking(null);
-  }, [title]);
 
   useEffect(() => {
     function onKey(event: KeyboardEvent) {
@@ -74,7 +98,7 @@ export default function StepWindow({
     if (isPhone || event.button !== 0) {
       return;
     }
-    if ((event.target as HTMLElement).closest("button")) {
+    if ((event.target as HTMLElement).closest("button, a, input, label")) {
       return;
     }
     drag.current = {
@@ -141,21 +165,19 @@ export default function StepWindow({
           onPointerCancel={onDragEnd}
           className={`flex shrink-0 items-start justify-between gap-4 border-b border-[#E2E2E2] px-5 py-4 ${isPhone ? "" : "cursor-grab touch-none select-none active:cursor-grabbing"}`}
         >
-          {booking ? (
+          {consent ? (
             <div className="min-w-0 flex-1">
-              {booking.kind === "slots" ? (
-                <button
-                  type="button"
-                  onClick={() => setBooking(null)}
-                  className="cursor-pointer text-sm font-medium text-black underline decoration-black underline-offset-4"
-                >
-                  Back
-                </button>
-              ) : null}
+              <button
+                type="button"
+                onClick={() => setConsent(null)}
+                className="cursor-pointer text-sm font-medium text-black underline decoration-black underline-offset-4"
+              >
+                Back
+              </button>
               <h2 id="step-window-title" className="text-xl font-bold tracking-tight text-black">
-                {booking.person.name}
+                {consent.person.name}
               </h2>
-              <p className="text-sm leading-6 text-[#545454]">{booking.person.clinic}</p>
+              <p className="text-sm leading-6 text-[#545454]">{consent.person.clinic}</p>
             </div>
           ) : (
             <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
@@ -183,32 +205,17 @@ export default function StepWindow({
             </svg>
           </button>
         </header>
-        {booking ? (
-          <BookingScreen
+        {consent ? (
+          <ConsentStep
+            key={`${consent.person.id}-${consent.destination}`}
+            person={consent.person}
+            destination={consent.destination}
+            ageBand={ageBand}
+            pathwayId={pathwayId}
+            stepNodeId={stepNodeId}
             roomy={isPhone}
-            booking={booking}
-            onSelect={(slotId) =>
-              setBooking((current) =>
-                current?.kind === "slots" ? { ...current, slotId } : current,
-              )
-            }
-            onConfirm={() =>
-              setBooking((current) => {
-                if (current?.kind !== "slots" || !current.slotId) {
-                  return current;
-                }
-                const slot = current.slots.find((item) => item.id === current.slotId);
-                if (!slot) {
-                  return current;
-                }
-                return {
-                  kind: "confirmed",
-                  person: current.person,
-                  slotLabel: slot.label,
-                };
-              })
-            }
-            onDone={onBooked}
+            buildSnapshot={buildSnapshot}
+            onCancel={() => setConsent(null)}
           />
         ) : (
           <div
@@ -234,14 +241,7 @@ export default function StepWindow({
                 patientCity={patientCity}
                 ageBand={ageBand}
                 roomy={isPhone}
-                onChoose={(person) =>
-                  setBooking({
-                    kind: "slots",
-                    person,
-                    slotId: null,
-                    slots: bookingSlots(person.details.availability, new Date()),
-                  })
-                }
+                onStart={(person, destination) => setConsent({ person, destination })}
               />
             </div>
           </div>
@@ -251,6 +251,11 @@ export default function StepWindow({
     document.body,
   );
 }
+
+type ConsentTarget = {
+  person: Practitioner;
+  destination: BookingDestination;
+};
 
 function DraftBadge({ stepId }: { stepId: string | null }) {
   const step = libraryStepById(stepId);
@@ -345,18 +350,32 @@ function firstSentence(about: string) {
   return trimmed.slice(0, end + 1);
 }
 
+function contactActions(person: Practitioner): { destination: BookingDestination; label: string }[] {
+  if (person.bookingUrl) {
+    return [{ destination: "booking", label: BOOK_BUTTON }];
+  }
+  const actions: { destination: BookingDestination; label: string }[] = [];
+  if (person.phone) {
+    actions.push({ destination: "phone", label: CALL_BUTTON });
+  }
+  if (person.website) {
+    actions.push({ destination: "website", label: WEBSITE_BUTTON });
+  }
+  return actions;
+}
+
 function WhoOffers({
   practitionerType,
   patientCity,
   ageBand,
   roomy = false,
-  onChoose,
+  onStart,
 }: {
   practitionerType: string;
   patientCity: string;
   ageBand: AgeBand | null;
   roomy?: boolean;
-  onChoose: (person: Practitioner) => void;
+  onStart: (person: Practitioner, destination: BookingDestination) => void;
 }) {
   const matches = cliniciansForStep(practitionerType, patientCity, ageBand ?? undefined);
 
@@ -369,187 +388,225 @@ function WhoOffers({
         </p>
       ) : (
         <ul className="mt-3 flex flex-col gap-3">
-          {matches.map((person) => (
-            <li key={person.id} className="rounded-xl border border-[#E2E2E2] bg-white px-4 py-3">
-              <p className="text-base font-semibold text-black">{person.name}</p>
-              <p className="text-sm leading-6 text-[#545454]">{person.clinic}</p>
-              <p className="mt-2 text-base leading-7 text-black">{firstSentence(person.about)}</p>
-              <p className="mt-2 text-sm leading-6 text-[#545454]">
-                {person.details.availability}
-              </p>
-              <p className="text-sm leading-6 text-[#545454]">
-                {person.details.languages.join(", ")}
-              </p>
-              <p className="mt-2 text-sm font-medium text-black">
-                {person.details.accepting_new_patients
-                  ? "Accepting new patients"
-                  : "Not accepting new patients"}
-              </p>
-              <p className="mt-1 text-sm leading-6 text-[#545454]">Fictional clinic.</p>
-              <button
-                type="button"
-                onClick={() => onChoose(person)}
-                className={`mt-3 inline-flex cursor-pointer items-center justify-center rounded-full border border-[#E2E2E2] bg-white font-medium text-black hover:bg-[#F6F6F6] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black ${roomy ? "min-h-12 w-full px-5 text-base" : "min-h-10 px-4 text-sm"}`}
-              >
-                Choose
-              </button>
-            </li>
-          ))}
+          {matches.map((person) => {
+            const actions = contactActions(person);
+            return (
+              <li key={person.id} className="rounded-xl border border-[#E2E2E2] bg-white px-4 py-3">
+                <p className="text-base font-semibold text-black">{person.name}</p>
+                <p className="text-sm leading-6 text-[#545454]">{person.clinic}</p>
+                <p className="mt-2 text-base leading-7 text-black">{firstSentence(person.about)}</p>
+                <p className="mt-2 text-sm leading-6 text-[#545454]">
+                  {person.details.availability}
+                </p>
+                <p className="text-sm leading-6 text-[#545454]">
+                  {person.details.languages.join(", ")}
+                </p>
+                <p className="mt-2 text-sm font-medium text-black">
+                  {person.details.accepting_new_patients
+                    ? "Accepting new patients"
+                    : "Not accepting new patients"}
+                </p>
+                <p className="mt-1 text-sm leading-6 text-[#545454]">Fictional clinic.</p>
+                {actions.length > 0 ? (
+                  <div className="mt-3 flex flex-col gap-2 sm:flex-row">
+                    {actions.map((action) => (
+                      <button
+                        key={action.destination}
+                        type="button"
+                        onClick={() => onStart(person, action.destination)}
+                        className={`inline-flex cursor-pointer items-center justify-center rounded-full border border-[#E2E2E2] bg-white font-medium text-black hover:bg-[#F6F6F6] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black ${roomy ? "min-h-12 w-full px-5 text-base" : "min-h-10 px-4 text-sm"}`}
+                      >
+                        {action.label}
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="mt-3 text-sm leading-6 text-[#545454]">
+                    No booking link, phone, or website is listed for this demo clinician.
+                  </p>
+                )}
+              </li>
+            );
+          })}
         </ul>
       )}
     </section>
   );
 }
 
-type BookingSlot = { id: string; label: string };
-
-type Booking =
-  | { kind: "slots"; person: Practitioner; slotId: string | null; slots: BookingSlot[] }
-  | { kind: "confirmed"; person: Practitioner; slotLabel: string };
-
-const DAY_NAMES = [
-  "sunday",
-  "monday",
-  "tuesday",
-  "wednesday",
-  "thursday",
-  "friday",
-  "saturday",
-] as const;
-
-const MORNING_TIMES = ["9:00 a.m.", "10:30 a.m."];
-const AFTERNOON_TIMES = ["1:00 p.m.", "2:30 p.m."];
-
-function bookingSlots(availability: string, today: Date): BookingSlot[] {
-  const rules = availabilityRules(availability);
-  const slots: BookingSlot[] = [];
-  const cursor = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-  cursor.setDate(cursor.getDate() + 1);
-  for (let guard = 0; guard < 80 && slots.length < 6; guard += 1) {
-    const matches = rules.filter((rule) => rule.day === cursor.getDay());
-    for (const match of matches) {
-      const times = match.period === "afternoon" ? AFTERNOON_TIMES : MORNING_TIMES;
-      for (const time of times) {
-        if (slots.length >= 6) {
-          break;
-        }
-        const label = `${dayLabel(cursor)} · ${time}`;
-        slots.push({ id: label, label });
-      }
-    }
-    cursor.setDate(cursor.getDate() + 1);
-  }
-  return slots;
+function openBookingPage(url: string) {
+  const link = document.createElement("a");
+  link.href = url;
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
 }
 
-function availabilityRules(availability: string): { day: number; period: "morning" | "afternoon" }[] {
-  const normalized = availability.toLowerCase().replace(/,/g, "");
-  if (/\bweekdays?\b/.test(normalized)) {
-    const period = normalized.includes("afternoon") ? "afternoon" : "morning";
-    return [1, 2, 3, 4, 5].map((day) => ({ day, period }));
+function writeField(form: HTMLFormElement, name: string, value: string) {
+  const field = form.elements.namedItem(name);
+  if (field instanceof HTMLInputElement) {
+    field.value = value;
   }
-  const rules: { day: number; period: "morning" | "afternoon" }[] = [];
-  let pending: number[] = [];
-  for (const token of normalized.split(/\s+/)) {
-    const day = DAY_NAMES.indexOf(token as (typeof DAY_NAMES)[number]);
-    if (day >= 0) {
-      pending.push(day);
-      continue;
-    }
-    if (token.startsWith("morning") || token.startsWith("afternoon")) {
-      const period = token.startsWith("afternoon") ? "afternoon" : "morning";
-      for (const pendingDay of pending) {
-        rules.push({ day: pendingDay, period });
-      }
-      pending = [];
-    }
-  }
-  if (rules.length > 0) {
-    return rules;
-  }
-  return [1, 2, 3, 4, 5].map((day) => ({ day, period: "morning" as const }));
 }
 
-function dayLabel(date: Date) {
-  return new Intl.DateTimeFormat("en-US", {
-    weekday: "long",
-    month: "short",
-    day: "numeric",
-  }).format(date);
-}
-
-function BookingScreen({
-  booking,
+function ConsentStep({
+  person,
+  destination,
+  ageBand,
+  pathwayId,
+  stepNodeId,
   roomy = false,
-  onSelect,
-  onConfirm,
-  onDone,
+  buildSnapshot,
+  onCancel,
 }: {
-  booking: Booking;
+  person: Practitioner;
+  destination: BookingDestination;
+  ageBand: AgeBand | null;
+  pathwayId: string;
+  stepNodeId: string;
   roomy?: boolean;
-  onSelect: (slotId: string) => void;
-  onConfirm: () => void;
-  onDone: () => void;
+  buildSnapshot: () => ResultsFile;
+  onCancel: () => void;
 }) {
-  const ready = booking.kind === "slots" && Boolean(booking.slotId);
+  const [share, setShare] = useState(false);
+  const [parental, setParental] = useState(false);
+  const [problem, setProblem] = useState<string | null>(null);
+  const sending = useRef(false);
+  const under18 = ageBand === "13-17";
+  const canContinue = consentCanContinue({
+    shared: share,
+    under18,
+    parentalConsent: parental,
+  });
+
+  function onSubmit(event: FormEvent<HTMLFormElement>) {
+    if (!canContinue || sending.current) {
+      event.preventDefault();
+      return;
+    }
+    const attemptId = newBookingId();
+    const sessionId = getOrCreateSessionId();
+    if (!attemptId || !sessionId || !pathwayId) {
+      event.preventDefault();
+      setProblem("This browser could not start a booking. Try again.");
+      return;
+    }
+    const createdAt = new Date().toISOString();
+    const clinicId = clinicIdFromName(person.clinic);
+    const snapshot = share ? JSON.stringify(buildSnapshot()) : "";
+    const form = event.currentTarget;
+    writeField(form, "attemptId", attemptId);
+    writeField(form, "createdAt", createdAt);
+    writeField(form, "clinicId", clinicId);
+    writeField(form, "pathwayId", pathwayId);
+    writeField(form, "sessionId", sessionId);
+    writeField(form, "sharedWithClinic", share ? "true" : "false");
+    writeField(form, "parentalConsent", parental ? "true" : "false");
+    writeField(form, "consentTextVersion", CONSENT_TEXT_VERSION);
+    writeField(form, "ageBand", ageBand ?? "");
+    writeField(form, "destination", destination);
+    writeField(form, "snapshot", snapshot);
+    const saved = saveCurrentAttempt({
+      id: attemptId,
+      createdAt,
+      status: "clicked",
+      practitionerId: person.id,
+      clinicId,
+      clinicName: person.clinic,
+      pathwayId,
+      sessionId,
+      stepNodeId,
+      destination,
+      phone: person.phone,
+      promptOpen: true,
+      returned: false,
+    });
+    if (!saved) {
+      event.preventDefault();
+      setProblem("This browser could not save the booking on this device.");
+      return;
+    }
+    sending.current = true;
+    if (destination === "booking") {
+      event.preventDefault();
+      openBookingPage(SHARED_BOOKING_URL);
+      void fetch(`/api/book/${person.id}`, {
+        method: "POST",
+        body: new FormData(form),
+        keepalive: true,
+      });
+    }
+  }
+
   return (
-    <div
+    <form
+      method="POST"
+      action={`/api/book/${person.id}`}
+      target="_blank"
+      onSubmit={onSubmit}
       className={`flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-5 py-5 ${roomy ? "step-sheet-scroll" : ""}`}
       style={roomy ? sheetScrollStyle : undefined}
     >
-      <p className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-6 text-amber-950">
-        Demo only. No real booking is made.
-      </p>
-      {booking.kind === "slots" ? (
-        <>
-          <ul className="flex flex-col gap-2">
-            {booking.slots.map((slot) => {
-              const selected = booking.slotId === slot.id;
-              return (
-                <li key={slot.id}>
-                  <button
-                    type="button"
-                    aria-pressed={selected}
-                    onClick={() => onSelect(slot.id)}
-                    className={
-                      selected
-                        ? `w-full cursor-pointer rounded-xl border-2 border-black bg-[#F6F6F6] px-4 text-left text-base text-black ${roomy ? "min-h-12" : "py-3"}`
-                        : `w-full cursor-pointer rounded-xl border border-[#E2E2E2] bg-white px-4 text-left text-base text-black hover:bg-[#F6F6F6] ${roomy ? "min-h-12" : "py-3"}`
-                    }
-                  >
-                    {slot.label}
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-          <button
-            type="button"
-            disabled={!ready}
-            onClick={onConfirm}
-            className={
-              ready
-                ? "inline-flex min-h-12 cursor-pointer items-center justify-center rounded-full bg-black px-5 text-base font-medium text-white"
-                : "inline-flex min-h-12 cursor-not-allowed items-center justify-center rounded-full bg-[#E2E2E2] px-5 text-base font-medium text-[#545454]"
-            }
-          >
-            Confirm
-          </button>
-        </>
-      ) : (
-        <div className="flex flex-col gap-3">
-          <p className="text-xl font-bold tracking-tight text-black">{booking.person.name}</p>
-          <p className="text-base leading-7 text-[#545454]">{booking.person.clinic}</p>
-          <p className="text-base leading-7 text-black">{booking.slotLabel}</p>
-          <button
-            type="button"
-            onClick={onDone}
-            className="mt-2 inline-flex min-h-12 w-fit cursor-pointer items-center justify-center rounded-full bg-black px-5 text-base font-medium text-white"
-          >
-            Back to pathway
-          </button>
-        </div>
-      )}
-    </div>
+      <Hidden name="attemptId" />
+      <Hidden name="createdAt" />
+      <Hidden name="clinicId" />
+      <Hidden name="pathwayId" />
+      <Hidden name="sessionId" />
+      <Hidden name="sharedWithClinic" />
+      <Hidden name="parentalConsent" />
+      <Hidden name="consentTextVersion" />
+      <Hidden name="ageBand" />
+      <Hidden name="destination" />
+      <Hidden name="snapshot" />
+      <p className="text-base leading-7 text-black">{consentIntro(person.clinic)}</p>
+      <p className="text-base leading-7 text-[#545454]">{CONSENT_UNCHECKED}</p>
+      <label className="flex items-start gap-3 text-base leading-7 text-black">
+        <input
+          type="checkbox"
+          checked={share}
+          onChange={(event) => setShare(event.target.checked)}
+          className="mt-1 size-5 shrink-0 accent-black"
+        />
+        <span>{shareLabel(person.clinic)}</span>
+      </label>
+      {under18 ? (
+        <label className="flex items-start gap-3 text-base leading-7 text-black">
+          <input
+            type="checkbox"
+            checked={parental}
+            onChange={(event) => setParental(event.target.checked)}
+            className="mt-1 size-5 shrink-0 accent-black"
+          />
+          <span>{PARENT_LABEL}</span>
+        </label>
+      ) : null}
+      {problem ? <p className="text-base leading-7 text-red-950">{problem}</p> : null}
+      <div className="mt-2 flex flex-col gap-3 sm:flex-row">
+        <button
+          type="submit"
+          disabled={!canContinue}
+          className={
+            canContinue
+              ? "inline-flex min-h-12 cursor-pointer items-center justify-center rounded-full bg-black px-5 text-base font-medium text-white"
+              : "inline-flex min-h-12 cursor-not-allowed items-center justify-center rounded-full bg-[#E2E2E2] px-5 text-base font-medium text-[#545454]"
+          }
+        >
+          {CONTINUE_LABEL}
+        </button>
+        <button
+          type="button"
+          onClick={onCancel}
+          className="inline-flex min-h-12 cursor-pointer items-center justify-center rounded-full border border-[#E2E2E2] bg-white px-5 text-base font-medium text-black hover:bg-[#F6F6F6]"
+        >
+          {CANCEL_LABEL}
+        </button>
+      </div>
+    </form>
   );
+}
+
+function Hidden({ name }: { name: string }) {
+  return <input type="hidden" name={name} defaultValue="" />;
 }
