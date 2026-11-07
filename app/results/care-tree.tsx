@@ -26,6 +26,13 @@ import {
   type MouseEvent,
 } from "react";
 import type { AgeBand } from "../../lib/catalog";
+import {
+  STEP_BOOKED_EVENT,
+  getBookedStepServerSnapshot,
+  getBookedStepSnapshot,
+  subscribeBookedSteps,
+} from "../../lib/booking/browser";
+import type { ResultsFile } from "../../lib/booking/snapshot";
 import { practitionerTypeLabel } from "../../lib/catalog";
 import { libraryStepById, libraryStepType } from "../../lib/careSteps";
 import { pathwayColor } from "../../lib/pathwayColors";
@@ -46,6 +53,7 @@ const CLOSED_ROW_SPAN = 170;
 const PHONE_QUERY = "(max-width: 639px)";
 
 export type CarePathway = {
+  categoryId: string;
   name: string;
   scoreText?: string | null;
   steps: {
@@ -74,6 +82,7 @@ type StepNode = Node<
     background: string;
     stepTypeLabel: string | null;
     libraryStepId: string | null;
+    categoryId: string;
     border: string;
     rationale: string;
     draftLabel: string | null;
@@ -517,6 +526,7 @@ function buildCareTree(
           background: color.background,
           stepTypeLabel: stepTypeLabel(libraryStepType(step.step_id)),
           libraryStepId: step.step_id ?? null,
+          categoryId: pathway.categoryId,
           border: color.border,
           rationale: step.rationale ?? "",
           draftLabel: step.draft_label ?? null,
@@ -552,32 +562,52 @@ export default function CareTree({
   pathways,
   patientCity,
   ageBand,
+  showAllPatterns,
+  onShowAllPatterns,
+  buildSnapshot,
+  readOnly = false,
 }: {
   pathways: CarePathway[];
   patientCity: string;
   ageBand: AgeBand | null;
+  showAllPatterns: boolean;
+  onShowAllPatterns: (showAll: boolean) => void;
+  buildSnapshot: (treeDetail: TreeDetail) => ResultsFile;
+  readOnly?: boolean;
 }) {
   const [detail, setDetail] = useState<TreeDetail>("simple");
   const [selectedStepId, setSelectedStepId] = useState<string | null>(null);
-  const [bookedStepIds, setBookedStepIds] = useState<Record<string, boolean>>({});
+  const bookedStepList = useSyncExternalStore(
+    subscribeBookedSteps,
+    getBookedStepSnapshot,
+    getBookedStepServerSnapshot,
+  );
+  const bookedStepIds = useMemo(
+    () => Object.fromEntries(bookedStepList.map((id) => [id, true])),
+    [bookedStepList],
+  );
   const closeStep = useCallback(() => setSelectedStepId(null), []);
-  const finishBooking = useCallback(() => {
-    setBookedStepIds((booked) =>
-      selectedStepId ? { ...booked, [selectedStepId]: true } : booked,
-    );
-    setSelectedStepId(null);
-  }, [selectedStepId]);
   const isPhone = useSyncExternalStore(
     subscribeToPhone,
     phoneSnapshot,
     phoneServerSnapshot,
   );
+  if (isPhone && detail !== "simple") {
+    setDetail("simple");
+  }
 
   useEffect(() => {
-    if (isPhone) {
-      setDetail("simple");
+    function onBooked(event: Event) {
+      const stepNodeId = (event as CustomEvent<{ stepNodeId?: string }>).detail?.stepNodeId;
+      if (!stepNodeId) {
+        return;
+      }
+      setSelectedStepId((current) => (current === stepNodeId ? null : current));
     }
-  }, [isPhone]);
+    window.addEventListener(STEP_BOOKED_EVENT, onBooked);
+    return () => window.removeEventListener(STEP_BOOKED_EVENT, onBooked);
+  }, []);
+
   const { nodes, edges } = useMemo(
     () => buildCareTree(pathways, selectedStepId, detail === "simple"),
     [pathways, selectedStepId, detail],
@@ -613,7 +643,7 @@ export default function CareTree({
       <div
         role="radiogroup"
         aria-label="How much each step shows"
-        className="inline-flex w-fit gap-1 rounded-full border border-[#E2E2E2] bg-white p-1"
+        className="inline-flex w-fit gap-1 rounded-full border border-[#E2E2E2] bg-white p-1 print:hidden"
       >
         <button
           type="button"
@@ -642,14 +672,46 @@ export default function CareTree({
           Detailed
         </button>
       </div>
+      <div
+        role="radiogroup"
+        aria-label="How many patterns to show"
+        className="inline-flex w-fit gap-1 rounded-full border border-[#E2E2E2] bg-white p-1 print:hidden"
+      >
+        <button
+          type="button"
+          role="radio"
+          aria-checked={!showAllPatterns}
+          onClick={() => onShowAllPatterns(false)}
+          className={
+            showAllPatterns
+              ? "cursor-pointer rounded-full px-4 py-2 text-sm font-medium text-black"
+              : "cursor-pointer rounded-full bg-black px-4 py-2 text-sm font-medium text-white"
+          }
+        >
+          Top 3
+        </button>
+        <button
+          type="button"
+          role="radio"
+          aria-checked={showAllPatterns}
+          onClick={() => onShowAllPatterns(true)}
+          className={
+            showAllPatterns
+              ? "cursor-pointer rounded-full bg-black px-4 py-2 text-sm font-medium text-white"
+              : "cursor-pointer rounded-full px-4 py-2 text-sm font-medium text-black"
+          }
+        >
+          All
+        </button>
+      </div>
       <PathwayLegend pathways={pathways} />
       <div
         role="region"
         aria-label="Care pathway diagram"
         className={
           isPhone
-            ? "h-[70svh] w-full overflow-hidden rounded-xl border border-[#E2E2E2] bg-[#F6F6F6]"
-            : "h-[75vh] min-h-[640px] w-full overflow-hidden rounded-xl border border-[#E2E2E2] bg-[#F6F6F6]"
+            ? "h-[70svh] w-full overflow-hidden rounded-xl border border-[#E2E2E2] bg-[#F6F6F6] print:h-[720px] print:min-h-0"
+            : "h-[75vh] min-h-[640px] w-full overflow-hidden rounded-xl border border-[#E2E2E2] bg-[#F6F6F6] print:h-[720px] print:min-h-0"
         }
       >
         <div className="h-full w-full">
@@ -699,8 +761,11 @@ export default function CareTree({
           practitionerType={selected.practitionerType}
           patientCity={patientCity}
           ageBand={ageBand}
+          pathwayId={selected.pathwayId}
+          stepNodeId={selected.stepNodeId}
+          buildSnapshot={() => buildSnapshot(detail)}
           onClose={closeStep}
-          onBooked={finishBooking}
+          readOnly={readOnly}
         />
       ) : null}
     </div>
@@ -719,5 +784,7 @@ function selectedStep(nodes: CareNode[], selectedStepId: string | null) {
     title: node.data.title,
     stepId: node.data.libraryStepId,
     practitionerType: node.data.practitionerTypeId,
+    pathwayId: node.data.categoryId,
+    stepNodeId: node.id,
   };
 }

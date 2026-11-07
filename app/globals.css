@@ -60,8 +60,39 @@ body {
   touch-action: pan-y;
 }
 
+@keyframes journal-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.journal-panel {
+  animation: journal-in 220ms ease-out;
+}
+
+.journal-slider {
+  height: 2.75rem;
+  accent-color: #000;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .step-sheet {
+  .step-sheet,
+  .journal-panel {
     animation: none;
+  }
+}
+
+@media print {
+  .portal-chrome {
+    display: none !important;
+  }
+
+  .react-flow__controls,
+  .react-flow__attribution,
+  .react-flow__panel {
+    display: none !important;
   }
 }

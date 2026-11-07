@@ -1,6 +1,8 @@
-import practitioners from "../data/practitioners.json";
+import { listPractitioners, type Practitioner } from "./booking/practitioners";
 
-export type Practitioner = (typeof practitioners)[number];
+export type { Practitioner };
+
+const practitioners = listPractitioners();
 
 function sameCity(givenCity: string, practitionerCity: string) {
   const location = givenCity.trim().toLowerCase();

@@ -40,3 +40,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# booking attempts and referral snapshots saved by the demo
+/data/runtime/

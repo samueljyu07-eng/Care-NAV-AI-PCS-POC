@@ -32,7 +32,12 @@ export const modelPathwaySchema = z.object({
   pathways: z.array(draftPathwaySchema).max(4),
 });
 
+export const modelJournalPathwaySchema = modelPathwaySchema.extend({
+  journal_note: z.string().min(1),
+});
+
 export type ModelPathwayResponse = z.infer<typeof modelPathwaySchema>;
+export type ModelJournalPathwayResponse = z.infer<typeof modelJournalPathwaySchema>;
 
 export async function validatedOutput<T>(
   schema: z.ZodType<T>,

@@ -67,7 +67,7 @@ export function categoryMaxPoints(categoryId: string): number {
   return total;
 }
 
-function strengthLabel(percentage: number): string | null {
+export function strengthLabel(percentage: number): string | null {
   const labels = [...surveyRules().strength_labels].sort(
     (left, right) => right.min_percentage - left.min_percentage,
   );
@@ -200,6 +200,14 @@ export function scoreSurvey(answers: SurveyAnswer[]): ScoreResult {
       drivers,
     };
   });
+
+  return assignScoreRoles(categories);
+}
+
+export function assignScoreRoles(categories: CategoryScore[]): ScoreResult {
+  for (const category of categories) {
+    category.role = "unmatched";
+  }
 
   const ranked = categories
     .filter((category) => category.percentage > 0)

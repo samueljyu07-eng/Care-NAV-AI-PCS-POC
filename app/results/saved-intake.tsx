@@ -28,8 +28,13 @@ import {
 } from "../intake-answers";
 import { surveyAnswersFromSelection } from "../questions/survey-form";
 import CareTree, { type CarePathway } from "./care-tree";
+import { IntakeSummary } from "./intake-summary";
 import { ProvisionalCards, type CardPathway } from "./path-details";
 import type { DisplayPathway, PresentedPathway } from "../../lib/pathwayDraft";
+import { buildResultsFile } from "../../lib/booking/snapshot";
+import { adjustScores, journalChangeText } from "../../lib/journalAdjustment";
+import { todayIso } from "../../lib/journal";
+import { listJournalEntries } from "../../lib/journalStore";
 import {
   formatPercentage,
   scoreSurvey,
@@ -58,6 +63,7 @@ function pathScoreText(score: CategoryScore): string {
 
 function toTree(pathways: CardPathway[]): CarePathway[] {
   return pathways.map((pathway) => ({
+    categoryId: pathway.category_id,
     name: pathway.name,
     scoreText: pathway.scoreText,
     steps: pathway.steps,
@@ -90,7 +96,7 @@ type ProvisionalState =
 type RefineState =
   | { kind: "idle" }
   | { kind: "loading" }
-  | { kind: "ready"; pathways: DisplayPathway[]; note: string | null }
+  | { kind: "ready"; pathways: DisplayPathway[]; note: string | null; journalNote: string | null }
   | { kind: "urgent"; message: string }
   | { kind: "message"; text: string };
 
@@ -169,6 +175,11 @@ export default function SavedIntake({ children }: { children?: ReactNode }) {
     id: string;
     state: RefineState;
   } | null>(null);
+  const [journalRecord, setJournalRecord] = useState<{
+    id: string;
+    fallback: string | null;
+  } | null>(null);
+  const [showAllPatterns, setShowAllPatterns] = useState(false);
   const refineAbort = useRef<AbortController | null>(null);
   const latestIntake = useRef(storedAnswers);
   const provisional: ProvisionalState =
@@ -180,6 +191,8 @@ export default function SavedIntake({ children }: { children?: ReactNode }) {
   const scores = scoreRecord?.id === storedAnswers ? scoreRecord.result : null;
   const refine: RefineState =
     refineRecord?.id === storedAnswers ? refineRecord.state : { kind: "idle" };
+  const journalFallback =
+    journalRecord?.id === storedAnswers ? journalRecord.fallback : null;
 
   useEffect(() => {
     if (pending) {
@@ -304,7 +317,14 @@ export default function SavedIntake({ children }: { children?: ReactNode }) {
       return;
     }
     const result = scoreSurvey(surveyAnswers);
-    setScoreRecord({ id: requestKey, result });
+    const today = todayIso();
+    const journalEntries = listJournalEntries();
+    const adjustment = adjustScores(result, journalEntries, today);
+    setScoreRecord({ id: requestKey, result: adjustment.adjusted });
+    setJournalRecord({
+      id: requestKey,
+      fallback: adjustment.applied ? journalChangeText(adjustment.reasons) : null,
+    });
     refineAbort.current?.abort();
     const controller = new AbortController();
     refineAbort.current = controller;
@@ -323,6 +343,9 @@ export default function SavedIntake({ children }: { children?: ReactNode }) {
         age_band: saved.ageBand,
         survey_answers: surveyAnswers,
         provisional_paths: provisionalPaths,
+        ...(adjustment.applied
+          ? { journal_entries: journalEntries, journal_today: today }
+          : {}),
       }),
     })
       .then(async (response) => {
@@ -331,6 +354,7 @@ export default function SavedIntake({ children }: { children?: ReactNode }) {
           message?: string | null;
           error?: string;
           pathways?: DisplayPathway[];
+          journal_note?: string;
         };
         if (latestIntake.current !== requestKey) {
           return;
@@ -358,6 +382,10 @@ export default function SavedIntake({ children }: { children?: ReactNode }) {
             kind: "ready",
             pathways: payload.pathways ?? [],
             note: payload.message ?? null,
+            journalNote:
+              typeof payload.journal_note === "string" && payload.journal_note.trim()
+                ? payload.journal_note.trim()
+                : null,
           },
         });
       })
@@ -391,7 +419,51 @@ export default function SavedIntake({ children }: { children?: ReactNode }) {
         ? provisional.pathways
         : [];
   const cardPathways = withScores(shownPathways, scores);
-  const treePathways = toTree(cardPathways);
+  const visibleCardPathways = showAllPatterns
+    ? cardPathways
+    : cardPathways.slice(0, 3);
+  const journalCopy =
+    provisional.kind === "urgent" || refine.kind === "urgent"
+      ? null
+      : refine.kind === "ready" && refine.journalNote
+        ? refine.journalNote
+        : pathwaySettled
+          ? journalFallback
+          : null;
+  const treePathways = toTree(visibleCardPathways);
+  function buildFile(treeDetail: "simple" | "detailed") {
+    const selection = readSurveySelection(getSurveySnapshot());
+    return buildResultsFile({
+      capturedAt: new Date().toISOString(),
+      showAllPatterns,
+      treeDetail,
+      intake: answers
+        ? {
+            ageBand,
+            ageLabel: ageBand ? ageLabel(ageBand) : "Not added",
+            city: answerText(answers.city, "Not added"),
+            timeline: answerText(answers.timeline, "Not added"),
+            symptoms: answers.symptoms,
+            symptomText,
+            concerns: answerText(answers.concerns, "Not added"),
+            pastAttempts: answerText(answers.pastAttempts, "Not added"),
+          }
+        : null,
+      surveyAnswers: answers
+        ? surveyAnswersFromSelection(answers.symptoms, selection)
+        : [],
+      scores,
+      journalNote: journalCopy,
+      journalEntries: listJournalEntries(),
+      refineNote: refine.kind === "ready" ? refine.note : null,
+      draftBanner: SHOW_DRAFT_STEPS ? DRAFT_STEP_LABEL : null,
+      teenNote: ageBand === "13-17" ? TEEN_FRAMING : null,
+      disclaimer: pathwayDisclaimer(ageBand ?? "18+"),
+      footer: RESULTS_FOOTER,
+      visibleCategoryIds: visibleCardPathways.map((pathway) => pathway.category_id),
+      pathways: cardPathways,
+    });
+  }
   const backHref =
     answers?.ageBand &&
     !textUrgent &&
@@ -415,50 +487,28 @@ export default function SavedIntake({ children }: { children?: ReactNode }) {
           {DRAFT_STEP_LABEL}
         </p>
       ) : null}
-      <section
-        aria-label="Your intake answers"
-        className="rounded-xl border border-[#E2E2E2] bg-[#F6F6F6] px-4 py-4"
-      >
-        <h2 className="text-base font-semibold text-black">Your answers</h2>
-        {answers ? (
-          <dl className="mt-3 grid gap-3 text-base leading-7 text-black sm:grid-cols-2">
-            <div>
-              <dt className="text-sm text-[#545454]">Age</dt>
-              <dd>{ageBand ? ageLabel(ageBand) : "Not added"}</dd>
-            </div>
-            <div>
-              <dt className="text-sm text-[#545454]">City</dt>
-              <dd>{answerText(answers.city, "Not added")}</dd>
-            </div>
-            <div>
-              <dt className="text-sm text-[#545454]">Timeline</dt>
-              <dd>{answerText(answers.timeline, "Not added")}</dd>
-            </div>
-            <div className="sm:col-span-2">
-              <dt className="text-sm text-[#545454]">Primary symptoms</dt>
-              <dd>{symptomText}</dd>
-            </div>
-            <div className="sm:col-span-2">
-              <dt className="text-sm text-[#545454]">Main concerns</dt>
-              <dd className="line-clamp-2">
-                {answerText(answers.concerns, "Not added")}
-              </dd>
-            </div>
-            <div className="sm:col-span-2">
-              <dt className="text-sm text-[#545454]">Past attempts</dt>
-              <dd className="line-clamp-2">
-                {answerText(answers.pastAttempts, "Not added")}
-              </dd>
-            </div>
-          </dl>
-        ) : (
+      {answers ? (
+        <IntakeSummary
+          age={ageBand ? ageLabel(ageBand) : "Not added"}
+          city={answerText(answers.city, "Not added")}
+          timeline={answerText(answers.timeline, "Not added")}
+          symptoms={symptomText}
+          concerns={answerText(answers.concerns, "Not added")}
+          pastAttempts={answerText(answers.pastAttempts, "Not added")}
+        />
+      ) : (
+        <section
+          aria-label="Your intake answers"
+          className="rounded-xl border border-[#E2E2E2] bg-[#F6F6F6] px-4 py-4"
+        >
+          <h2 className="text-base font-semibold text-black">Your answers</h2>
           <p className="mt-2 text-base leading-7 text-[#545454]">
             {pending
               ? "Loading your answers…"
               : "No intake answers are saved for this visit. Go back to the form, fill it in, and submit."}
           </p>
-        )}
-      </section>
+        </section>
+      )}
 
       {ageBand === "13-17" ? (
         <aside className="rounded-xl border border-[#E2E2E2] bg-[#F6F6F6] px-4 py-4" role="note">
@@ -512,8 +562,19 @@ export default function SavedIntake({ children }: { children?: ReactNode }) {
           {provisional.notice && refine.kind !== "ready" ? (
             <p className="text-base leading-7 text-[#545454]">{provisional.notice}</p>
           ) : null}
+          {journalCopy ? (
+            <section
+              aria-label="What changed since your survey"
+              className="rounded-xl border border-[#E2E2E2] bg-[#F6F6F6] px-4 py-4"
+            >
+              <h2 className="text-base font-semibold text-black">
+                What changed since your survey
+              </h2>
+              <p className="mt-2 text-base leading-7 text-black">{journalCopy}</p>
+            </section>
+          ) : null}
           <ProvisionalCards
-            pathways={cardPathways}
+            pathways={visibleCardPathways}
             label={refine.kind === "ready" ? null : undefined}
           />
         </>
@@ -537,6 +598,9 @@ export default function SavedIntake({ children }: { children?: ReactNode }) {
             pathways={treePathways}
             patientCity={answers?.city ?? ""}
             ageBand={ageBand}
+            showAllPatterns={showAllPatterns}
+            onShowAllPatterns={setShowAllPatterns}
+            buildSnapshot={buildFile}
           />
         </div>
       ) : null}

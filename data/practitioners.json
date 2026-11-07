@@ -16,7 +16,10 @@
     "sees_ages": [
       "teen",
       "adult"
-    ]
+    ],
+    "phone": "250-555-0101",
+    "website": "https://example.com/clinics/lantern-bend-vestibular-studio",
+    "bookingUrl": "https://example.com/book/p001"
   },
   {
     "id": "p002",
@@ -36,7 +39,10 @@
     "sees_ages": [
       "teen",
       "adult"
-    ]
+    ],
+    "phone": "403-555-0102",
+    "website": "https://example.com/clinics/copper-finch-balance-room",
+    "bookingUrl": "https://example.com/book/p002"
   },
   {
     "id": "p003",
@@ -55,7 +61,10 @@
     "sees_ages": [
       "teen",
       "adult"
-    ]
+    ],
+    "phone": "250-555-0103",
+    "website": "https://example.com/clinics/glasspine-vision-workshop",
+    "bookingUrl": "https://example.com/book/p003"
   },
   {
     "id": "p004",
@@ -75,7 +84,10 @@
     "sees_ages": [
       "teen",
       "adult"
-    ]
+    ],
+    "phone": "403-555-0104",
+    "website": "https://example.com/clinics/horizon-quill-eye-studio",
+    "bookingUrl": "https://example.com/book/p004"
   },
   {
     "id": "p005",
@@ -94,7 +106,10 @@
     "sees_ages": [
       "teen",
       "adult"
-    ]
+    ],
+    "phone": "250-555-0105",
+    "website": "https://example.com/clinics/night-orchard-sleep-centre",
+    "bookingUrl": "https://example.com/book/p005"
   },
   {
     "id": "p006",
@@ -114,7 +129,10 @@
     "sees_ages": [
       "teen",
       "adult"
-    ]
+    ],
+    "phone": "403-555-0106",
+    "website": "https://example.com/clinics/stillwater-drift-sleep-clinic",
+    "bookingUrl": "https://example.com/book/p006"
   },
   {
     "id": "p007",
@@ -133,7 +151,10 @@
     "sees_ages": [
       "teen",
       "adult"
-    ]
+    ],
+    "phone": "250-555-0107",
+    "website": "https://example.com/clinics/meadow-circuit-psychology",
+    "bookingUrl": "https://example.com/book/p007"
   },
   {
     "id": "p008",
@@ -153,7 +174,10 @@
     "sees_ages": [
       "teen",
       "adult"
-    ]
+    ],
+    "phone": "403-555-0108",
+    "website": "https://example.com/clinics/cedar-kiln-counselling",
+    "bookingUrl": "https://example.com/book/p008"
   },
   {
     "id": "p009",
@@ -173,7 +197,9 @@
     "sees_ages": [
       "teen",
       "adult"
-    ]
+    ],
+    "phone": "250-555-0109",
+    "website": "https://example.com/clinics/ridgepath-movement-clinic"
   },
   {
     "id": "p010",
@@ -192,7 +218,10 @@
     "sees_ages": [
       "teen",
       "adult"
-    ]
+    ],
+    "phone": "403-555-0110",
+    "website": "https://example.com/clinics/summit-sparrow-sports-medicine",
+    "bookingUrl": "https://example.com/book/p010"
   },
   {
     "id": "p011",
@@ -211,7 +240,10 @@
         "English"
       ],
       "accepting_new_patients": true
-    }
+    },
+    "phone": "250-555-0111",
+    "website": "https://example.com/clinics/bramble-peak-sports-clinic",
+    "bookingUrl": "https://example.com/book/p011"
   },
   {
     "id": "p012",
@@ -229,7 +261,10 @@
         "English"
       ],
       "accepting_new_patients": true
-    }
+    },
+    "phone": "604-555-0112",
+    "website": "https://example.com/clinics/harbour-line-sports-clinic",
+    "bookingUrl": "https://example.com/book/p012"
   },
   {
     "id": "p013",
@@ -248,7 +283,9 @@
         "English"
       ],
       "accepting_new_patients": true
-    }
+    },
+    "phone": "403-555-0113",
+    "website": "https://example.com/clinics/foothill-thread-movement"
   },
   {
     "id": "p014",
@@ -259,10 +296,18 @@
     "about": "Willa is a fictional family physician. People use a visit to gather questions after a concussion and decide what to raise next. This clinic is invented for the demo and is not a real practice.",
     "details": {
       "availability": "Monday and Wednesday mornings",
-      "languages": ["English"],
+      "languages": [
+        "English"
+      ],
       "accepting_new_patients": true
     },
-    "sees_ages": ["teen", "adult"]
+    "sees_ages": [
+      "teen",
+      "adult"
+    ],
+    "phone": "250-555-0114",
+    "website": "https://example.com/clinics/orchard-lamp-family-practice",
+    "bookingUrl": "https://example.com/book/p014"
   },
   {
     "id": "p015",
@@ -273,10 +318,18 @@
     "about": "Ned is a fictional family physician. A visit is for listing what someone has noticed after a concussion so those notes can be reviewed. This listing does not represent a real person or clinic.",
     "details": {
       "availability": "Thursday afternoons",
-      "languages": ["English"],
+      "languages": [
+        "English"
+      ],
       "accepting_new_patients": true
     },
-    "sees_ages": ["teen", "adult"]
+    "sees_ages": [
+      "teen",
+      "adult"
+    ],
+    "phone": "403-555-0115",
+    "website": "https://example.com/clinics/cinder-street-family-practice",
+    "bookingUrl": "https://example.com/book/p015"
   },
   {
     "id": "p016",
@@ -287,10 +340,18 @@
     "about": "Nell is a fictional optometrist who talks with people about eye strain, focusing, and tracking after a concussion. A visit is a chance to describe those visual symptoms and decide what to raise with a GP. This profile is sample data for the demo.",
     "details": {
       "availability": "Tuesday and Thursday mornings",
-      "languages": ["English"],
+      "languages": [
+        "English"
+      ],
       "accepting_new_patients": true
     },
-    "sees_ages": ["teen", "adult"]
+    "sees_ages": [
+      "teen",
+      "adult"
+    ],
+    "phone": "250-555-0116",
+    "website": "https://example.com/clinics/orchard-glass-optometry",
+    "bookingUrl": "https://example.com/book/p016"
   },
   {
     "id": "p017",
@@ -301,9 +362,17 @@
     "about": "Felix is a fictional optometrist who meets people bothered by reading fatigue or screen strain after a concussion. The conversation is about those symptoms and which questions to take to a doctor. This clinic is invented for the demo.",
     "details": {
       "availability": "Wednesday afternoons and Friday mornings",
-      "languages": ["English"],
+      "languages": [
+        "English"
+      ],
       "accepting_new_patients": true
     },
-    "sees_ages": ["teen", "adult"]
+    "sees_ages": [
+      "teen",
+      "adult"
+    ],
+    "phone": "403-555-0117",
+    "website": "https://example.com/clinics/bowlight-optometry-room",
+    "bookingUrl": "https://example.com/book/p017"
   }
 ]
