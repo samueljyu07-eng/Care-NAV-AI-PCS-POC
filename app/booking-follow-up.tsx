@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { usePathname } from "next/navigation";
 import {
   getBookingClock,
   getBookingClockServer,
@@ -36,6 +37,7 @@ export default function BookingFollowUp() {
   );
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const pathname = usePathname();
   const leftTab = useRef(false);
 
   useEffect(() => {
@@ -65,6 +67,10 @@ export default function BookingFollowUp() {
     void patchBookingStatus("expired");
   }, [attempt, now]);
 
+  if (pathname.startsWith("/portal")) {
+    return null;
+  }
+
   if (!attempt || now === 0) {
     return null;
   }
@@ -86,7 +92,7 @@ export default function BookingFollowUp() {
   }
 
   const prompt = showPrompt ? (
-    <div className="fixed inset-0 z-[80]">
+    <div className="fixed inset-0 z-[80] print:hidden">
       <div className="absolute inset-0 bg-black/40" />
       <div
         role="dialog"
@@ -154,7 +160,7 @@ export default function BookingFollowUp() {
         setError(null);
         openBookingPrompt();
       }}
-      className="fixed right-4 bottom-4 z-40 inline-flex min-h-12 cursor-pointer items-center justify-center rounded-full bg-black px-4 text-sm font-medium text-white shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+      className="fixed right-4 bottom-4 z-40 inline-flex min-h-12 cursor-pointer items-center justify-center rounded-full bg-black px-4 text-sm font-medium text-white shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black print:hidden"
     >
       {BADGE_LABEL}
     </button>

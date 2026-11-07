@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
-    "import-steps": "node scripts/import-steps.mts"
+    "import-steps": "node scripts/import-steps.mts",
+    "migrate-bookings": "node scripts/migrate-bookings.mts",
+    "seed-portal": "node scripts/seed-portal.mts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.135.0",

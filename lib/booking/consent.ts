@@ -1,8 +1,8 @@
 // Patient-facing booking words live here. Bump the version when the consent paragraphs change.
-export const CONSENT_TEXT_VERSION = "2026-11-06";
+export const CONSENT_TEXT_VERSION = "2026-11-06.2";
 
 export function consentIntro(clinicName: string): string {
-  return `${clinicName} can receive the intake answers, survey results, and the care pathway tree shown on your results page. CareNav sends that file when you press Continue, even if you do not finish booking. The clinic sees it in their CareNav portal.`;
+  return `${clinicName} can receive your name, phone, email, intake answers, survey results, and the care pathway tree shown on your results page. CareNav sends that file when you press Continue, even if you do not finish booking. The clinic sees it in their CareNav portal.`;
 }
 
 export const CONSENT_UNCHECKED =

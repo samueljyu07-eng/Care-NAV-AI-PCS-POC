@@ -28,6 +28,7 @@ import {
 } from "../intake-answers";
 import { surveyAnswersFromSelection } from "../questions/survey-form";
 import CareTree, { type CarePathway } from "./care-tree";
+import { IntakeSummary } from "./intake-summary";
 import { ProvisionalCards, type CardPathway } from "./path-details";
 import type { DisplayPathway, PresentedPathway } from "../../lib/pathwayDraft";
 import { buildResultsFile } from "../../lib/booking/snapshot";
@@ -486,50 +487,28 @@ export default function SavedIntake({ children }: { children?: ReactNode }) {
           {DRAFT_STEP_LABEL}
         </p>
       ) : null}
-      <section
-        aria-label="Your intake answers"
-        className="rounded-xl border border-[#E2E2E2] bg-[#F6F6F6] px-4 py-4"
-      >
-        <h2 className="text-base font-semibold text-black">Your answers</h2>
-        {answers ? (
-          <dl className="mt-3 grid gap-3 text-base leading-7 text-black sm:grid-cols-2">
-            <div>
-              <dt className="text-sm text-[#545454]">Age</dt>
-              <dd>{ageBand ? ageLabel(ageBand) : "Not added"}</dd>
-            </div>
-            <div>
-              <dt className="text-sm text-[#545454]">City</dt>
-              <dd>{answerText(answers.city, "Not added")}</dd>
-            </div>
-            <div>
-              <dt className="text-sm text-[#545454]">Timeline</dt>
-              <dd>{answerText(answers.timeline, "Not added")}</dd>
-            </div>
-            <div className="sm:col-span-2">
-              <dt className="text-sm text-[#545454]">Primary symptoms</dt>
-              <dd>{symptomText}</dd>
-            </div>
-            <div className="sm:col-span-2">
-              <dt className="text-sm text-[#545454]">Main concerns</dt>
-              <dd className="line-clamp-2">
-                {answerText(answers.concerns, "Not added")}
-              </dd>
-            </div>
-            <div className="sm:col-span-2">
-              <dt className="text-sm text-[#545454]">Past attempts</dt>
-              <dd className="line-clamp-2">
-                {answerText(answers.pastAttempts, "Not added")}
-              </dd>
-            </div>
-          </dl>
-        ) : (
+      {answers ? (
+        <IntakeSummary
+          age={ageBand ? ageLabel(ageBand) : "Not added"}
+          city={answerText(answers.city, "Not added")}
+          timeline={answerText(answers.timeline, "Not added")}
+          symptoms={symptomText}
+          concerns={answerText(answers.concerns, "Not added")}
+          pastAttempts={answerText(answers.pastAttempts, "Not added")}
+        />
+      ) : (
+        <section
+          aria-label="Your intake answers"
+          className="rounded-xl border border-[#E2E2E2] bg-[#F6F6F6] px-4 py-4"
+        >
+          <h2 className="text-base font-semibold text-black">Your answers</h2>
           <p className="mt-2 text-base leading-7 text-[#545454]">
             {pending
               ? "Loading your answers…"
               : "No intake answers are saved for this visit. Go back to the form, fill it in, and submit."}
           </p>
-        )}
-      </section>
+        </section>
+      )}
 
       {ageBand === "13-17" ? (
         <aside className="rounded-xl border border-[#E2E2E2] bg-[#F6F6F6] px-4 py-4" role="note">

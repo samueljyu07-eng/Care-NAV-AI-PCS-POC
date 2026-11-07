@@ -84,3 +84,15 @@ body {
     animation: none;
   }
 }
+
+@media print {
+  .portal-chrome {
+    display: none !important;
+  }
+
+  .react-flow__controls,
+  .react-flow__attribution,
+  .react-flow__panel {
+    display: none !important;
+  }
+}

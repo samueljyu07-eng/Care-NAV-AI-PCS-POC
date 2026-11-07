@@ -5,11 +5,16 @@ export type ClinicReferralNotice = {
   body: string;
 };
 
+export function clinicPortalUrl(): string {
+  const base = (process.env.CARENAV_APP_URL ?? "http://localhost:3000").trim().replace(/\/+$/, "");
+  return `${base}/portal`;
+}
+
 export function clinicReferralNotice(): ClinicReferralNotice {
   const to = process.env.CARENAV_CLINIC_NOTIFY_EMAIL?.trim() || null;
   return {
     to,
-    body: CLINIC_REFERRAL_EMAIL,
+    body: `${CLINIC_REFERRAL_EMAIL} ${clinicPortalUrl()}`,
   };
 }
 

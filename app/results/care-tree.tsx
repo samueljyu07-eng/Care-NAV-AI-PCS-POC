@@ -565,6 +565,7 @@ export default function CareTree({
   showAllPatterns,
   onShowAllPatterns,
   buildSnapshot,
+  readOnly = false,
 }: {
   pathways: CarePathway[];
   patientCity: string;
@@ -572,6 +573,7 @@ export default function CareTree({
   showAllPatterns: boolean;
   onShowAllPatterns: (showAll: boolean) => void;
   buildSnapshot: (treeDetail: TreeDetail) => ResultsFile;
+  readOnly?: boolean;
 }) {
   const [detail, setDetail] = useState<TreeDetail>("simple");
   const [selectedStepId, setSelectedStepId] = useState<string | null>(null);
@@ -641,7 +643,7 @@ export default function CareTree({
       <div
         role="radiogroup"
         aria-label="How much each step shows"
-        className="inline-flex w-fit gap-1 rounded-full border border-[#E2E2E2] bg-white p-1"
+        className="inline-flex w-fit gap-1 rounded-full border border-[#E2E2E2] bg-white p-1 print:hidden"
       >
         <button
           type="button"
@@ -673,7 +675,7 @@ export default function CareTree({
       <div
         role="radiogroup"
         aria-label="How many patterns to show"
-        className="inline-flex w-fit gap-1 rounded-full border border-[#E2E2E2] bg-white p-1"
+        className="inline-flex w-fit gap-1 rounded-full border border-[#E2E2E2] bg-white p-1 print:hidden"
       >
         <button
           type="button"
@@ -708,8 +710,8 @@ export default function CareTree({
         aria-label="Care pathway diagram"
         className={
           isPhone
-            ? "h-[70svh] w-full overflow-hidden rounded-xl border border-[#E2E2E2] bg-[#F6F6F6]"
-            : "h-[75vh] min-h-[640px] w-full overflow-hidden rounded-xl border border-[#E2E2E2] bg-[#F6F6F6]"
+            ? "h-[70svh] w-full overflow-hidden rounded-xl border border-[#E2E2E2] bg-[#F6F6F6] print:h-[720px] print:min-h-0"
+            : "h-[75vh] min-h-[640px] w-full overflow-hidden rounded-xl border border-[#E2E2E2] bg-[#F6F6F6] print:h-[720px] print:min-h-0"
         }
       >
         <div className="h-full w-full">
@@ -763,6 +765,7 @@ export default function CareTree({
           stepNodeId={selected.stepNodeId}
           buildSnapshot={() => buildSnapshot(detail)}
           onClose={closeStep}
+          readOnly={readOnly}
         />
       ) : null}
     </div>

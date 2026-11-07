@@ -23,7 +23,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <div className="flex justify-center px-4 pt-8">
+        <div className="flex justify-center px-4 pt-8 print:hidden">
           <Image
             src="/carenav-logo.jpg"
             alt="CareNav"

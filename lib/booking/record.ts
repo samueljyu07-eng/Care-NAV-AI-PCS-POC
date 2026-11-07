@@ -79,13 +79,17 @@ export async function recordBooking(
     };
     store.attempts.push(attempt);
 
-    if (input.sharedWithClinic && input.snapshot) {
+    if (input.sharedWithClinic && input.snapshot && input.patient) {
       store.referrals.push({
         id: randomUUID(),
         attemptId: attempt.id,
         clinicId,
         createdAt: attempt.createdAt,
         snapshot: input.snapshot,
+        status: "new",
+        statusUpdatedAt: attempt.createdAt,
+        firstViewedAt: null,
+        patient: input.patient,
       });
       return { createdReferral: true, conflict: false };
     }

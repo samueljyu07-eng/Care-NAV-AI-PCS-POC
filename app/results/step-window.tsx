@@ -45,6 +45,7 @@ export default function StepWindow({
   stepNodeId,
   buildSnapshot,
   onClose,
+  readOnly = false,
 }: {
   title: string;
   stepId: string | null;
@@ -55,6 +56,7 @@ export default function StepWindow({
   stepNodeId: string;
   buildSnapshot: () => ResultsFile;
   onClose: () => void;
+  readOnly?: boolean;
 }) {
   const [isPhone, setIsPhone] = useState(false);
   const [consent, setConsent] = useState<ConsentTarget | null>(null);
@@ -137,7 +139,7 @@ export default function StepWindow({
   }
 
   return createPortal(
-    <div className="fixed inset-0 z-50">
+    <div className="fixed inset-0 z-50 print:hidden">
       <div className="absolute inset-0 bg-black/40" onClick={onClose} />
       <div
         ref={dialogRef}
@@ -241,6 +243,7 @@ export default function StepWindow({
                 patientCity={patientCity}
                 ageBand={ageBand}
                 roomy={isPhone}
+                readOnly={readOnly}
                 onStart={(person, destination) => setConsent({ person, destination })}
               />
             </div>
@@ -369,12 +372,14 @@ function WhoOffers({
   patientCity,
   ageBand,
   roomy = false,
+  readOnly = false,
   onStart,
 }: {
   practitionerType: string;
   patientCity: string;
   ageBand: AgeBand | null;
   roomy?: boolean;
+  readOnly?: boolean;
   onStart: (person: Practitioner, destination: BookingDestination) => void;
 }) {
   const matches = cliniciansForStep(practitionerType, patientCity, ageBand ?? undefined);
@@ -407,7 +412,7 @@ function WhoOffers({
                     : "Not accepting new patients"}
                 </p>
                 <p className="mt-1 text-sm leading-6 text-[#545454]">Fictional clinic.</p>
-                {actions.length > 0 ? (
+                {readOnly ? null : actions.length > 0 ? (
                   <div className="mt-3 flex flex-col gap-2 sm:flex-row">
                     {actions.map((action) => (
                       <button
@@ -472,16 +477,27 @@ function ConsentStep({
 }) {
   const [share, setShare] = useState(false);
   const [parental, setParental] = useState(false);
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
   const [problem, setProblem] = useState<string | null>(null);
   const sending = useRef(false);
   const under18 = ageBand === "13-17";
-  const canContinue = consentCanContinue({
-    shared: share,
-    under18,
-    parentalConsent: parental,
-  });
+  const contactReady =
+    name.trim().length > 0 && phone.trim().length >= 7 && email.trim().includes("@");
+  const canContinue =
+    consentCanContinue({
+      shared: share,
+      under18,
+      parentalConsent: parental,
+    }) && (!share || contactReady);
 
   function onSubmit(event: FormEvent<HTMLFormElement>) {
+    if (share && !contactReady) {
+      event.preventDefault();
+      setProblem("Add your name, phone, and email so the clinic can reach you.");
+      return;
+    }
     if (!canContinue || sending.current) {
       event.preventDefault();
       return;
@@ -581,6 +597,51 @@ function ConsentStep({
           />
           <span>{PARENT_LABEL}</span>
         </label>
+      ) : null}
+      {share ? (
+        <div className="flex flex-col gap-3">
+          <p className="text-base leading-7 text-[#545454]">
+            The clinic needs these to reach you. They are sent only with the file.
+          </p>
+          <label className="flex flex-col gap-1 text-sm text-[#545454]">
+            Your name
+            <input
+              name="patientName"
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              autoComplete="name"
+              required
+              maxLength={80}
+              className="min-h-12 rounded-xl border border-[#E2E2E2] bg-white px-3 text-base text-black"
+            />
+          </label>
+          <label className="flex flex-col gap-1 text-sm text-[#545454]">
+            Phone
+            <input
+              name="patientPhone"
+              type="tel"
+              value={phone}
+              onChange={(event) => setPhone(event.target.value)}
+              autoComplete="tel"
+              required
+              maxLength={30}
+              className="min-h-12 rounded-xl border border-[#E2E2E2] bg-white px-3 text-base text-black"
+            />
+          </label>
+          <label className="flex flex-col gap-1 text-sm text-[#545454]">
+            Email
+            <input
+              name="patientEmail"
+              type="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              autoComplete="email"
+              required
+              maxLength={120}
+              className="min-h-12 rounded-xl border border-[#E2E2E2] bg-white px-3 text-base text-black"
+            />
+          </label>
+        </div>
       ) : null}
       {problem ? <p className="text-base leading-7 text-red-950">{problem}</p> : null}
       <div className="mt-2 flex flex-col gap-3 sm:flex-row">

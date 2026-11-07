@@ -90,8 +90,15 @@ function ScorePie({ percent }: { percent: number }) {
   );
 }
 
-function PathwayCard({ pathway }: { pathway: CardPathway }) {
+function PathwayCard({
+  pathway,
+  forceOpen = false,
+}: {
+  pathway: CardPathway;
+  forceOpen?: boolean;
+}) {
   const [open, setOpen] = useState(false);
+  const shown = open || forceOpen;
   const bodyId = `${pathway.category_id}-details`;
   const percent = scorePercent(pathway.scoreText);
   const color = pathwayColor(pathway.name);
@@ -103,7 +110,7 @@ function PathwayCard({ pathway }: { pathway: CardPathway }) {
     >
       <button
         type="button"
-        aria-expanded={open}
+        aria-expanded={shown}
         aria-controls={bodyId}
         onClick={() => setOpen((current) => !current)}
         className="flex w-full cursor-pointer items-start justify-between gap-3 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
@@ -132,7 +139,7 @@ function PathwayCard({ pathway }: { pathway: CardPathway }) {
         <svg
           viewBox="0 0 20 20"
           aria-hidden="true"
-          className={`mt-1 h-5 w-5 shrink-0 text-black transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+          className={`mt-1 h-5 w-5 shrink-0 text-black transition-transform duration-300 ${shown ? "rotate-180" : ""}`}
         >
           <path
             d="M5 7.5 10 12.5 15 7.5"
@@ -146,9 +153,9 @@ function PathwayCard({ pathway }: { pathway: CardPathway }) {
       </button>
       <div
         id={bodyId}
-        className={`grid transition-[grid-template-rows] duration-300 ease-out ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
+        className={`grid transition-[grid-template-rows] duration-300 ease-out ${shown ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
       >
-        <div className="overflow-hidden" inert={open ? undefined : true}>
+        <div className="overflow-hidden" inert={shown ? undefined : true}>
           <p className="mt-3 text-base leading-7 text-black">{pathway.why_it_may_apply}</p>
           <StepList steps={pathway.steps} />
           {pathway.sources.length > 0 ? (
@@ -183,9 +190,11 @@ function PathwayCard({ pathway }: { pathway: CardPathway }) {
 export function ProvisionalCards({
   pathways,
   label = PROVISIONAL_LABEL,
+  forceOpen = false,
 }: {
   pathways: CardPathway[];
   label?: string | null;
+  forceOpen?: boolean;
 }) {
   if (pathways.length === 0) {
     return null;
@@ -195,7 +204,7 @@ export function ProvisionalCards({
       {label ? <p className="text-base font-semibold text-black">{label}</p> : null}
       <ul className="flex flex-col gap-4">
         {pathways.map((pathway) => (
-          <PathwayCard key={pathway.category_id} pathway={pathway} />
+          <PathwayCard key={pathway.category_id} pathway={pathway} forceOpen={forceOpen} />
         ))}
       </ul>
     </section>

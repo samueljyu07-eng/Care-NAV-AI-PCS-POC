@@ -33,7 +33,11 @@ async function useStore() {
 async function savedStore(file: string) {
   return JSON.parse(await readFile(file, "utf8")) as {
     attempts: { id: string; sharedWithClinic: boolean; status: string }[];
-    referrals: { attemptId: string; snapshot: { marker?: string } }[];
+    referrals: {
+      attemptId: string;
+      snapshot: { marker?: string };
+      patient?: { name: string; email: string };
+    }[];
   };
 }
 
@@ -160,6 +164,9 @@ it("stores the shared results file and logs a clinic email with no patient detai
   const form = bookingForm({
     sharedWithClinic: "true",
     snapshot: JSON.stringify(snapshot),
+    patientName: "ONLY-IN-NAME",
+    patientPhone: "250-555-0199",
+    patientEmail: "only-in-name@example.com",
   });
   const result = await recordBooking("p001", form);
 
@@ -167,12 +174,20 @@ it("stores the shared results file and logs a clinic email with no patient detai
   const store = await savedStore(file);
   expect(store.referrals).toHaveLength(1);
   expect(store.referrals[0]?.snapshot).toEqual(snapshot);
+  expect(store.referrals[0]?.patient).toEqual({
+    name: "ONLY-IN-NAME",
+    phone: "250-555-0199",
+    email: "only-in-name@example.com",
+  });
   expect(info).toHaveBeenCalledTimes(1);
   const line = String(info.mock.calls[0]?.[0]);
   expect(line).toContain(CLINIC_REFERRAL_EMAIL);
+  expect(line).toContain("/portal");
   expect(line).toContain("clinic@example.com");
   expect(line).toContain("lantern-bend-vestibular-studio");
   expect(line).not.toContain("ONLY-IN-SNAPSHOT");
+  expect(line).not.toContain("ONLY-IN-NAME");
+  expect(line).not.toContain("only-in-name@example.com");
 });
 
 it("refuses a shared teen file without parent permission and does not save it", async () => {
@@ -191,6 +206,20 @@ it("refuses a shared teen file without parent permission and does not save it", 
   await expect(readFile(file, "utf8")).rejects.toThrow();
 });
 
+it("refuses a shared file that has no contact details", async () => {
+  const file = await useStore();
+  const result = await recordBooking(
+    "p001",
+    bookingForm({
+      sharedWithClinic: "true",
+      snapshot: JSON.stringify({ kind: "results-file" }),
+    }),
+  );
+
+  expect(result).toMatchObject({ ok: false, status: 400 });
+  await expect(readFile(file, "utf8")).rejects.toThrow();
+});
+
 it("accepts a shared teen file when a parent confirms", async () => {
   const file = await useStore();
   vi.spyOn(console, "info").mockImplementation(() => {});
@@ -201,6 +230,9 @@ it("accepts a shared teen file when a parent confirms", async () => {
       sharedWithClinic: "true",
       parentalConsent: "true",
       snapshot: JSON.stringify({ kind: "results-file", marker: "teen-file" }),
+      patientName: "Teen Demo",
+      patientPhone: "250-555-0198",
+      patientEmail: "teen.demo@example.com",
     }),
   );
 

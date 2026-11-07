@@ -30,12 +30,62 @@ export type BookingAttempt = {
   statusUpdatedAt: string;
 };
 
+export const REFERRAL_STATUSES = ["new", "viewed", "contacted", "booked", "closed"] as const;
+export type ReferralStatus = (typeof REFERRAL_STATUSES)[number];
+
+export const CLINIC_REFERRAL_STATUSES = ["contacted", "booked", "closed"] as const;
+export type ClinicReferralStatus = (typeof CLINIC_REFERRAL_STATUSES)[number];
+
+export const REFERRAL_STATUS_LABEL: Record<ReferralStatus, string> = {
+  new: "New",
+  viewed: "Viewed",
+  contacted: "Contacted",
+  booked: "Booked",
+  closed: "Closed / Not a fit",
+};
+
+export type PatientSays = "booked" | "not_yet" | "no_response";
+
+export const PATIENT_SAYS_LABEL: Record<PatientSays, string> = {
+  booked: "Booked",
+  not_yet: "Not yet",
+  no_response: "No response",
+};
+
+export type PatientContact = {
+  name: string;
+  phone: string;
+  email: string;
+};
+
 export type Referral = {
   id: string;
   attemptId: string;
   clinicId: string;
   createdAt: string;
   snapshot: ResultsFile;
+  status: ReferralStatus;
+  statusUpdatedAt: string;
+  firstViewedAt: string | null;
+  patient: PatientContact;
+};
+
+export const ACCESS_ACTIONS = [
+  "viewed_list",
+  "opened_referral",
+  "status_changed",
+  "printed",
+] as const;
+export type AccessAction = (typeof ACCESS_ACTIONS)[number];
+
+export type AccessLog = {
+  id: string;
+  timestamp: string;
+  referralId: string | null;
+  clinicId: string;
+  actor: "shared-portal";
+  action: AccessAction;
+  details: string;
 };
 
 export type BookFormInput = {
@@ -50,6 +100,7 @@ export type BookFormInput = {
   ageBand: "13-17" | "18+";
   destination: BookingDestination;
   snapshot: ResultsFile | null;
+  patient: PatientContact | null;
 };
 
 const PATIENT_STATUSES = new Set<BookingStatus>([
@@ -123,6 +174,51 @@ export function nextStatusAllowed(
 
 export function isPatientStatus(value: unknown): value is BookingStatus {
   return typeof value === "string" && PATIENT_STATUSES.has(value as BookingStatus);
+}
+
+export function isReferralStatus(value: unknown): value is ReferralStatus {
+  return typeof value === "string" && (REFERRAL_STATUSES as readonly string[]).includes(value);
+}
+
+export function isClinicReferralStatus(value: unknown): value is ClinicReferralStatus {
+  return (
+    typeof value === "string" && (CLINIC_REFERRAL_STATUSES as readonly string[]).includes(value)
+  );
+}
+
+export function patientSays(status: BookingStatus | null | undefined): PatientSays {
+  if (status === "booked") {
+    return "booked";
+  }
+  if (status === "remind_later") {
+    return "not_yet";
+  }
+  return "no_response";
+}
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PHONE_PATTERN = /^[0-9+().\-\s]{7,30}$/;
+
+export function parsePatientContact(
+  form: FormData,
+  shared: boolean,
+): { ok: true; patient: PatientContact | null } | { ok: false; error: string } {
+  if (!shared) {
+    return { ok: true, patient: null };
+  }
+  const name = field(form, "patientName");
+  const phone = field(form, "patientPhone");
+  const email = field(form, "patientEmail");
+  if (!name || name.length > 80) {
+    return { ok: false, error: "Add your name so the clinic can reach you." };
+  }
+  if (!PHONE_PATTERN.test(phone)) {
+    return { ok: false, error: "Add a phone number the clinic can call." };
+  }
+  if (email.length > 120 || !EMAIL_PATTERN.test(email)) {
+    return { ok: false, error: "Add an email the clinic can use." };
+  }
+  return { ok: true, patient: { name, phone, email } };
 }
 
 function field(form: FormData, name: string): string {
@@ -233,6 +329,10 @@ export function parseBookForm(
   if (!snapshot.ok) {
     return snapshot;
   }
+  const patient = parsePatientContact(form, sharedWithClinic);
+  if (!patient.ok) {
+    return patient;
+  }
 
   return {
     ok: true,
@@ -248,6 +348,7 @@ export function parseBookForm(
       ageBand,
       destination,
       snapshot: snapshot.snapshot,
+      patient: patient.patient,
     },
   };
 }
