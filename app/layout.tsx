@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { SiteFollowUp, SiteLogo } from "./site-chrome";
+import BookingFollowUp from "./booking-follow-up";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -22,9 +23,18 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <SiteLogo />
+        <div className="flex justify-center px-4 pt-8 print:hidden">
+          <Image
+            src="/carenav-logo.jpg"
+            alt="CareNav"
+            width={1024}
+            height={1024}
+            preload
+            className="h-auto w-14 sm:w-18"
+          />
+        </div>
         {children}
-        <SiteFollowUp />
+        <BookingFollowUp />
       </body>
     </html>
   );

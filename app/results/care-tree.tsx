@@ -566,7 +566,6 @@ export default function CareTree({
   onShowAllPatterns,
   buildSnapshot,
   readOnly = false,
-  diagramSizeClass,
 }: {
   pathways: CarePathway[];
   patientCity: string;
@@ -575,8 +574,6 @@ export default function CareTree({
   onShowAllPatterns: (showAll: boolean) => void;
   buildSnapshot: (treeDetail: TreeDetail) => ResultsFile;
   readOnly?: boolean;
-  // Overrides the diagram's height, e.g. for the compact /embed/pathway demo.
-  diagramSizeClass?: string;
 }) {
   const [detail, setDetail] = useState<TreeDetail>("simple");
   const [selectedStepId, setSelectedStepId] = useState<string | null>(null);
@@ -711,9 +708,11 @@ export default function CareTree({
       <div
         role="region"
         aria-label="Care pathway diagram"
-        className={`${
-          diagramSizeClass ?? (isPhone ? "h-[70svh]" : "h-[75vh] min-h-[640px]")
-        } w-full overflow-hidden rounded-xl border border-[#E2E2E2] bg-[#F6F6F6] print:h-[720px] print:min-h-0`}
+        className={
+          isPhone
+            ? "h-[70svh] w-full overflow-hidden rounded-xl border border-[#E2E2E2] bg-[#F6F6F6] print:h-[720px] print:min-h-0"
+            : "h-[75vh] min-h-[640px] w-full overflow-hidden rounded-xl border border-[#E2E2E2] bg-[#F6F6F6] print:h-[720px] print:min-h-0"
+        }
       >
         <div className="h-full w-full">
           <StepUiContext.Provider
