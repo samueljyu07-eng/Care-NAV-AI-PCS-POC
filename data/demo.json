@@ -1,0 +1,1077 @@
+{
+  "capturedAt": "2026-11-18T02:32:42.610Z",
+  "intake": {
+    "ageBand": "18+",
+    "ageLabel": "18 or older",
+    "city": "Kelowna, BC",
+    "timeline": "3 months",
+    "symptomText": "Headache, Dizziness, Light sensitivity, Brain fog",
+    "concerns": "Headaches get worse with screen time and I lose focus at work after an hour.",
+    "pastAttempts": "Rest and over-the-counter pain relief. Tried going back to work full days."
+  },
+  "refineNote": null,
+  "journalNote": null,
+  "pathways": [
+    {
+      "category_id": "oculomotor",
+      "why_it_may_apply": "You said your headaches get worse with screen time and that you lose focus at work after an hour. In the survey you also described eyes tiring quickly or reading fatigue, and symptoms when scrolling a phone or tracking moving things. These are possible features of this category. Only a clinician can say whether they are relevant for you.",
+      "steps": [
+        {
+          "order": 1,
+          "title": "Get a vision and eye-movement assessment",
+          "practitioner_type": "optometrist",
+          "rationale": "It may help identify visual problems that need follow-up; screening alone is not a diagnosis.",
+          "step_id": "OCU-01",
+          "from_library": true,
+          "draft_label": "Draft: pending clinician review",
+          "safety_note": "",
+          "sources": [
+            {
+              "title": "Ontario Living Concussion Guidelines — Vestibular (Balance/Dizziness) & Vision Dysfunction",
+              "url": "https://concussionsontario.org/concussion/guideline-section/vestibular-balance-dizziness-vision-dysfunction",
+              "limits": "Supports VOMS screening, further assessment for persistent functional symptoms, consideration of vestibular interventions after assessment, BPPV suspicion/management, and specialist vision referral. Does not validate the workbook’s specific YouTube video or every home exercise."
+            },
+            {
+              "title": "Association between post-concussion symptoms and oculomotor deficits among adolescents",
+              "url": "https://pubmed.ncbi.nlm.nih.gov/34383619/",
+              "limits": "Supports an association between post-concussion symptoms and oculomotor deficits in the studied adolescents. It is not a treatment trial, not a guideline, and does not directly support reading aids, generic home exercises, or general therapy claims."
+            },
+            {
+              "title": "CDC — Safety Guidelines for Pediatric Mild TBI",
+              "url": "https://www.cdc.gov/traumatic-brain-injury/hcp/clinical-guidance/pediatric-mtbi.html",
+              "limits": "Supports age-appropriate assessment, gradual return to non-sport activity after 1–2 days of rest as tolerated, clear return-to-activity instructions, referral when symptoms do not resolve as expected after 2–4 weeks, and attention to red flags. Does not support every specialized intervention in the workbook."
+            }
+          ]
+        },
+        {
+          "order": 2,
+          "title": "Ask about assessment before using visual supports",
+          "practitioner_type": "optometrist",
+          "rationale": "It may help connect symptoms to an assessed visual issue and avoid using supports that are not appropriate.",
+          "step_id": "OCU-03",
+          "from_library": true,
+          "draft_label": "Draft: pending clinician review",
+          "safety_note": "",
+          "sources": [
+            {
+              "title": "Ontario Living Concussion Guidelines — Vestibular (Balance/Dizziness) & Vision Dysfunction",
+              "url": "https://concussionsontario.org/concussion/guideline-section/vestibular-balance-dizziness-vision-dysfunction",
+              "limits": "Supports VOMS screening, further assessment for persistent functional symptoms, consideration of vestibular interventions after assessment, BPPV suspicion/management, and specialist vision referral. Does not validate the workbook’s specific YouTube video or every home exercise."
+            },
+            {
+              "title": "Association between post-concussion symptoms and oculomotor deficits among adolescents",
+              "url": "https://pubmed.ncbi.nlm.nih.gov/34383619/",
+              "limits": "Supports an association between post-concussion symptoms and oculomotor deficits in the studied adolescents. It is not a treatment trial, not a guideline, and does not directly support reading aids, generic home exercises, or general therapy claims."
+            },
+            {
+              "title": "CDC — Safety Guidelines for Pediatric Mild TBI",
+              "url": "https://www.cdc.gov/traumatic-brain-injury/hcp/clinical-guidance/pediatric-mtbi.html",
+              "limits": "Supports age-appropriate assessment, gradual return to non-sport activity after 1–2 days of rest as tolerated, clear return-to-activity instructions, referral when symptoms do not resolve as expected after 2–4 weeks, and attention to red flags. Does not support every specialized intervention in the workbook."
+            }
+          ]
+        }
+      ],
+      "name": "Eye tracking, focusing and screen strain",
+      "evidence_badge": "Guideline",
+      "sources": [
+        {
+          "name": "Ontario Living Concussion Guidelines — Vestibular (Balance/Dizziness) & Vision Dysfunction",
+          "url": "https://concussionsontario.org/concussion/guideline-section/vestibular-balance-dizziness-vision-dysfunction"
+        },
+        {
+          "name": "Association between post-concussion symptoms and oculomotor deficits among adolescents",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/34383619/"
+        },
+        {
+          "name": "CONCUSS randomised clinical trial of vergence/accommodative therapy for concussion-related symptomatic convergence insufficiency",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41033748/"
+        }
+      ],
+      "note": null,
+      "percentage": 100,
+      "percentage_label": "100%",
+      "points": 5,
+      "max_points": 5,
+      "strength_label": "Strong",
+      "role": "primary",
+      "drivers": [
+        {
+          "question_id": "Q6",
+          "question_text": "Screen & reading strain",
+          "option_id": "A",
+          "option_text": "Eye strain quickly or reading fatigue",
+          "weight": 2
+        },
+        {
+          "question_id": "Q6",
+          "question_text": "Screen & reading strain",
+          "option_id": "B",
+          "option_text": "Scrolling on a phone screen or tracking moving targets triggers symptoms",
+          "weight": 3
+        }
+      ],
+      "scoreText": "Strong · 5 of 5 · 100%"
+    },
+    {
+      "category_id": "exertional_symptoms",
+      "why_it_may_apply": "In the survey you described symptoms that predictably appear within minutes of physical activity or a raised heart rate, along with lightheadedness or brief spacing out. These are possible features of this category. You also said that going back to full work days did not go well, which may be worth mentioning to a clinician. This is a possible pattern, not a diagnosis.",
+      "steps": [
+        {
+          "order": 1,
+          "title": "Discuss exercise-related symptoms with a clinician",
+          "practitioner_type": "gp_family_physician",
+          "rationale": "It may help guide assessment and an individualized return-to-activity plan.",
+          "step_id": "CER-01",
+          "from_library": true,
+          "draft_label": "Draft: pending clinician review",
+          "safety_note": "",
+          "sources": [
+            {
+              "title": "Consensus statement on concussion in sport: 6th International Conference on Concussion in Sport — Amsterdam",
+              "url": "https://doi.org/10.1136/BJSPORTS-2023-106898",
+              "limits": "Supports symptom-targeted rehabilitation, cervicovestibular rehabilitation for persistent dizziness/neck pain/headache beyond 10 days, and prescribed subsymptom-threshold aerobic exercise in suitable cases. These recommendations are not proof of a cerebrovascular cause for any one patient’s symptoms."
+            },
+            {
+              "title": "BC Guidelines — Concussion / Mild Traumatic Brain Injury",
+              "url": "https://www2.gov.bc.ca/gov/content/health/practitioner-professional-resources/bc-guidelines/concussion-mild-traumatic-brain-injury-mtbi",
+              "limits": "Supports initial relative rest of 24–48 hours, graded return to activity as tolerated, mild and brief symptom exacerbation being acceptable, reducing pace for significant worsening, and avoiding reinjury risk. Check the current page for any updates before deployment."
+            },
+            {
+              "title": "CDC — Safety Guidelines for Pediatric Mild TBI",
+              "url": "https://www.cdc.gov/traumatic-brain-injury/hcp/clinical-guidance/pediatric-mtbi.html",
+              "limits": "Supports age-appropriate assessment, gradual return to non-sport activity after 1–2 days of rest as tolerated, clear return-to-activity instructions, referral when symptoms do not resolve as expected after 2–4 weeks, and attention to red flags. Does not support every specialized intervention in the workbook."
+            }
+          ]
+        },
+        {
+          "order": 2,
+          "title": "Clinician-guided gradual activity plan",
+          "practitioner_type": "sports_medicine_physician",
+          "rationale": "It may support a safe return to activity when progression is individualized and reinjury risk is managed.",
+          "step_id": "CER-02",
+          "from_library": true,
+          "draft_label": "Draft: pending clinician review",
+          "safety_note": "",
+          "sources": [
+            {
+              "title": "Consensus statement on concussion in sport: 6th International Conference on Concussion in Sport — Amsterdam",
+              "url": "https://doi.org/10.1136/BJSPORTS-2023-106898",
+              "limits": "Supports symptom-targeted rehabilitation, cervicovestibular rehabilitation for persistent dizziness/neck pain/headache beyond 10 days, and prescribed subsymptom-threshold aerobic exercise in suitable cases. These recommendations are not proof of a cerebrovascular cause for any one patient’s symptoms."
+            },
+            {
+              "title": "BC Guidelines — Concussion / Mild Traumatic Brain Injury",
+              "url": "https://www2.gov.bc.ca/gov/content/health/practitioner-professional-resources/bc-guidelines/concussion-mild-traumatic-brain-injury-mtbi",
+              "limits": "Supports initial relative rest of 24–48 hours, graded return to activity as tolerated, mild and brief symptom exacerbation being acceptable, reducing pace for significant worsening, and avoiding reinjury risk. Check the current page for any updates before deployment."
+            },
+            {
+              "title": "CDC — Safety Guidelines for Pediatric Mild TBI",
+              "url": "https://www.cdc.gov/traumatic-brain-injury/hcp/clinical-guidance/pediatric-mtbi.html",
+              "limits": "Supports age-appropriate assessment, gradual return to non-sport activity after 1–2 days of rest as tolerated, clear return-to-activity instructions, referral when symptoms do not resolve as expected after 2–4 weeks, and attention to red flags. Does not support every specialized intervention in the workbook."
+            }
+          ]
+        }
+      ],
+      "name": "Symptoms triggered by exertion",
+      "evidence_badge": "Guideline",
+      "sources": [
+        {
+          "name": "Ontario Living Concussion Guidelines — Management of Prolonged Symptoms",
+          "url": "https://concussionsontario.org/concussion/guideline-section/management-of-prolonged-symptoms"
+        },
+        {
+          "name": "BC Guidelines — Concussion / Mild Traumatic Brain Injury",
+          "url": "https://www2.gov.bc.ca/gov/content/health/practitioner-professional-resources/bc-guidelines/concussion-mild-traumatic-brain-injury-mtbi"
+        },
+        {
+          "name": "Consensus statement on concussion in sport: 6th International Conference on Concussion in Sport — Amsterdam",
+          "url": "https://doi.org/10.1136/BJSPORTS-2023-106898"
+        }
+      ],
+      "note": null,
+      "percentage": 71.42857142857143,
+      "percentage_label": "71.4%",
+      "points": 5,
+      "max_points": 7,
+      "strength_label": "Strong",
+      "role": "secondary",
+      "drivers": [
+        {
+          "question_id": "Q2",
+          "question_text": "Symptom onset timing with physical activity / heart rate",
+          "option_id": "A",
+          "option_text": "Predictably within minutes of physical activity or heart rate elevation",
+          "weight": 3
+        },
+        {
+          "question_id": "Q3",
+          "question_text": "Exertional physical sensations in head/balance",
+          "option_id": "B",
+          "option_text": "Lightheadedness or brief temporary \"spacing out\" / transient focal fog",
+          "weight": 2
+        }
+      ],
+      "scoreText": "Strong · 5 of 7 · 71.4%"
+    },
+    {
+      "category_id": "sensory_peripheral",
+      "why_it_may_apply": "You checked headache and light sensitivity, and in the survey you described discomfort in bright light and daily tension-type headaches. These are possible features of this category. Neck tenderness is another possible feature, but you did not mention it, so a clinician could check for it.",
+      "steps": [
+        {
+          "order": 1,
+          "title": "Assess persistent neck pain, dizziness, or headache",
+          "practitioner_type": "physiotherapist",
+          "rationale": "It may help identify whether neck or vestibular assessment is relevant and which symptoms need separate evaluation.",
+          "step_id": "SEN-01",
+          "from_library": true,
+          "draft_label": "Draft: pending clinician review",
+          "safety_note": "",
+          "sources": [
+            {
+              "title": "Cervicovestibular rehabilitation in sport-related concussion: a randomised controlled trial",
+              "url": "https://pubmed.ncbi.nlm.nih.gov/24855132/",
+              "limits": "Directly supports considering combined cervical and vestibular rehabilitation for a defined symptom group. It does not justify routine neck therapy for every patient or broad sensory-exposure claims."
+            },
+            {
+              "title": "Consensus statement on concussion in sport: 6th International Conference on Concussion in Sport — Amsterdam",
+              "url": "https://doi.org/10.1136/BJSPORTS-2023-106898",
+              "limits": "Supports symptom-targeted rehabilitation, cervicovestibular rehabilitation for persistent dizziness/neck pain/headache beyond 10 days, and prescribed subsymptom-threshold aerobic exercise in suitable cases. These recommendations are not proof of a cerebrovascular cause for any one patient’s symptoms."
+            },
+            {
+              "title": "Ontario Living Concussion Guidelines — Vestibular (Balance/Dizziness) & Vision Dysfunction",
+              "url": "https://concussionsontario.org/concussion/guideline-section/vestibular-balance-dizziness-vision-dysfunction",
+              "limits": "Supports VOMS screening, further assessment for persistent functional symptoms, consideration of vestibular interventions after assessment, BPPV suspicion/management, and specialist vision referral. Does not validate the workbook’s specific YouTube video or every home exercise."
+            }
+          ]
+        },
+        {
+          "order": 2,
+          "title": "Manage sensory triggers during gradual return to activity",
+          "practitioner_type": "physiotherapist",
+          "rationale": "It may make everyday activities more manageable while symptoms are monitored; the cited sources do not establish a specific sensory-exposure protocol.",
+          "step_id": "SEN-03",
+          "from_library": true,
+          "draft_label": "Draft: pending clinician review",
+          "safety_note": "",
+          "sources": [
+            {
+              "title": "Ontario Living Concussion Guidelines — Management of Prolonged Symptoms",
+              "url": "https://concussionsontario.org/concussion/guideline-section/management-of-prolonged-symptoms",
+              "limits": "Supports monitoring prolonged symptoms, identifying potentially treatable contributors, and gradual activity resumption. It says mild, transient symptom worsening can occur; more-than-mild or prolonged worsening warrants monitored, slower progression."
+            },
+            {
+              "title": "Ontario Living Concussion Guidelines — Return-to-Activity / Work / School Considerations",
+              "url": "https://concussionsontario.org/concussion/guideline-section/return-to-activity_work_school_considerations",
+              "limits": "Supports brief relative rest followed by gradual, tolerance-based resumption of normal activities and avoiding reinjury-risk activity. Does not establish a cerebrovascular mechanism for exertional symptoms."
+            },
+            {
+              "title": "Consensus statement on concussion in sport: 6th International Conference on Concussion in Sport — Amsterdam",
+              "url": "https://doi.org/10.1136/BJSPORTS-2023-106898",
+              "limits": "Supports symptom-targeted rehabilitation, cervicovestibular rehabilitation for persistent dizziness/neck pain/headache beyond 10 days, and prescribed subsymptom-threshold aerobic exercise in suitable cases. These recommendations are not proof of a cerebrovascular cause for any one patient’s symptoms."
+            },
+            {
+              "title": "CDC — Safety Guidelines for Pediatric Mild TBI",
+              "url": "https://www.cdc.gov/traumatic-brain-injury/hcp/clinical-guidance/pediatric-mtbi.html",
+              "limits": "Supports age-appropriate assessment, gradual return to non-sport activity after 1–2 days of rest as tolerated, clear return-to-activity instructions, referral when symptoms do not resolve as expected after 2–4 weeks, and attention to red flags. Does not support every specialized intervention in the workbook."
+            }
+          ]
+        }
+      ],
+      "name": "Neck tension and sensory sensitivity",
+      "evidence_badge": "Guideline",
+      "sources": [
+        {
+          "name": "Ontario Living Concussion Guidelines — Vestibular (Balance/Dizziness) & Vision Dysfunction",
+          "url": "https://concussionsontario.org/concussion/guideline-section/vestibular-balance-dizziness-vision-dysfunction"
+        },
+        {
+          "name": "Ontario Living Concussion Guidelines — Management of Prolonged Symptoms",
+          "url": "https://concussionsontario.org/concussion/guideline-section/management-of-prolonged-symptoms"
+        },
+        {
+          "name": "Ontario Living Concussion Guidelines — Return-to-Activity / Work / School Considerations",
+          "url": "https://concussionsontario.org/concussion/guideline-section/return-to-activity_work_school_considerations"
+        },
+        {
+          "name": "BC Guidelines — Concussion / Mild Traumatic Brain Injury",
+          "url": "https://www2.gov.bc.ca/gov/content/health/practitioner-professional-resources/bc-guidelines/concussion-mild-traumatic-brain-injury-mtbi"
+        },
+        {
+          "name": "Consensus statement on concussion in sport: 6th International Conference on Concussion in Sport — Amsterdam",
+          "url": "https://doi.org/10.1136/BJSPORTS-2023-106898"
+        },
+        {
+          "name": "Cervicovestibular rehabilitation in sport-related concussion: a randomised controlled trial",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/24855132/"
+        }
+      ],
+      "note": null,
+      "percentage": 66.66666666666666,
+      "percentage_label": "66.7%",
+      "points": 6,
+      "max_points": 9,
+      "strength_label": "Moderate",
+      "role": "secondary",
+      "drivers": [
+        {
+          "question_id": "Q7",
+          "question_text": "Sensitivity to light",
+          "option_id": "A",
+          "option_text": "High hyper-reactivity or discomfort when exposed to bright lights",
+          "weight": 3
+        },
+        {
+          "question_id": "Q8",
+          "question_text": "Daily tension headaches",
+          "option_id": "A",
+          "option_text": "Experience daily tension headaches",
+          "weight": 3
+        }
+      ],
+      "scoreText": "Moderate · 6 of 9 · 66.7%"
+    },
+    {
+      "category_id": "vestibular",
+      "why_it_may_apply": "You checked dizziness among your symptoms, and in the survey you described feeling dizzy, disoriented, or overwhelmed in crowded places. This is a possible feature of this category. A balance assessment may help clarify whether it is relevant for you.",
+      "steps": [
+        {
+          "order": 1,
+          "title": "Get a balance and dizziness assessment",
+          "practitioner_type": "vestibular_physio",
+          "rationale": "It may help identify which symptoms or findings need follow-up and guide next steps in care.",
+          "step_id": "VES-01",
+          "from_library": true,
+          "draft_label": "Draft: pending clinician review",
+          "safety_note": "",
+          "sources": [
+            {
+              "title": "Ontario Living Concussion Guidelines — Vestibular (Balance/Dizziness) & Vision Dysfunction",
+              "url": "https://concussionsontario.org/concussion/guideline-section/vestibular-balance-dizziness-vision-dysfunction",
+              "limits": "Supports VOMS screening, further assessment for persistent functional symptoms, consideration of vestibular interventions after assessment, BPPV suspicion/management, and specialist vision referral. Does not validate the workbook’s specific YouTube video or every home exercise."
+            },
+            {
+              "title": "CDC — Safety Guidelines for Pediatric Mild TBI",
+              "url": "https://www.cdc.gov/traumatic-brain-injury/hcp/clinical-guidance/pediatric-mtbi.html",
+              "limits": "Supports age-appropriate assessment, gradual return to non-sport activity after 1–2 days of rest as tolerated, clear return-to-activity instructions, referral when symptoms do not resolve as expected after 2–4 weeks, and attention to red flags. Does not support every specialized intervention in the workbook."
+            }
+          ]
+        },
+        {
+          "order": 2,
+          "title": "Clinician-directed vestibular rehabilitation",
+          "practitioner_type": "vestibular_physio",
+          "rationale": "It may help some people with identified vestibular problems improve balance, dizziness, or movement tolerance; benefit is not guaranteed.",
+          "step_id": "VES-02",
+          "from_library": true,
+          "draft_label": "Draft: pending clinician review",
+          "safety_note": "",
+          "sources": [
+            {
+              "title": "Ontario Living Concussion Guidelines — Vestibular (Balance/Dizziness) & Vision Dysfunction",
+              "url": "https://concussionsontario.org/concussion/guideline-section/vestibular-balance-dizziness-vision-dysfunction",
+              "limits": "Supports VOMS screening, further assessment for persistent functional symptoms, consideration of vestibular interventions after assessment, BPPV suspicion/management, and specialist vision referral. Does not validate the workbook’s specific YouTube video or every home exercise."
+            },
+            {
+              "title": "Consensus statement on concussion in sport: 6th International Conference on Concussion in Sport — Amsterdam",
+              "url": "https://doi.org/10.1136/BJSPORTS-2023-106898",
+              "limits": "Supports symptom-targeted rehabilitation, cervicovestibular rehabilitation for persistent dizziness/neck pain/headache beyond 10 days, and prescribed subsymptom-threshold aerobic exercise in suitable cases. These recommendations are not proof of a cerebrovascular cause for any one patient’s symptoms."
+            },
+            {
+              "title": "CDC — Safety Guidelines for Pediatric Mild TBI",
+              "url": "https://www.cdc.gov/traumatic-brain-injury/hcp/clinical-guidance/pediatric-mtbi.html",
+              "limits": "Supports age-appropriate assessment, gradual return to non-sport activity after 1–2 days of rest as tolerated, clear return-to-activity instructions, referral when symptoms do not resolve as expected after 2–4 weeks, and attention to red flags. Does not support every specialized intervention in the workbook."
+            }
+          ]
+        }
+      ],
+      "name": "Balance, dizziness and visual motion",
+      "evidence_badge": "Guideline",
+      "sources": [
+        {
+          "name": "Ontario Living Concussion Guidelines — Vestibular (Balance/Dizziness) & Vision Dysfunction",
+          "url": "https://concussionsontario.org/concussion/guideline-section/vestibular-balance-dizziness-vision-dysfunction"
+        },
+        {
+          "name": "Ontario Living Concussion Guidelines — Management of Prolonged Symptoms",
+          "url": "https://concussionsontario.org/concussion/guideline-section/management-of-prolonged-symptoms"
+        },
+        {
+          "name": "Ontario Living Concussion Guidelines — Return-to-Activity / Work / School Considerations",
+          "url": "https://concussionsontario.org/concussion/guideline-section/return-to-activity_work_school_considerations"
+        },
+        {
+          "name": "BC Guidelines — Concussion / Mild Traumatic Brain Injury",
+          "url": "https://www2.gov.bc.ca/gov/content/health/practitioner-professional-resources/bc-guidelines/concussion-mild-traumatic-brain-injury-mtbi"
+        },
+        {
+          "name": "Consensus statement on concussion in sport: 6th International Conference on Concussion in Sport — Amsterdam",
+          "url": "https://doi.org/10.1136/BJSPORTS-2023-106898"
+        }
+      ],
+      "note": null,
+      "percentage": 50,
+      "percentage_label": "50%",
+      "points": 3,
+      "max_points": 6,
+      "strength_label": "Moderate",
+      "role": "secondary",
+      "drivers": [
+        {
+          "question_id": "Q5",
+          "question_text": "Crowd dizziness & motion sickness",
+          "option_id": "A",
+          "option_text": "Feel dizzy, disoriented, or overwhelmed in crowded places",
+          "weight": 3
+        }
+      ],
+      "scoreText": "Moderate · 3 of 6 · 50%"
+    }
+  ],
+  "resultsFile": {
+    "kind": "results-file",
+    "capturedAt": "2026-11-18T02:32:42.611Z",
+    "view": {
+      "showAllPatterns": false,
+      "treeDetail": "simple"
+    },
+    "intake": {
+      "ageBand": "18+",
+      "ageLabel": "18 or older",
+      "city": "Kelowna, BC",
+      "timeline": "3 months",
+      "symptoms": [
+        "Headache",
+        "Dizziness",
+        "Light sensitivity",
+        "Brain fog"
+      ],
+      "symptomText": "Headache, Dizziness, Light sensitivity, Brain fog",
+      "concerns": "Headaches get worse with screen time and I lose focus at work after an hour.",
+      "pastAttempts": "Rest and over-the-counter pain relief. Tried going back to work full days."
+    },
+    "survey": [
+      {
+        "questionId": "Q1",
+        "summary": "Exhaustion after minor mental/physical effort",
+        "questionText": "Exhaustion after minor mental/physical effort",
+        "selection": "single",
+        "selected": []
+      },
+      {
+        "questionId": "Q2",
+        "summary": "Symptom onset timing with physical activity / heart rate",
+        "questionText": "Symptom onset timing with physical activity / heart rate",
+        "selection": "single",
+        "selected": [
+          {
+            "optionId": "A",
+            "text": "Predictably within minutes of physical activity or heart rate elevation"
+          }
+        ]
+      },
+      {
+        "questionId": "Q5",
+        "summary": "Crowd dizziness & motion sickness",
+        "questionText": "Crowd dizziness & motion sickness",
+        "selection": "multi",
+        "selected": [
+          {
+            "optionId": "A",
+            "text": "Feel dizzy, disoriented, or overwhelmed in crowded places"
+          }
+        ]
+      },
+      {
+        "questionId": "Q7",
+        "summary": "Sensitivity to light",
+        "questionText": "Sensitivity to light",
+        "selection": "single",
+        "selected": [
+          {
+            "optionId": "A",
+            "text": "High hyper-reactivity or discomfort when exposed to bright lights"
+          }
+        ]
+      },
+      {
+        "questionId": "Q8",
+        "summary": "Daily tension headaches",
+        "questionText": "Daily tension headaches",
+        "selection": "single",
+        "selected": [
+          {
+            "optionId": "A",
+            "text": "Experience daily tension headaches"
+          }
+        ]
+      },
+      {
+        "questionId": "Q9",
+        "summary": "Neck & suboccipital tenderness",
+        "questionText": "Neck & suboccipital tenderness",
+        "selection": "single",
+        "selected": []
+      },
+      {
+        "questionId": "Q3",
+        "summary": "Exertional physical sensations in head/balance",
+        "questionText": "Exertional physical sensations in head/balance",
+        "selection": "multi",
+        "selected": [
+          {
+            "optionId": "B",
+            "text": "Lightheadedness or brief temporary \"spacing out\" / transient focal fog"
+          }
+        ]
+      },
+      {
+        "questionId": "Q4",
+        "summary": "Unexplained hormonal & systemic shifts",
+        "questionText": "Unexplained hormonal & systemic shifts",
+        "selection": "multi",
+        "selected": []
+      },
+      {
+        "questionId": "Q6",
+        "summary": "Screen & reading strain",
+        "questionText": "Screen & reading strain",
+        "selection": "multi",
+        "selected": [
+          {
+            "optionId": "A",
+            "text": "Eye strain quickly or reading fatigue"
+          },
+          {
+            "optionId": "B",
+            "text": "Scrolling on a phone screen or tracking moving targets triggers symptoms"
+          }
+        ]
+      }
+    ],
+    "scores": {
+      "primaryIds": [
+        "oculomotor"
+      ],
+      "secondaryIds": [
+        "exertional_symptoms",
+        "vestibular",
+        "sensory_peripheral"
+      ],
+      "tie": false,
+      "followUpQuestionIds": [],
+      "categories": [
+        {
+          "categoryId": "fatigue_activity",
+          "label": "Energy and recovery after effort",
+          "scoreText": "0 of 5 · 0%",
+          "points": 0,
+          "maxPoints": 5,
+          "percentage": 0,
+          "strengthLabel": null,
+          "role": "unmatched",
+          "drivers": []
+        },
+        {
+          "categoryId": "exertional_symptoms",
+          "label": "Symptoms triggered by exertion",
+          "scoreText": "Strong · 5 of 7 · 71.4%",
+          "points": 5,
+          "maxPoints": 7,
+          "percentage": 71.42857142857143,
+          "strengthLabel": "Strong",
+          "role": "secondary",
+          "drivers": [
+            {
+              "questionId": "Q2",
+              "questionText": "Symptom onset timing with physical activity / heart rate",
+              "optionId": "A",
+              "optionText": "Predictably within minutes of physical activity or heart rate elevation",
+              "weight": 3
+            },
+            {
+              "questionId": "Q3",
+              "questionText": "Exertional physical sensations in head/balance",
+              "optionId": "B",
+              "optionText": "Lightheadedness or brief temporary \"spacing out\" / transient focal fog",
+              "weight": 2
+            }
+          ]
+        },
+        {
+          "categoryId": "neuroendocrine",
+          "label": "Hormonal and body-system changes",
+          "scoreText": "0 of 7 · 0%",
+          "points": 0,
+          "maxPoints": 7,
+          "percentage": 0,
+          "strengthLabel": null,
+          "role": "unmatched",
+          "drivers": []
+        },
+        {
+          "categoryId": "vestibular",
+          "label": "Balance, dizziness and visual motion",
+          "scoreText": "Moderate · 3 of 6 · 50%",
+          "points": 3,
+          "maxPoints": 6,
+          "percentage": 50,
+          "strengthLabel": "Moderate",
+          "role": "secondary",
+          "drivers": [
+            {
+              "questionId": "Q5",
+              "questionText": "Crowd dizziness & motion sickness",
+              "optionId": "A",
+              "optionText": "Feel dizzy, disoriented, or overwhelmed in crowded places",
+              "weight": 3
+            }
+          ]
+        },
+        {
+          "categoryId": "oculomotor",
+          "label": "Eye tracking, focusing and screen strain",
+          "scoreText": "Strong · 5 of 5 · 100%",
+          "points": 5,
+          "maxPoints": 5,
+          "percentage": 100,
+          "strengthLabel": "Strong",
+          "role": "primary",
+          "drivers": [
+            {
+              "questionId": "Q6",
+              "questionText": "Screen & reading strain",
+              "optionId": "A",
+              "optionText": "Eye strain quickly or reading fatigue",
+              "weight": 2
+            },
+            {
+              "questionId": "Q6",
+              "questionText": "Screen & reading strain",
+              "optionId": "B",
+              "optionText": "Scrolling on a phone screen or tracking moving targets triggers symptoms",
+              "weight": 3
+            }
+          ]
+        },
+        {
+          "categoryId": "sensory_peripheral",
+          "label": "Neck tension and sensory sensitivity",
+          "scoreText": "Moderate · 6 of 9 · 66.7%",
+          "points": 6,
+          "maxPoints": 9,
+          "percentage": 66.66666666666666,
+          "strengthLabel": "Moderate",
+          "role": "secondary",
+          "drivers": [
+            {
+              "questionId": "Q7",
+              "questionText": "Sensitivity to light",
+              "optionId": "A",
+              "optionText": "High hyper-reactivity or discomfort when exposed to bright lights",
+              "weight": 3
+            },
+            {
+              "questionId": "Q8",
+              "questionText": "Daily tension headaches",
+              "optionId": "A",
+              "optionText": "Experience daily tension headaches",
+              "weight": 3
+            }
+          ]
+        }
+      ]
+    },
+    "journal": {
+      "note": null,
+      "entries": []
+    },
+    "notices": {
+      "draftBanner": "Draft: pending clinician review",
+      "teenNote": null,
+      "disclaimer": "These pathways are a navigation roadmap to take to a GP. They are not a diagnosis, a prescription, or medical advice, and they do not promise any outcome.",
+      "footer": "Sources are under clinician review. Demo only. This is not a diagnosis or a probability; it shows how closely your answers match common patterns.",
+      "refineNote": null
+    },
+    "pathways": [
+      {
+        "categoryId": "oculomotor",
+        "name": "Eye tracking, focusing and screen strain",
+        "evidenceBadge": "Guideline",
+        "whyItMayApply": "You said your headaches get worse with screen time and that you lose focus at work after an hour. In the survey you also described eyes tiring quickly or reading fatigue, and symptoms when scrolling a phone or tracking moving things. These are possible features of this category. Only a clinician can say whether they are relevant for you.",
+        "scoreText": "Strong · 5 of 5 · 100%",
+        "percentage": 100,
+        "points": 5,
+        "maxPoints": 5,
+        "strengthLabel": "Strong",
+        "role": "primary",
+        "note": null,
+        "sources": [
+          {
+            "name": "Ontario Living Concussion Guidelines — Vestibular (Balance/Dizziness) & Vision Dysfunction",
+            "url": "https://concussionsontario.org/concussion/guideline-section/vestibular-balance-dizziness-vision-dysfunction"
+          },
+          {
+            "name": "Association between post-concussion symptoms and oculomotor deficits among adolescents",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/34383619/"
+          },
+          {
+            "name": "CONCUSS randomised clinical trial of vergence/accommodative therapy for concussion-related symptomatic convergence insufficiency",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/41033748/"
+          }
+        ],
+        "color": {
+          "background": "#f8e8ec",
+          "border": "#a15d6e"
+        },
+        "shownOnPage": true,
+        "steps": [
+          {
+            "order": 1,
+            "stepId": "OCU-01",
+            "title": "Get a vision and eye-movement assessment",
+            "shortLabel": "Get an eye assessment",
+            "practitionerTypeId": "optometrist",
+            "practitionerTypeLabel": "Optometrist",
+            "rationale": "It may help identify visual problems that need follow-up; screening alone is not a diagnosis.",
+            "safetyNote": "",
+            "draftLabel": "Draft: pending clinician review",
+            "sources": [
+              {
+                "title": "Ontario Living Concussion Guidelines — Vestibular (Balance/Dizziness) & Vision Dysfunction",
+                "url": "https://concussionsontario.org/concussion/guideline-section/vestibular-balance-dizziness-vision-dysfunction",
+                "limits": "Supports VOMS screening, further assessment for persistent functional symptoms, consideration of vestibular interventions after assessment, BPPV suspicion/management, and specialist vision referral. Does not validate the workbook’s specific YouTube video or every home exercise."
+              },
+              {
+                "title": "Association between post-concussion symptoms and oculomotor deficits among adolescents",
+                "url": "https://pubmed.ncbi.nlm.nih.gov/34383619/",
+                "limits": "Supports an association between post-concussion symptoms and oculomotor deficits in the studied adolescents. It is not a treatment trial, not a guideline, and does not directly support reading aids, generic home exercises, or general therapy claims."
+              },
+              {
+                "title": "CDC — Safety Guidelines for Pediatric Mild TBI",
+                "url": "https://www.cdc.gov/traumatic-brain-injury/hcp/clinical-guidance/pediatric-mtbi.html",
+                "limits": "Supports age-appropriate assessment, gradual return to non-sport activity after 1–2 days of rest as tolerated, clear return-to-activity instructions, referral when symptoms do not resolve as expected after 2–4 weeks, and attention to red flags. Does not support every specialized intervention in the workbook."
+              }
+            ]
+          },
+          {
+            "order": 2,
+            "stepId": "OCU-03",
+            "title": "Ask about assessment before using visual supports",
+            "shortLabel": "Ask about visual supports",
+            "practitionerTypeId": "optometrist",
+            "practitionerTypeLabel": "Optometrist",
+            "rationale": "It may help connect symptoms to an assessed visual issue and avoid using supports that are not appropriate.",
+            "safetyNote": "",
+            "draftLabel": "Draft: pending clinician review",
+            "sources": [
+              {
+                "title": "Ontario Living Concussion Guidelines — Vestibular (Balance/Dizziness) & Vision Dysfunction",
+                "url": "https://concussionsontario.org/concussion/guideline-section/vestibular-balance-dizziness-vision-dysfunction",
+                "limits": "Supports VOMS screening, further assessment for persistent functional symptoms, consideration of vestibular interventions after assessment, BPPV suspicion/management, and specialist vision referral. Does not validate the workbook’s specific YouTube video or every home exercise."
+              },
+              {
+                "title": "Association between post-concussion symptoms and oculomotor deficits among adolescents",
+                "url": "https://pubmed.ncbi.nlm.nih.gov/34383619/",
+                "limits": "Supports an association between post-concussion symptoms and oculomotor deficits in the studied adolescents. It is not a treatment trial, not a guideline, and does not directly support reading aids, generic home exercises, or general therapy claims."
+              },
+              {
+                "title": "CDC — Safety Guidelines for Pediatric Mild TBI",
+                "url": "https://www.cdc.gov/traumatic-brain-injury/hcp/clinical-guidance/pediatric-mtbi.html",
+                "limits": "Supports age-appropriate assessment, gradual return to non-sport activity after 1–2 days of rest as tolerated, clear return-to-activity instructions, referral when symptoms do not resolve as expected after 2–4 weeks, and attention to red flags. Does not support every specialized intervention in the workbook."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "categoryId": "exertional_symptoms",
+        "name": "Symptoms triggered by exertion",
+        "evidenceBadge": "Guideline",
+        "whyItMayApply": "In the survey you described symptoms that predictably appear within minutes of physical activity or a raised heart rate, along with lightheadedness or brief spacing out. These are possible features of this category. You also said that going back to full work days did not go well, which may be worth mentioning to a clinician. This is a possible pattern, not a diagnosis.",
+        "scoreText": "Strong · 5 of 7 · 71.4%",
+        "percentage": 71.42857142857143,
+        "points": 5,
+        "maxPoints": 7,
+        "strengthLabel": "Strong",
+        "role": "secondary",
+        "note": null,
+        "sources": [
+          {
+            "name": "Ontario Living Concussion Guidelines — Management of Prolonged Symptoms",
+            "url": "https://concussionsontario.org/concussion/guideline-section/management-of-prolonged-symptoms"
+          },
+          {
+            "name": "BC Guidelines — Concussion / Mild Traumatic Brain Injury",
+            "url": "https://www2.gov.bc.ca/gov/content/health/practitioner-professional-resources/bc-guidelines/concussion-mild-traumatic-brain-injury-mtbi"
+          },
+          {
+            "name": "Consensus statement on concussion in sport: 6th International Conference on Concussion in Sport — Amsterdam",
+            "url": "https://doi.org/10.1136/BJSPORTS-2023-106898"
+          }
+        ],
+        "color": {
+          "background": "#e6f0f7",
+          "border": "#5d7f9a"
+        },
+        "shownOnPage": true,
+        "steps": [
+          {
+            "order": 1,
+            "stepId": "CER-01",
+            "title": "Discuss exercise-related symptoms with a clinician",
+            "shortLabel": "Discuss activity symptoms",
+            "practitionerTypeId": "gp_family_physician",
+            "practitionerTypeLabel": "GP or family physician",
+            "rationale": "It may help guide assessment and an individualized return-to-activity plan.",
+            "safetyNote": "",
+            "draftLabel": "Draft: pending clinician review",
+            "sources": [
+              {
+                "title": "Consensus statement on concussion in sport: 6th International Conference on Concussion in Sport — Amsterdam",
+                "url": "https://doi.org/10.1136/BJSPORTS-2023-106898",
+                "limits": "Supports symptom-targeted rehabilitation, cervicovestibular rehabilitation for persistent dizziness/neck pain/headache beyond 10 days, and prescribed subsymptom-threshold aerobic exercise in suitable cases. These recommendations are not proof of a cerebrovascular cause for any one patient’s symptoms."
+              },
+              {
+                "title": "BC Guidelines — Concussion / Mild Traumatic Brain Injury",
+                "url": "https://www2.gov.bc.ca/gov/content/health/practitioner-professional-resources/bc-guidelines/concussion-mild-traumatic-brain-injury-mtbi",
+                "limits": "Supports initial relative rest of 24–48 hours, graded return to activity as tolerated, mild and brief symptom exacerbation being acceptable, reducing pace for significant worsening, and avoiding reinjury risk. Check the current page for any updates before deployment."
+              },
+              {
+                "title": "CDC — Safety Guidelines for Pediatric Mild TBI",
+                "url": "https://www.cdc.gov/traumatic-brain-injury/hcp/clinical-guidance/pediatric-mtbi.html",
+                "limits": "Supports age-appropriate assessment, gradual return to non-sport activity after 1–2 days of rest as tolerated, clear return-to-activity instructions, referral when symptoms do not resolve as expected after 2–4 weeks, and attention to red flags. Does not support every specialized intervention in the workbook."
+              }
+            ]
+          },
+          {
+            "order": 2,
+            "stepId": "CER-02",
+            "title": "Clinician-guided gradual activity plan",
+            "shortLabel": "Follow a gradual plan",
+            "practitionerTypeId": "sports_medicine_physician",
+            "practitionerTypeLabel": "Sports medicine physician",
+            "rationale": "It may support a safe return to activity when progression is individualized and reinjury risk is managed.",
+            "safetyNote": "",
+            "draftLabel": "Draft: pending clinician review",
+            "sources": [
+              {
+                "title": "Consensus statement on concussion in sport: 6th International Conference on Concussion in Sport — Amsterdam",
+                "url": "https://doi.org/10.1136/BJSPORTS-2023-106898",
+                "limits": "Supports symptom-targeted rehabilitation, cervicovestibular rehabilitation for persistent dizziness/neck pain/headache beyond 10 days, and prescribed subsymptom-threshold aerobic exercise in suitable cases. These recommendations are not proof of a cerebrovascular cause for any one patient’s symptoms."
+              },
+              {
+                "title": "BC Guidelines — Concussion / Mild Traumatic Brain Injury",
+                "url": "https://www2.gov.bc.ca/gov/content/health/practitioner-professional-resources/bc-guidelines/concussion-mild-traumatic-brain-injury-mtbi",
+                "limits": "Supports initial relative rest of 24–48 hours, graded return to activity as tolerated, mild and brief symptom exacerbation being acceptable, reducing pace for significant worsening, and avoiding reinjury risk. Check the current page for any updates before deployment."
+              },
+              {
+                "title": "CDC — Safety Guidelines for Pediatric Mild TBI",
+                "url": "https://www.cdc.gov/traumatic-brain-injury/hcp/clinical-guidance/pediatric-mtbi.html",
+                "limits": "Supports age-appropriate assessment, gradual return to non-sport activity after 1–2 days of rest as tolerated, clear return-to-activity instructions, referral when symptoms do not resolve as expected after 2–4 weeks, and attention to red flags. Does not support every specialized intervention in the workbook."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "categoryId": "sensory_peripheral",
+        "name": "Neck tension and sensory sensitivity",
+        "evidenceBadge": "Guideline",
+        "whyItMayApply": "You checked headache and light sensitivity, and in the survey you described discomfort in bright light and daily tension-type headaches. These are possible features of this category. Neck tenderness is another possible feature, but you did not mention it, so a clinician could check for it.",
+        "scoreText": "Moderate · 6 of 9 · 66.7%",
+        "percentage": 66.66666666666666,
+        "points": 6,
+        "maxPoints": 9,
+        "strengthLabel": "Moderate",
+        "role": "secondary",
+        "note": null,
+        "sources": [
+          {
+            "name": "Ontario Living Concussion Guidelines — Vestibular (Balance/Dizziness) & Vision Dysfunction",
+            "url": "https://concussionsontario.org/concussion/guideline-section/vestibular-balance-dizziness-vision-dysfunction"
+          },
+          {
+            "name": "Ontario Living Concussion Guidelines — Management of Prolonged Symptoms",
+            "url": "https://concussionsontario.org/concussion/guideline-section/management-of-prolonged-symptoms"
+          },
+          {
+            "name": "Ontario Living Concussion Guidelines — Return-to-Activity / Work / School Considerations",
+            "url": "https://concussionsontario.org/concussion/guideline-section/return-to-activity_work_school_considerations"
+          },
+          {
+            "name": "BC Guidelines — Concussion / Mild Traumatic Brain Injury",
+            "url": "https://www2.gov.bc.ca/gov/content/health/practitioner-professional-resources/bc-guidelines/concussion-mild-traumatic-brain-injury-mtbi"
+          },
+          {
+            "name": "Consensus statement on concussion in sport: 6th International Conference on Concussion in Sport — Amsterdam",
+            "url": "https://doi.org/10.1136/BJSPORTS-2023-106898"
+          },
+          {
+            "name": "Cervicovestibular rehabilitation in sport-related concussion: a randomised controlled trial",
+            "url": "https://pubmed.ncbi.nlm.nih.gov/24855132/"
+          }
+        ],
+        "color": {
+          "background": "#e5f3f2",
+          "border": "#4f8a86"
+        },
+        "shownOnPage": true,
+        "steps": [
+          {
+            "order": 1,
+            "stepId": "SEN-01",
+            "title": "Assess persistent neck pain, dizziness, or headache",
+            "shortLabel": "Assess neck pain",
+            "practitionerTypeId": "physiotherapist",
+            "practitionerTypeLabel": "Physiotherapist",
+            "rationale": "It may help identify whether neck or vestibular assessment is relevant and which symptoms need separate evaluation.",
+            "safetyNote": "",
+            "draftLabel": "Draft: pending clinician review",
+            "sources": [
+              {
+                "title": "Cervicovestibular rehabilitation in sport-related concussion: a randomised controlled trial",
+                "url": "https://pubmed.ncbi.nlm.nih.gov/24855132/",
+                "limits": "Directly supports considering combined cervical and vestibular rehabilitation for a defined symptom group. It does not justify routine neck therapy for every patient or broad sensory-exposure claims."
+              },
+              {
+                "title": "Consensus statement on concussion in sport: 6th International Conference on Concussion in Sport — Amsterdam",
+                "url": "https://doi.org/10.1136/BJSPORTS-2023-106898",
+                "limits": "Supports symptom-targeted rehabilitation, cervicovestibular rehabilitation for persistent dizziness/neck pain/headache beyond 10 days, and prescribed subsymptom-threshold aerobic exercise in suitable cases. These recommendations are not proof of a cerebrovascular cause for any one patient’s symptoms."
+              },
+              {
+                "title": "Ontario Living Concussion Guidelines — Vestibular (Balance/Dizziness) & Vision Dysfunction",
+                "url": "https://concussionsontario.org/concussion/guideline-section/vestibular-balance-dizziness-vision-dysfunction",
+                "limits": "Supports VOMS screening, further assessment for persistent functional symptoms, consideration of vestibular interventions after assessment, BPPV suspicion/management, and specialist vision referral. Does not validate the workbook’s specific YouTube video or every home exercise."
+              }
+            ]
+          },
+          {
+            "order": 2,
+            "stepId": "SEN-03",
+            "title": "Manage sensory triggers during gradual return to activity",
+            "shortLabel": "Manage sensory triggers",
+            "practitionerTypeId": "physiotherapist",
+            "practitionerTypeLabel": "Physiotherapist",
+            "rationale": "It may make everyday activities more manageable while symptoms are monitored; the cited sources do not establish a specific sensory-exposure protocol.",
+            "safetyNote": "",
+            "draftLabel": "Draft: pending clinician review",
+            "sources": [
+              {
+                "title": "Ontario Living Concussion Guidelines — Management of Prolonged Symptoms",
+                "url": "https://concussionsontario.org/concussion/guideline-section/management-of-prolonged-symptoms",
+                "limits": "Supports monitoring prolonged symptoms, identifying potentially treatable contributors, and gradual activity resumption. It says mild, transient symptom worsening can occur; more-than-mild or prolonged worsening warrants monitored, slower progression."
+              },
+              {
+                "title": "Ontario Living Concussion Guidelines — Return-to-Activity / Work / School Considerations",
+                "url": "https://concussionsontario.org/concussion/guideline-section/return-to-activity_work_school_considerations",
+                "limits": "Supports brief relative rest followed by gradual, tolerance-based resumption of normal activities and avoiding reinjury-risk activity. Does not establish a cerebrovascular mechanism for exertional symptoms."
+              },
+              {
+                "title": "Consensus statement on concussion in sport: 6th International Conference on Concussion in Sport — Amsterdam",
+                "url": "https://doi.org/10.1136/BJSPORTS-2023-106898",
+                "limits": "Supports symptom-targeted rehabilitation, cervicovestibular rehabilitation for persistent dizziness/neck pain/headache beyond 10 days, and prescribed subsymptom-threshold aerobic exercise in suitable cases. These recommendations are not proof of a cerebrovascular cause for any one patient’s symptoms."
+              },
+              {
+                "title": "CDC — Safety Guidelines for Pediatric Mild TBI",
+                "url": "https://www.cdc.gov/traumatic-brain-injury/hcp/clinical-guidance/pediatric-mtbi.html",
+                "limits": "Supports age-appropriate assessment, gradual return to non-sport activity after 1–2 days of rest as tolerated, clear return-to-activity instructions, referral when symptoms do not resolve as expected after 2–4 weeks, and attention to red flags. Does not support every specialized intervention in the workbook."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "categoryId": "vestibular",
+        "name": "Balance, dizziness and visual motion",
+        "evidenceBadge": "Guideline",
+        "whyItMayApply": "You checked dizziness among your symptoms, and in the survey you described feeling dizzy, disoriented, or overwhelmed in crowded places. This is a possible feature of this category. A balance assessment may help clarify whether it is relevant for you.",
+        "scoreText": "Moderate · 3 of 6 · 50%",
+        "percentage": 50,
+        "points": 3,
+        "maxPoints": 6,
+        "strengthLabel": "Moderate",
+        "role": "secondary",
+        "note": null,
+        "sources": [
+          {
+            "name": "Ontario Living Concussion Guidelines — Vestibular (Balance/Dizziness) & Vision Dysfunction",
+            "url": "https://concussionsontario.org/concussion/guideline-section/vestibular-balance-dizziness-vision-dysfunction"
+          },
+          {
+            "name": "Ontario Living Concussion Guidelines — Management of Prolonged Symptoms",
+            "url": "https://concussionsontario.org/concussion/guideline-section/management-of-prolonged-symptoms"
+          },
+          {
+            "name": "Ontario Living Concussion Guidelines — Return-to-Activity / Work / School Considerations",
+            "url": "https://concussionsontario.org/concussion/guideline-section/return-to-activity_work_school_considerations"
+          },
+          {
+            "name": "BC Guidelines — Concussion / Mild Traumatic Brain Injury",
+            "url": "https://www2.gov.bc.ca/gov/content/health/practitioner-professional-resources/bc-guidelines/concussion-mild-traumatic-brain-injury-mtbi"
+          },
+          {
+            "name": "Consensus statement on concussion in sport: 6th International Conference on Concussion in Sport — Amsterdam",
+            "url": "https://doi.org/10.1136/BJSPORTS-2023-106898"
+          }
+        ],
+        "color": {
+          "background": "#efe8f7",
+          "border": "#7d6d9a"
+        },
+        "shownOnPage": false,
+        "steps": [
+          {
+            "order": 1,
+            "stepId": "VES-01",
+            "title": "Get a balance and dizziness assessment",
+            "shortLabel": "Assess balance and dizziness",
+            "practitionerTypeId": "vestibular_physio",
+            "practitionerTypeLabel": "Vestibular physiotherapist",
+            "rationale": "It may help identify which symptoms or findings need follow-up and guide next steps in care.",
+            "safetyNote": "",
+            "draftLabel": "Draft: pending clinician review",
+            "sources": [
+              {
+                "title": "Ontario Living Concussion Guidelines — Vestibular (Balance/Dizziness) & Vision Dysfunction",
+                "url": "https://concussionsontario.org/concussion/guideline-section/vestibular-balance-dizziness-vision-dysfunction",
+                "limits": "Supports VOMS screening, further assessment for persistent functional symptoms, consideration of vestibular interventions after assessment, BPPV suspicion/management, and specialist vision referral. Does not validate the workbook’s specific YouTube video or every home exercise."
+              },
+              {
+                "title": "CDC — Safety Guidelines for Pediatric Mild TBI",
+                "url": "https://www.cdc.gov/traumatic-brain-injury/hcp/clinical-guidance/pediatric-mtbi.html",
+                "limits": "Supports age-appropriate assessment, gradual return to non-sport activity after 1–2 days of rest as tolerated, clear return-to-activity instructions, referral when symptoms do not resolve as expected after 2–4 weeks, and attention to red flags. Does not support every specialized intervention in the workbook."
+              }
+            ]
+          },
+          {
+            "order": 2,
+            "stepId": "VES-02",
+            "title": "Clinician-directed vestibular rehabilitation",
+            "shortLabel": "Get guided balance care",
+            "practitionerTypeId": "vestibular_physio",
+            "practitionerTypeLabel": "Vestibular physiotherapist",
+            "rationale": "It may help some people with identified vestibular problems improve balance, dizziness, or movement tolerance; benefit is not guaranteed.",
+            "safetyNote": "",
+            "draftLabel": "Draft: pending clinician review",
+            "sources": [
+              {
+                "title": "Ontario Living Concussion Guidelines — Vestibular (Balance/Dizziness) & Vision Dysfunction",
+                "url": "https://concussionsontario.org/concussion/guideline-section/vestibular-balance-dizziness-vision-dysfunction",
+                "limits": "Supports VOMS screening, further assessment for persistent functional symptoms, consideration of vestibular interventions after assessment, BPPV suspicion/management, and specialist vision referral. Does not validate the workbook’s specific YouTube video or every home exercise."
+              },
+              {
+                "title": "Consensus statement on concussion in sport: 6th International Conference on Concussion in Sport — Amsterdam",
+                "url": "https://doi.org/10.1136/BJSPORTS-2023-106898",
+                "limits": "Supports symptom-targeted rehabilitation, cervicovestibular rehabilitation for persistent dizziness/neck pain/headache beyond 10 days, and prescribed subsymptom-threshold aerobic exercise in suitable cases. These recommendations are not proof of a cerebrovascular cause for any one patient’s symptoms."
+              },
+              {
+                "title": "CDC — Safety Guidelines for Pediatric Mild TBI",
+                "url": "https://www.cdc.gov/traumatic-brain-injury/hcp/clinical-guidance/pediatric-mtbi.html",
+                "limits": "Supports age-appropriate assessment, gradual return to non-sport activity after 1–2 days of rest as tolerated, clear return-to-activity instructions, referral when symptoms do not resolve as expected after 2–4 weeks, and attention to red flags. Does not support every specialized intervention in the workbook."
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
