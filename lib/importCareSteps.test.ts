@@ -6,7 +6,7 @@ import {
   practitionerTypesFromCategories,
   splitSourceField,
   type SourceRecord,
-} from "./importCareSteps";
+} from "./importCareSteps.mts";
 
 const PRACTITIONERS = [
   "gp_family_physician",
