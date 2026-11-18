@@ -1,0 +1,5 @@
+# Never upload local secrets or local-only data to Vercel.
+.env*
+/data/runtime/
+node_modules
+.next
