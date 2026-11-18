@@ -4,6 +4,8 @@ import type { NextConfig } from "next";
 const EMBED_FRAME_ANCESTORS = [
   "'self'",
   "https://sam-yu-personal-websitevercelapp.vercel.app",
+  "https://samuelyu.com",
+  "https://www.samuelyu.com",
   "http://localhost:*",
   "http://127.0.0.1:*",
 ];
